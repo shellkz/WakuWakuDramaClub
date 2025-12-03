@@ -1,0 +1,109 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\zechi\\Game Development\\projects\\WakuWakuDramaClub\\WakuWakuDramaClub\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{07E0022A-D5B7-434A-B5B0-E3E8F1D35DD4}|WakuWaku Drama Club.csproj|c:\\users\\zechi\\game development\\projects\\wakuwakudramaclub\\wakuwakudramaclub\\modules\\tts\\sherpattsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07E0022A-D5B7-434A-B5B0-E3E8F1D35DD4}|WakuWaku Drama Club.csproj|solutionrelative:modules\\tts\\sherpattsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07E0022A-D5B7-434A-B5B0-E3E8F1D35DD4}|WakuWaku Drama Club.csproj|c:\\users\\zechi\\game development\\projects\\wakuwakudramaclub\\wakuwakudramaclub\\modules\\parse\\dialogueinstruction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07E0022A-D5B7-434A-B5B0-E3E8F1D35DD4}|WakuWaku Drama Club.csproj|solutionrelative:modules\\parse\\dialogueinstruction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07E0022A-D5B7-434A-B5B0-E3E8F1D35DD4}|WakuWaku Drama Club.csproj|c:\\users\\zechi\\game development\\projects\\wakuwakudramaclub\\wakuwakudramaclub\\scenes\\dialogue_panel\\dialoguepanel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07E0022A-D5B7-434A-B5B0-E3E8F1D35DD4}|WakuWaku Drama Club.csproj|solutionrelative:scenes\\dialogue_panel\\dialoguepanel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07E0022A-D5B7-434A-B5B0-E3E8F1D35DD4}|WakuWaku Drama Club.csproj|c:\\users\\zechi\\game development\\projects\\wakuwakudramaclub\\wakuwakudramaclub\\modules\\render\\videorenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07E0022A-D5B7-434A-B5B0-E3E8F1D35DD4}|WakuWaku Drama Club.csproj|solutionrelative:modules\\render\\videorenderer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07E0022A-D5B7-434A-B5B0-E3E8F1D35DD4}|WakuWaku Drama Club.csproj|c:\\users\\zechi\\game development\\projects\\wakuwakudramaclub\\wakuwakudramaclub\\scenes\\editing_menu\\editingmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07E0022A-D5B7-434A-B5B0-E3E8F1D35DD4}|WakuWaku Drama Club.csproj|solutionrelative:scenes\\editing_menu\\editingmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "EditingMenu.cs",
+              "DocumentMoniker": "C:\\Users\\zechi\\Game Development\\projects\\WakuWakuDramaClub\\WakuWakuDramaClub\\scenes\\editing_menu\\EditingMenu.cs",
+              "RelativeDocumentMoniker": "scenes\\editing_menu\\EditingMenu.cs",
+              "ToolTip": "C:\\Users\\zechi\\Game Development\\projects\\WakuWakuDramaClub\\WakuWakuDramaClub\\scenes\\editing_menu\\EditingMenu.cs",
+              "RelativeToolTip": "scenes\\editing_menu\\EditingMenu.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-09T12:25:12.473Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "VideoRenderer.cs",
+              "DocumentMoniker": "C:\\Users\\zechi\\Game Development\\projects\\WakuWakuDramaClub\\WakuWakuDramaClub\\modules\\render\\VideoRenderer.cs",
+              "RelativeDocumentMoniker": "modules\\render\\VideoRenderer.cs",
+              "ToolTip": "C:\\Users\\zechi\\Game Development\\projects\\WakuWakuDramaClub\\WakuWakuDramaClub\\modules\\render\\VideoRenderer.cs",
+              "RelativeToolTip": "modules\\render\\VideoRenderer.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAxwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-09T07:38:46.761Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DialoguePanel.cs",
+              "DocumentMoniker": "C:\\Users\\zechi\\Game Development\\projects\\WakuWakuDramaClub\\WakuWakuDramaClub\\scenes\\dialogue_panel\\DialoguePanel.cs",
+              "RelativeDocumentMoniker": "scenes\\dialogue_panel\\DialoguePanel.cs",
+              "ToolTip": "C:\\Users\\zechi\\Game Development\\projects\\WakuWakuDramaClub\\WakuWakuDramaClub\\scenes\\dialogue_panel\\DialoguePanel.cs",
+              "RelativeToolTip": "scenes\\dialogue_panel\\DialoguePanel.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAiwA0AAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-09T05:36:55.713Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DialogueInstruction.cs",
+              "DocumentMoniker": "C:\\Users\\zechi\\Game Development\\projects\\WakuWakuDramaClub\\WakuWakuDramaClub\\modules\\parse\\DialogueInstruction.cs",
+              "RelativeDocumentMoniker": "modules\\parse\\DialogueInstruction.cs",
+              "ToolTip": "C:\\Users\\zechi\\Game Development\\projects\\WakuWakuDramaClub\\WakuWakuDramaClub\\modules\\parse\\DialogueInstruction.cs",
+              "RelativeToolTip": "modules\\parse\\DialogueInstruction.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBQAAAA9AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-09T03:22:17.039Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SherpaTTSService.cs",
+              "DocumentMoniker": "C:\\Users\\zechi\\Game Development\\projects\\WakuWakuDramaClub\\WakuWakuDramaClub\\modules\\tts\\SherpaTTSService.cs",
+              "RelativeDocumentMoniker": "modules\\tts\\SherpaTTSService.cs",
+              "ToolTip": "C:\\Users\\zechi\\Game Development\\projects\\WakuWakuDramaClub\\WakuWakuDramaClub\\modules\\tts\\SherpaTTSService.cs",
+              "RelativeToolTip": "modules\\tts\\SherpaTTSService.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAmwDMAAABYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-08T16:46:45.09Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

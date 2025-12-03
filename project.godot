@@ -1,0 +1,31 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="WakuWaku Drama Club"
+run/main_scene="uid://by6r5p7e5c5w5"
+config/features=PackedStringArray("4.5", "C#", "Forward Plus")
+
+[autoload]
+
+FFmpegService="*res://modules/render/FFmpegService.cs"
+TTSService="*res://modules/tts/TTSService.cs"
+SherpaTTSService="*res://modules/tts/SherpaTTSService.cs"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="viewport"
+
+[dotnet]
+
+project/assembly_name="WakuWaku Drama Club"

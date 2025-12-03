@@ -1,0 +1,911 @@
+[gd_scene load_steps=43 format=3 uid="uid://by6r5p7e5c5w5"]
+
+[ext_resource type="Script" uid="uid://dv3mu6gcxl0mf" path="res://modules/timeline/TimelineBuilder.cs" id="1_1kc3g"]
+[ext_resource type="Script" uid="uid://kd4rot4su7xo" path="res://scenes/editing_menu/EditingMenu.cs" id="1_yf4wl"]
+[ext_resource type="Script" uid="uid://caqlwvawboogb" path="res://scenes/main/TimelinePreview.cs" id="2_4na11"]
+[ext_resource type="Texture2D" uid="uid://o4gorfrhwv3h" path="res://assets/backgrounds/螢幕擷取畫面 2025-06-04 163546.png" id="2_qtu10"]
+[ext_resource type="Script" uid="uid://b5ynslh55orys" path="res://modules/timeline/TimelineViewport.cs" id="3_fbaj0"]
+[ext_resource type="Script" uid="uid://cioomy225no3x" path="res://modules/render/VideoRenderer.cs" id="3_mg8al"]
+[ext_resource type="Script" uid="uid://b3wf1cmsev3p3" path="res://scenes/dialogue_panel/DialoguePanel.cs" id="6_fyarh"]
+[ext_resource type="Script" uid="uid://d378sk40wl48n" path="res://scenes/Actor.cs" id="8_c1dxk"]
+[ext_resource type="Texture2D" uid="uid://bbbedu5bbutec" path="res://assets/actors/tsundamon/mouth/tsundamon mouth pout.png" id="10_1g6b5"]
+[ext_resource type="Texture2D" uid="uid://rhlat73gdcr5" path="res://assets/actors/tsundamon/hand_left/tsundamon hand left normal.png" id="10_c1dxk"]
+[ext_resource type="Texture2D" uid="uid://do3vmn56kegtj" path="res://assets/actors/tsundamon/mouth/tsundamon mouth happy.png" id="11_1ucan"]
+[ext_resource type="Texture2D" uid="uid://11efoso72si2" path="res://assets/actors/tsundamon/eye/tsundamon eye staring.png" id="11_8mv2l"]
+[ext_resource type="Texture2D" uid="uid://cej32wcmcrjuh" path="res://assets/actors/tsundamon/hand_right/tsundamon hand right normal.png" id="11_yxbua"]
+[ext_resource type="Texture2D" uid="uid://dk0cj8aq2b2kq" path="res://assets/actors/tsundamon/eyebrow/tsundamon eyebrow angry.png" id="12_4bxr1"]
+[ext_resource type="Texture2D" uid="uid://by3a03uiel4sd" path="res://assets/actors/tsundamon/mouth/tsundamon mouth cat open.png" id="12_exscy"]
+[ext_resource type="Texture2D" uid="uid://dqw22ha1uennb" path="res://assets/actors/tsundamon/eye/tsundamon eye joyful.png" id="12_h0m0t"]
+[ext_resource type="Texture2D" uid="uid://clbjlpgxiujyn" path="res://assets/actors/tsundamon/body/tsundamon body normal.png" id="12_urjek"]
+[ext_resource type="Texture2D" uid="uid://bleo7uvsoi76t" path="res://assets/actors/tsundamon/tsundamon ear normal.png" id="12_yxbua"]
+[ext_resource type="Texture2D" uid="uid://de8624v62vd5t" path="res://assets/actors/tsundamon/eyewhite/tsundamon eyewhite normal.png" id="14_1ucan"]
+[ext_resource type="Texture2D" uid="uid://c6gkou5sj4vd" path="res://assets/actors/tsundamon/pupil/tsundamon pupil lookforward normal.png" id="15_h0m0t"]
+[ext_resource type="Texture2D" uid="uid://by5csxlnhym0m" path="res://assets/actors/tsundamon/eyebrow/tsundamon eyebrow normal.png" id="16_hrq52"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_fyarh"]
+viewport_path = NodePath("TimelineViewport")
+
+[sub_resource type="Animation" id="Animation_qtu10"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DialoguePanel:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ee4bf"]
+_data = {
+&"RESET": SubResource("Animation_qtu10")
+}
+
+[sub_resource type="Animation" id="Animation_sky72"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_pxugv"]
+resource_name = "angry"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mouth:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_1g6b5")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EyeWhite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("11_8mv2l")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pupil:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("11_8mv2l")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Eyebrow:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("12_4bxr1")]
+}
+
+[sub_resource type="Animation" id="Animation_0ytqx"]
+resource_name = "new_animation"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mouth:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("11_1ucan")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EyeWhite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("12_h0m0t")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pupil:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("12_h0m0t")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Eyebrow:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("16_hrq52")]
+}
+
+[sub_resource type="Animation" id="Animation_6a6wx"]
+resource_name = "neutral"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mouth:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("12_exscy")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EyeWhite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("14_1ucan")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pupil:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("15_h0m0t")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Eyebrow:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("16_hrq52")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sky72"]
+_data = {
+&"RESET": SubResource("Animation_sky72"),
+&"angry": SubResource("Animation_pxugv"),
+&"happy": SubResource("Animation_0ytqx"),
+&"neutral": SubResource("Animation_6a6wx")
+}
+
+[sub_resource type="Animation" id="Animation_fj5cn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(960, 800)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_c1dxk"]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_am1vj"]
+resource_name = "faint"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.117126, 0.294835),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 64), Vector2(7, 1000)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.133281, 0.31099),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, -0.287429, 0.937242]
+}
+
+[sub_resource type="Animation" id="Animation_ee4bf"]
+resource_name = "jump"
+length = 0.3333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.3333),
+"transitions": PackedFloat32Array(0.435275, 2.63902, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -95), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_iy58a"]
+resource_name = "node"
+length = 0.2333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.109048, 0.2333),
+"transitions": PackedFloat32Array(0.554785, 2.73208, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 32), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iy58a"]
+_data = {
+&"RESET": SubResource("Animation_fj5cn"),
+&"fade_in": SubResource("Animation_c1dxk"),
+&"faint": SubResource("Animation_am1vj"),
+&"jump": SubResource("Animation_ee4bf"),
+&"nod": SubResource("Animation_iy58a")
+}
+
+[sub_resource type="Gradient" id="Gradient_ee4bf"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.75431, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0.8, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kbped"]
+gradient = SubResource("Gradient_ee4bf")
+fill_from = Vector2(0.508547, 1)
+fill_to = Vector2(0.549145, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fj5cn"]
+texture = SubResource("GradientTexture2D_kbped")
+
+[sub_resource type="Animation" id="Animation_16l5g"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SpeakerLabel:text")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["角色"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SpeakerLabel:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SpeechLabel:text")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["對話"]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SpeechLabel:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_fyarh"]
+resource_name = "show_dialogue"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SpeakerLabel:text")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["角色"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SpeakerLabel:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SpeechLabel:text")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["對話"]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SpeechLabel:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yf4wl"]
+_data = {
+&"RESET": SubResource("Animation_16l5g"),
+&"show_dialogue": SubResource("Animation_fyarh")
+}
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_ee4bf"]
+color = Color(0.36, 0.36, 0.36, 0.741176)
+thickness = 4
+
+[node name="EditingMenu" type="Panel" node_paths=PackedStringArray("ScriptEditor", "RenderButton", "PlayButton", "PauseButton", "TimelineBuilder", "TimelineViewport", "TimelinePreview", "VideoRenderer")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yf4wl")
+ScriptEditor = NodePath("ScriptEditor")
+RenderButton = NodePath("RenderButton")
+PlayButton = NodePath("TimelinePreview/VBoxContainer/HBoxContainer/PlayButton")
+PauseButton = NodePath("TimelinePreview/VBoxContainer/HBoxContainer/PauseButton")
+TimelineBuilder = NodePath("TimelineBuilder")
+TimelineViewport = NodePath("TimelineViewport")
+TimelinePreview = NodePath("TimelinePreview")
+VideoRenderer = NodePath("VideoRender")
+
+[node name="TimelinePreview" type="TextureRect" parent="." node_paths=PackedStringArray("TimelineViewport", "PlaybackSlider")]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -902.0
+offset_top = 53.0
+offset_right = 277.0
+offset_bottom = 773.0
+grow_horizontal = 2
+texture = SubResource("ViewportTexture_fyarh")
+expand_mode = 2
+stretch_mode = 4
+script = ExtResource("2_4na11")
+TimelineViewport = NodePath("../TimelineViewport")
+PlaybackSlider = NodePath("VBoxContainer/PlaybackSlider")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TimelinePreview"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="PlaybackSlider" type="HSlider" parent="TimelinePreview/VBoxContainer"]
+layout_mode = 2
+step = 0.033
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TimelinePreview/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="TimelinePreview/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "播放"
+
+[node name="PauseButton" type="Button" parent="TimelinePreview/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "暫停"
+
+[node name="ScriptEditor" type="CodeEdit" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1266.0
+offset_top = -1025.0
+offset_right = -25.0
+offset_bottom = -90.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+text = "毛豆 「大家的每日任務有跟我一樣嗎？」
+登場 毛豆
+毛豆 「沒有，只有光之映畫」（表情=angry）
+毛豆 「打開官方IG看有沒有新的營運團隊報告計畫」（表情=neutral）
+毛豆 「沒有，只有光之映畫」（表情=happy）"
+placeholder_text = "蓮實 「說是要讓露西亞她們也再奉陪一會兒」
+蓮實 「贏了嗎？」
+蓮實 「慘敗。本人說要變強到單挑打贏為止。」"
+wrap_mode = 1
+
+[node name="RenderButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -107.0
+offset_top = -62.0
+offset_right = -43.0
+offset_bottom = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Render"
+
+[node name="----------------" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ScriptParser" type="Node" parent="."]
+
+[node name="TimelineBuilder" type="Node" parent="." node_paths=PackedStringArray("TimelineViewport")]
+script = ExtResource("1_1kc3g")
+TimelineViewport = NodePath("../TimelineViewport")
+
+[node name="VideoRender" type="Node" parent="." node_paths=PackedStringArray("SubViewportToRecord", "AnimationPlayer")]
+script = ExtResource("3_mg8al")
+SubViewportToRecord = NodePath("../TimelineViewport")
+AnimationPlayer = NodePath("../TimelineViewport/TimelineAnimationPlayer")
+
+[node name="TimelineViewport" type="SubViewport" parent="." node_paths=PackedStringArray("AnimationPlayer", "Actors", "DialoguePanel")]
+canvas_cull_mask = 1
+size = Vector2i(1920, 1080)
+script = ExtResource("3_fbaj0")
+AnimationPlayer = NodePath("TimelineAnimationPlayer")
+Actors = NodePath("Actor")
+DialoguePanel = NodePath("DialoguePanel")
+
+[node name="TimelineAnimationPlayer" type="AnimationPlayer" parent="TimelineViewport"]
+libraries = {
+&"": SubResource("AnimationLibrary_ee4bf")
+}
+
+[node name="Background" type="TextureRect" parent="TimelineViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_qtu10")
+expand_mode = 1
+
+[node name="Position" type="Control" parent="TimelineViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="左" type="Control" parent="TimelineViewport/Position"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -616.0
+offset_top = -160.0
+offset_right = -616.0
+offset_bottom = -160.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="中" type="Control" parent="TimelineViewport/Position"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = -160.0
+offset_bottom = -160.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="右" type="Control" parent="TimelineViewport/Position"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 638.0
+offset_top = -160.0
+offset_right = 638.0
+offset_bottom = -160.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Actor" type="Control" parent="TimelineViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="毛豆" type="Control" parent="TimelineViewport/Actor" node_paths=PackedStringArray("ExpressionPlayer", "PosePlayer")]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 960.0
+offset_top = 800.0
+offset_right = 960.0
+offset_bottom = 800.0
+script = ExtResource("8_c1dxk")
+ExpressionPlayer = NodePath("Pivot/ExpressionAnimationPlayer")
+PosePlayer = NodePath("PoseAnimationPlayer")
+
+[node name="Pivot" type="Control" parent="TimelineViewport/Actor/毛豆"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Body" type="TextureRect" parent="TimelineViewport/Actor/毛豆/Pivot"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("12_urjek")
+
+[node name="Ear" type="TextureRect" parent="TimelineViewport/Actor/毛豆/Pivot"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("12_yxbua")
+
+[node name="Mouth" type="TextureRect" parent="TimelineViewport/Actor/毛豆/Pivot"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("12_exscy")
+
+[node name="EyeWhite" type="TextureRect" parent="TimelineViewport/Actor/毛豆/Pivot"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("14_1ucan")
+
+[node name="Pupil" type="TextureRect" parent="TimelineViewport/Actor/毛豆/Pivot"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_h0m0t")
+
+[node name="Eyebrow" type="TextureRect" parent="TimelineViewport/Actor/毛豆/Pivot"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("16_hrq52")
+
+[node name="HandLeft" type="TextureRect" parent="TimelineViewport/Actor/毛豆/Pivot"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_c1dxk")
+
+[node name="HandRight" type="TextureRect" parent="TimelineViewport/Actor/毛豆/Pivot"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_yxbua")
+stretch_mode = 5
+
+[node name="ExpressionAnimationPlayer" type="AnimationPlayer" parent="TimelineViewport/Actor/毛豆/Pivot"]
+libraries = {
+&"": SubResource("AnimationLibrary_sky72")
+}
+
+[node name="PoseAnimationPlayer" type="AnimationPlayer" parent="TimelineViewport/Actor/毛豆"]
+libraries = {
+&"": SubResource("AnimationLibrary_iy58a")
+}
+
+[node name="DialoguePanel" type="Panel" parent="TimelineViewport" node_paths=PackedStringArray("Player")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 696.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_fj5cn")
+script = ExtResource("6_fyarh")
+Player = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TimelineViewport/DialoguePanel"]
+libraries = {
+&"": SubResource("AnimationLibrary_yf4wl")
+}
+
+[node name="SpeakerLabel" type="RichTextLabel" parent="TimelineViewport/DialoguePanel"]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 47.0
+offset_right = 511.0
+offset_bottom = 137.0
+theme_override_colors/default_color = Color(0.91, 0.91, 0.91, 1)
+theme_override_font_sizes/normal_font_size = 56
+text = "角色"
+
+[node name="SpeechLabel" type="RichTextLabel" parent="TimelineViewport/DialoguePanel"]
+layout_mode = 0
+offset_left = 238.0
+offset_top = 154.0
+offset_right = 1181.0
+offset_bottom = 407.0
+theme_override_colors/default_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/normal_font_size = 44
+text = "對話"
+
+[node name="Panel" type="Panel" parent="TimelineViewport/DialoguePanel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 241.0
+offset_top = -248.0
+offset_right = -235.0
+offset_bottom = -245.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxLine_ee4bf")
+
+[connection signal="pressed" from="RenderButton" to="." method="_on_render_button_pressed"]

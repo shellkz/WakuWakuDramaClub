@@ -1,0 +1,378 @@
+[gd_scene load_steps=21 format=3 uid="uid://by6r5p7e5c5w5"]
+
+[ext_resource type="Script" uid="uid://dy74ragb8gd72" path="res://capture.gd" id="1_62e2m"]
+[ext_resource type="Texture2D" uid="uid://o4gorfrhwv3h" path="res://螢幕擷取畫面 2025-06-04 163546.png" id="2_qtu10"]
+[ext_resource type="Texture2D" uid="uid://jq1deb1nq02g" path="res://actors/villager_girl/josei_02_b.png" id="3_ee4bf"]
+[ext_resource type="Texture2D" uid="uid://6ypw33af822d" path="res://actors/villager_girl/josei_02_i.png" id="5_fj5cn"]
+[ext_resource type="Texture2D" uid="uid://c2grc4qnktrjx" path="res://actors/patient/josei_11_g.png" id="6_iy58a"]
+[ext_resource type="Texture2D" uid="uid://lftlnebd8hpp" path="res://actors/patient/josei_11_b.png" id="7_6a6wx"]
+[ext_resource type="Texture2D" uid="uid://w0aojw67pgm5" path="res://actors/villager_girl/josei_02_d.png" id="8_6a6wx"]
+
+[sub_resource type="Animation" id="Animation_qtu10"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DialoguePanel/SpeechLabel:text")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["對話"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DialoguePanel/SpeakerLabel:text")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["角色A"]
+}
+
+[sub_resource type="Animation" id="Animation_kbped"]
+resource_name = "new_animation"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ee4bf"]
+_data = {
+&"RESET": SubResource("Animation_qtu10"),
+&"new_animation": SubResource("Animation_kbped")
+}
+
+[sub_resource type="Animation" id="Animation_6a6wx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_fj5cn"]
+resource_name = "happy"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TextureRect:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_ee4bf")]
+}
+
+[sub_resource type="Animation" id="Animation_ee4bf"]
+resource_name = "hide"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_iy58a"]
+resource_name = "surprised"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_fj5cn")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6a6wx"]
+_data = {
+&"RESET": SubResource("Animation_6a6wx"),
+&"happy": SubResource("Animation_fj5cn"),
+&"hide": SubResource("Animation_ee4bf"),
+&"surprised": SubResource("Animation_iy58a")
+}
+
+[sub_resource type="Animation" id="Animation_eh0v1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_0ytqx"]
+resource_name = "happy"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TextureRect:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_6a6wx")]
+}
+
+[sub_resource type="Animation" id="Animation_sky72"]
+resource_name = "hide"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_pxugv"]
+resource_name = "surprised"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TextureRect:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_iy58a")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kbped"]
+_data = {
+&"RESET": SubResource("Animation_eh0v1"),
+&"happy": SubResource("Animation_0ytqx"),
+&"hide": SubResource("Animation_sky72"),
+&"surprised": SubResource("Animation_pxugv")
+}
+
+[node name="Control" type="Control" node_paths=PackedStringArray("anim_player")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_62e2m")
+anim_player = NodePath("AnimationPlayer")
+dialogue = Array[String](["A:阿德麗企鵝", "B:皇帝企鵝", "A:不能比", "B:我我我"])
+raw_script = "場景 正義實現委員會 早上
+蓮實 登場 中
+蓮實 「請進」
+等待 1秒
+蓮實 移動 右
+一花 登場 左
+一花 「打擾了。蓮實前輩，請問你找我嗎？」
+蓮實 「沒錯，一花，我在等你。」"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ee4bf")
+}
+
+[node name="Scene" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_qtu10")
+expand_mode = 1
+
+[node name="SpeakerA" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="SpeakerA"]
+layout_mode = 0
+offset_left = -160.0
+offset_top = 21.0
+offset_right = 1206.0
+offset_bottom = 2119.0
+texture = ExtResource("8_6a6wx")
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SpeakerA"]
+libraries = {
+&"": SubResource("AnimationLibrary_6a6wx")
+}
+
+[node name="SpeakerB" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_left = 961.0
+offset_right = 1001.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="SpeakerB"]
+layout_mode = 0
+offset_left = -160.0
+offset_top = 21.0
+offset_right = 1206.0
+offset_bottom = 2119.0
+texture = ExtResource("7_6a6wx")
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SpeakerB"]
+libraries = {
+&"": SubResource("AnimationLibrary_kbped")
+}
+
+[node name="DialoguePanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -499.0
+offset_top = -397.0
+offset_right = 459.0
+offset_bottom = -74.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="SpeakerLabel" type="RichTextLabel" parent="DialoguePanel"]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 19.0
+offset_right = 310.0
+offset_bottom = 126.0
+theme_override_font_sizes/normal_font_size = 72
+text = "角色A"
+
+[node name="SpeechLabel" type="RichTextLabel" parent="DialoguePanel"]
+layout_mode = 0
+offset_left = 208.0
+offset_top = 130.0
+offset_right = 1100.0
+offset_bottom = 383.0
+theme_override_font_sizes/normal_font_size = 72
+text = "對話"
+
+[node name="Position" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Left" type="Control" parent="Position"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -616.0
+offset_right = -616.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Middle" type="Control" parent="Position"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Right" type="Control" parent="Position"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 638.0
+offset_right = 638.0
+grow_horizontal = 2
+grow_vertical = 0
