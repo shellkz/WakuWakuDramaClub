@@ -29,3 +29,7 @@ window/stretch/mode="viewport"
 [dotnet]
 
 project/assembly_name="WakuWaku Drama Club"
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://assets/translations/instructions.en.translation", "res://assets/translations/instructions.ja.translation", "res://assets/translations/instructions.zh_TW.translation")

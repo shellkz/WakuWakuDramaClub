@@ -6,8 +6,6 @@ namespace WakuWakuDramaClub.Parse;
 
 public partial class RawInstruction : RefCounted
 {
-
-
     public string Type {  get; set; }
     public string[] Arguments { get; set; }
     public Dictionary<string, string> Options { get; set; }

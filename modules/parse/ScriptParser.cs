@@ -11,10 +11,10 @@ namespace WakuWakuDramaClub.Parse;
 [GlobalClass]
 public partial class ScriptParser : RefCounted
 {
-    string[] SupportedInstruction = {"對話", "登場", "場景", "移動", "等待"};
 
-    Dictionary<string, InstructionFactory> Factory = new Dictionary<string, InstructionFactory>();
 
+
+    Dictionary<string, Type> Factory = new Dictionary<string, Type>();
     public ScriptParser()
     {
         RegisterAllFactory();
@@ -22,22 +22,15 @@ public partial class ScriptParser : RefCounted
 
     public void RegisterAllFactory()
     {
-        // Find all InstructionFactory derived solid class
         var factories = Assembly.GetExecutingAssembly().GetTypes()
-            .Where(t => !t.IsAbstract && typeof(InstructionFactory).IsAssignableFrom(t));
-
-        foreach (var factoryType in factories)
+            .Where(t => !t.IsAbstract && typeof(Instruction).IsAssignableFrom(t));
+        
+        foreach (Type factory in factories)
         {
-            InstructionFactory factory = (InstructionFactory)Activator.CreateInstance(factoryType);
-            RegisterFactory(factory);
+            Instruction instruction = (Instruction)Activator.CreateInstance(factory, new RawInstruction());
+            Factory.Add(instruction.GetName(), instruction.GetType());
         }
-    }
-    public void RegisterFactory(InstructionFactory factory)
-    {
-       
-        //for name in TranslateAll(factory.GetName()) 
-        //  Factory.Add(name, factory);
-        Factory.Add(factory.GetName(), factory);
+        
     }
 
     public List<Instruction> Parse(string script)
@@ -63,23 +56,19 @@ public partial class ScriptParser : RefCounted
             foreach (Token option in options)
             {
                 intruction.Options.Add(option.Value.Split("=")[0],option.Value.Split("=")[1]);
-
-               
             }
             
             token.RemoveAll(t => t.Type == TokenType.Option);
 
-
             // interprete token in token chain as intruction
-
-            if (SupportedInstruction.Contains(token[0].Value))
+            if (GetSupportedInstructions().Contains(token[0].Value))
             {
                 intruction.Type = token[0].Value;
                 token.RemoveAt(0);
                 intruction.Arguments = token.Select(t => t.Value).ToArray();
 
             }
-            else if (SupportedInstruction.Contains(token[1].Value))
+            else if (GetSupportedInstructions().Contains(token[1].Value))
             {
                 intruction.Type = token[1].Value;
                 token.RemoveAt(1);
@@ -87,7 +76,7 @@ public partial class ScriptParser : RefCounted
             }
             else if (token.Any(t => t.Type == TokenType.Dialogue))
             {
-                intruction.Type = "對話";
+                intruction.Type = Tr(InstructionType.Dialogue.ToString());
                 intruction.Arguments = token.Select(t => t.Value).ToArray();
 
             }
@@ -101,17 +90,16 @@ public partial class ScriptParser : RefCounted
         List<Instruction> instructions = new List<Instruction>();
         foreach (RawInstruction rawInstruction in raw_instructions)
         {
-            InstructionFactory factory;
-
+            Type factory;
+            
             bool factoryFound = Factory.TryGetValue(rawInstruction.Type, out factory);
 
             if (factoryFound)
             {
-                Instruction instruction = factory.Create(rawInstruction);
+                Instruction instruction = (Instruction)Activator.CreateInstance(factory, rawInstruction);
                 instructions.Add(instruction);
             }
         }
-
         return instructions;
     }
     public List<Token> Tokenize(string line)
@@ -157,4 +145,8 @@ public partial class ScriptParser : RefCounted
         return tokens;
     }
 
+    public List<string> GetSupportedInstructions()
+    {
+        return Factory.Keys.ToList();
+    }
 }
