@@ -31,11 +31,16 @@ public partial class Actor : Control
 
 	public AnimationClip MakeExpression(string expression)
 	{
-
-
 		Animation animation = (Animation)ExpressionPlayer.GetAnimation(expression).Duplicate();
 		animation.Length = 0;
 
 		return new AnimationClip(ExpressionPlayer, animation);
 	}
+	public AnimationClip TakePose(string pose)
+	{
+		Animation animation = (Animation)PosePlayer.GetAnimation(pose).Duplicate();
+		return new AnimationClip(PosePlayer, animation);
+	}
+
+	//TakePose
 }

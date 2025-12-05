@@ -9,6 +9,7 @@ public partial class DialogueInstruction : Instruction
     public String Speaker {  get; set; }
     public String Speech { get; set; }
     public String Expression { get; set; }
+    public String Pose { get; set; }
 
     public DialogueInstruction(RawInstruction raw) : base(raw) {}
 
@@ -19,35 +20,37 @@ public partial class DialogueInstruction : Instruction
 
     public override void BindData()
     {
- 
         Speaker = TryGetArgument(0, "");
         Speech = TryGetArgument(1, "");
         Expression = TryGetOption("表情", "");
+        Pose = TryGetOption("動作", "");
+    
     }
 
     public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
     {
         AnimationPack result = new AnimationPack();
 
+        //// TTS logic
         // SherpaTTSService tts = viewport.GetNode<SherpaTTSService>("/root/SherpaTTSService");
         // (byte[] voice, TimeSpan duration)= await tts.TTSAsync(Speech, 1.0f, 3);
-       
-
-
         // VideoRenderer.AudioClip voiceClip = new VideoRenderer.AudioClip();
         // voiceClip.Format = "wav";
         // voiceClip.Data = voice;
-
         // result.Audios.Add(voiceClip);
 
-        
-
 		Actor actor = viewport.GetActor(Speaker);
+
         if(!String.IsNullOrEmpty(Expression))
 		    result.AddClip(actor.MakeExpression(Expression));
+    
+        if (!String.IsNullOrEmpty(Pose))
+        {
+            result.AddClip(actor.TakePose(Pose));
+        }
 
         result.AddClip(viewport.DialoguePanel.ShowDialogue(Speaker, Speech, TimeSpan.FromSeconds(Speech.Length / 5.0)));
-
+        //GD.Print("AnimationPack length " + result.GetDuration());
         return result;
     }
 
