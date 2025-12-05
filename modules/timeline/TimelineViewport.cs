@@ -12,7 +12,8 @@ public partial class TimelineViewport : SubViewport
 
     [Export]
     public Control Actors;
-
+    [Export]
+    public Control Anchors;
     [Export]
     public DialoguePanel DialoguePanel;
 
@@ -70,6 +71,11 @@ public partial class TimelineViewport : SubViewport
     public Actor GetActor(string name)
     {
         return Actors.FindChild(name) as Actor;
+    }
 
+    public Vector2 GetAnchorPosition(string name)
+    {
+        Control anchor = Anchors.FindChild(name) as Control;
+        return anchor.Position;
     }
 }

@@ -5,10 +5,13 @@ using WakuWakuDramaClub.Timline;
 public partial class Actor : Control
 {
 	[Export]
-	public AnimationPlayer ExpressionPlayer;
-
+	public AnimationPlayer MotionPlayer;
 	[Export]
 	public AnimationPlayer PosePlayer;
+	[Export]
+	public AnimationPlayer ExpressionPlayer;
+
+
 	
 
 	//Enter() => AnimationClip that fade actor in
@@ -40,6 +43,24 @@ public partial class Actor : Control
 	{
 		Animation animation = (Animation)PosePlayer.GetAnimation(pose).Duplicate();
 		return new AnimationClip(PosePlayer, animation);
+	}
+
+	public AnimationClip MoveTo(Vector2 destination, double duration)
+	{
+		Animation animation = (Animation)MotionPlayer.GetAnimation("move").Duplicate();
+
+		// position or global_position?
+		
+		animation.UpdateTrackKeyValue(".:position",Animation.TrackType.Value, 0, Position);
+
+		animation.UpdateTrackKeyTime(".:position",Animation.TrackType.Value, 1, duration);
+		animation.UpdateTrackKeyValue(".:position",Animation.TrackType.Value, 1, destination);
+
+		animation.Length = (float)duration;
+
+		Position = destination;
+		
+		return new AnimationClip(MotionPlayer, animation);
 	}
 
 	//TakePose

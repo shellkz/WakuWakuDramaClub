@@ -40,5 +40,6 @@ public abstract partial class Instruction : RefCounted
 public enum InstructionType
 {
     ActorEnter,
-    Dialogue
+    Dialogue,
+    ActorMove
 }
