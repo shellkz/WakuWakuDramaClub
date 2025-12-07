@@ -17,6 +17,9 @@ public partial class TimelineViewport : SubViewport
     [Export]
     public DialoguePanel DialoguePanel;
 
+    [Export]
+    public StageBackground Background;
+    
     private Timeline _timeline;
     public Timeline Timeline
     {

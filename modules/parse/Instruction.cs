@@ -41,5 +41,6 @@ public enum InstructionType
 {
     ActorEnter,
     Dialogue,
-    ActorMove
+    ActorMove,
+    ChangeBackground
 }

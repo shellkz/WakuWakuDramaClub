@@ -1,8 +1,10 @@
 using Godot;
 using System.Collections.Generic;
+using System.Diagnostics;
 using WakuWakuDramaClub.Parse;
 using WakuWakuDramaClub.Render;
 using WakuWakuDramaClub.Timline;
+
 public partial class EditingMenu : Control
 {
 	[Export]
@@ -34,6 +36,17 @@ public partial class EditingMenu : Control
 
 	public override void _Ready()
 	{
+	// 	Microsoft Hanhan Desktop
+	//  Microsoft Hanhan
+	//  Microsoft Yating
+	//  Microsoft Zhiwei
+		SystemSpeechTTS tts = new SystemSpeechTTS();
+	
+		// tts.ListVoices();
+
+
+		
+
 		RenderButton.Pressed += OnRenderButtonPressed;
 
 		//await Task.Delay(1000);
@@ -47,14 +60,19 @@ public partial class EditingMenu : Control
 
 	public async void OnRenderButtonPressed() {
 
+		
 		ScriptParser parser = new ScriptParser();
 		List<Instruction> instructions = parser.Parse(ScriptEditor.Text);
 
 		Timeline timeline = await TimelineBuilder.BuildTimeline(instructions);
 		//ResourceSaver.Save(timeline.Animation, "res://test.res");		
 		
+		// Stopwatch watch = new Stopwatch();
+		// watch.Start();
 		TimelineViewport.Timeline = timeline;
-
+		await VideoRenderer.ExportAnimationToVideo(timeline.Animation, timeline.Audio);
+		// watch.Stop();
+		// GD.Print(watch.Elapsed.TotalSeconds);
 	}
 
 	public void OnPlayButtonPressed()

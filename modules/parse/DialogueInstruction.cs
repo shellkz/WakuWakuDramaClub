@@ -2,6 +2,7 @@ using System;
 using WakuWakuDramaClub.Timline;
 using System.Threading.Tasks;
 using Godot;
+using WakuWakuDramaClub.Render;
 
 namespace WakuWakuDramaClub.Parse;
 public partial class DialogueInstruction : Instruction
@@ -38,6 +39,13 @@ public partial class DialogueInstruction : Instruction
         // voiceClip.Format = "wav";
         // voiceClip.Data = voice;
         // result.Audios.Add(voiceClip);
+        SystemSpeechTTS tts= new SystemSpeechTTS();
+        (byte[] voice, TimeSpan duration) = tts.SynthesizeSpeechToBytes(Speech, "Microsoft Yating");
+        VideoRenderer.AudioClip voiceClip = new VideoRenderer.AudioClip();
+        voiceClip.Format = "wav";
+        voiceClip.Data = voice;
+        result.Audios.Add(voiceClip);
+        
 
 		Actor actor = viewport.GetActor(Speaker);
 
@@ -49,7 +57,7 @@ public partial class DialogueInstruction : Instruction
             result.AddClip(actor.TakePose(Pose));
         }
 
-        result.AddClip(viewport.DialoguePanel.ShowDialogue(Speaker, Speech, TimeSpan.FromSeconds(Speech.Length / 5.0)));
+        result.AddClip(viewport.DialoguePanel.ShowDialogue(Speaker, Speech, duration));
         //GD.Print("AnimationPack length " + result.GetDuration());
         return result;
     }
