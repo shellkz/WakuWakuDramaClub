@@ -17,21 +17,24 @@ public partial class ActorMoveInstruction : Instruction
     {
         return Tr(InstructionType.ActorMove.ToString());
     }
-    public override void BindData()
+    public override void BindData(RawInstruction raw)
     {
-		Actor = TryGetArgument(0, "");
-		Destination = TryGetArgument(1, "");
-		Duration = TryGetArgument(2, "");
+		Actor = raw.TryGetStatementArgumentValue(Tr(InstructionType.ActorMove.ToString()), 0, "");
+		Destination = raw.TryGetStatementArgumentValue("到", 0, "");
+		Duration = raw.TryGetStatementArgumentValue("在", 0, "");
     }
  	public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
 	{
 		AnimationPack result = new AnimationPack();
 
+		GD.Print(String.Format("Move to [{0}]", Destination));
+		GD.Print(String.Format("in [{0}]", Duration));
 
 		Actor actor = viewport.GetActor(Actor);
 		Vector2 destination = viewport.GetAnchorPosition(Destination);
 		double duration = Duration.ToFloat();
 		
+
 		result.AddClip(actor.MoveTo(destination, duration));
 
 		return result;

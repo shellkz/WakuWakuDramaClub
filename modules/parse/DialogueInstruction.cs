@@ -19,13 +19,12 @@ public partial class DialogueInstruction : Instruction
         return Tr(InstructionType.Dialogue.ToString());
     }
 
-    public override void BindData()
+    public override void BindData(RawInstruction raw)
     {
-        Speaker = TryGetArgument(0, "");
-        Speech = TryGetArgument(1, "");
-        Expression = TryGetOption("表情", "");
-        Pose = TryGetOption("動作", "");
-    
+        Speaker = raw.TryGetStatementArgumentValue(Tr(InstructionType.Dialogue.ToString()), 0, "");
+        Speech = raw.TryGetStatementArgumentValue(Tr(InstructionType.Dialogue.ToString()), 1, "");
+        Expression = raw.TryGetStatementArgumentValue("表情", 0, "");
+        Pose = raw.TryGetStatementArgumentValue("動作", 0, "");
     }
 
     public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)

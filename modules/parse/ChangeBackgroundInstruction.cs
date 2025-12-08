@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Parse;
 using WakuWakuDramaClub.Timline;
@@ -15,9 +16,25 @@ public partial class ChangeBackgroundInstruction : Instruction
     {
         return Tr(InstructionType.ChangeBackground.ToString());
     }
-    public override void BindData()
+    public override void BindData(RawInstruction raw)
     {
-		Background = TryGetArgument(0, "");
+		// foreach (Statement statement in raw.Statements.Values)
+		// {
+		// 	GD.Print(statement.Type);
+		// 	foreach (string argument in statement.Arguments)
+		// 	{	
+		// 		GD.Print("  -" + argument);
+		// 	}	
+			
+		// 	//GD.Print(raw.TryGetStatementArgumentValue(Tr(InstructionType.ChangeBackground.ToString()), 0, ""));
+		// }
+
+		// foreach (string key in raw.Statements.Keys)
+		// {
+		// 	GD.Print(key + " " + raw.Statements[key].Type);
+
+		// }
+		Background = raw.TryGetStatementArgumentValue(Tr(InstructionType.ChangeBackground.ToString()), 0, "");
     }
  	public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
 	{

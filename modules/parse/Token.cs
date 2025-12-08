@@ -4,9 +4,11 @@ using Godot;
 namespace WakuWakuDramaClub.Parse;
 public enum TokenType
 {
-    Normal,   // Content inside nothing
-    Dialogue, // Content of dialogue inside「」
-    Option    // Content of option inside（）
+    //Normal,   // Content inside nothing
+    //Option,    // Content of option inside（）
+    Keyword,
+    Dialogue, 
+    Argument
 }
 [GlobalClass]
 public partial class Token : Godot.RefCounted

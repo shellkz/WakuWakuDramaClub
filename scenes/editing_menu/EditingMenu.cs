@@ -64,6 +64,8 @@ public partial class EditingMenu : Control
 		ScriptParser parser = new ScriptParser();
 		List<Instruction> instructions = parser.Parse(ScriptEditor.Text);
 
+	
+
 		Timeline timeline = await TimelineBuilder.BuildTimeline(instructions);
 		//ResourceSaver.Save(timeline.Animation, "res://test.res");		
 		

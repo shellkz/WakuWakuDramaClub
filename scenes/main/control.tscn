@@ -1004,10 +1004,10 @@ text = "背景 res://assets/backgrounds/red-winter_president_office_morning.jpg
 毛豆 「我我我」
 背景 res://assets/backgrounds/red-winter_president_office_night.jpg
 登場 毛豆
-毛豆 移動 右 0.5
+毛豆 移動 到 右 在 0.5
 毛豆 「你妳你」
-毛豆 移動 左 1.0
-毛豆 「毛豆，唱歌」（表情=angry）（動作=mic）"
+毛豆 移動 到 左 在 1.0
+毛豆 「毛豆，唱歌」 表情 angry 動作 mic "
 placeholder_text = "毛豆 「我我我」
 登場 毛豆
 毛豆 移動 右 0.5

@@ -14,9 +14,9 @@ public partial class ActorEnterInstruction : Instruction
     {
         return Tr(InstructionType.ActorEnter.ToString());
     }
-    public override void BindData()
+    public override void BindData(RawInstruction raw)
     {
-		Actor = TryGetArgument(0, "");
+		Actor = raw.TryGetStatementArgumentValue(Tr(InstructionType.ActorEnter.ToString()), 0, "");
     }
  	public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
 	{
