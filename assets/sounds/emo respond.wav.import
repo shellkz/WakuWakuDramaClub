@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dl8uv6l8j0hj6"
+path="res://.godot/imported/emo respond.wav-eb9de6fe532c11b8df058118b385d9ce.sample"
+
+[deps]
+
+source_file="res://assets/sounds/emo respond.wav"
+dest_files=["res://.godot/imported/emo respond.wav-eb9de6fe532c11b8df058118b385d9ce.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

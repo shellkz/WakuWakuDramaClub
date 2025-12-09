@@ -53,6 +53,10 @@ public partial class VideoRenderer : Node
 
         AnimationLibrary animationLibrary = new AnimationLibrary();
         animationLibrary.AddAnimation("timeline", animation);
+
+        if (AnimationPlayer.HasAnimationLibrary("custom"))
+            AnimationPlayer.RemoveAnimationLibrary("custom");
+
         AnimationPlayer.AddAnimationLibrary("custom", animationLibrary);
         AnimationPlayer.Play("custom/timeline");
         AnimationPlayer.Pause();

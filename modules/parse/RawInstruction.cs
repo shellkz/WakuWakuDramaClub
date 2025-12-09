@@ -40,4 +40,18 @@ public partial class RawInstruction : RefCounted
         //     GD.Print("found no statement");
         return defaultValue;
     }
+
+        public string TryGetStatementArgumentsValue(string name, string defaultValue)
+    {
+        Statement statement;
+        if (Statements.TryGetValue(name, out statement))
+        {
+            // if (name == Tr(InstructionType.ChangeBackground.ToString()))
+            //     GD.Print("found no argument");
+            return statement.TryGetArgumentsValue(defaultValue);
+        }
+        // if (name == Tr(InstructionType.ChangeBackground.ToString()))
+        //     GD.Print("found no statement");
+        return defaultValue;
+    }
 }

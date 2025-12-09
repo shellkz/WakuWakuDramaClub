@@ -4,3 +4,5 @@ ActorExit,hide,退場,退場
 Dialogue,dialogue,對話,会話
 ActorMove,move,移動,移動
 ChangeBackground,background,背景,背景
+PlaySound,sound,音效,効果音
+Wait,wait,等待,待つ

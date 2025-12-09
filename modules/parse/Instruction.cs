@@ -44,5 +44,7 @@ public enum InstructionType
     ActorEnter,
     Dialogue,
     ActorMove,
-    ChangeBackground
+    ChangeBackground,
+    PlaySound,
+    Wait
 }

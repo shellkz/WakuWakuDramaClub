@@ -1,13 +1,8 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-
 using System.Linq;
 using System.Reflection;
-using System.IO;
-using Microsoft.VisualBasic;
-
 namespace WakuWakuDramaClub.Parse;
 
 [GlobalClass]
@@ -198,9 +193,9 @@ public partial class ScriptParser : RefCounted
         // Keyword, Dialogue, Argument
         foreach (string token in line.Split(" "))
         {
-            if (token.StartsWith("「") && token.EndsWith("」"))
+            if (token.StartsWith("\"") && token.EndsWith("\""))
             {
-                tokens.Add(new Token(TokenType.Dialogue, token.TrimPrefix("「").TrimSuffix("」")));
+                tokens.Add(new Token(TokenType.Dialogue, token.TrimPrefix("\"").TrimSuffix("\"")));
             }
             //GetSupportedInstructions() should be GetSupportedStatements()
             else if (GetSupportedKeywords().Contains(token))

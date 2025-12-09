@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public partial class Statement : Godot.RefCounted
 {
@@ -18,6 +19,21 @@ public partial class Statement : Godot.RefCounted
 		if (index >= 0 && index < Arguments.Count)
 		{
 			return Arguments[index];
+		}
+		return defaultValue;
+	}
+
+	public string TryGetArgumentsValue(string defaultValue)
+	{
+		if (Arguments.Count > 0)
+		{
+			string merged = "";
+			foreach (string argument in Arguments)
+			{
+				merged += argument;
+				merged += " ";
+			}
+			return merged.Trim();
 		}
 		return defaultValue;
 	}

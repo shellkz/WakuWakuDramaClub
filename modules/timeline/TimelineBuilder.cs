@@ -28,7 +28,7 @@ public partial class TimelineBuilder : Node
 
             AnimationPack animationPack = await instruction.BakeAsAnimation(TimelineViewport);
         
-       
+            
             animationPack.ConvertTo(TimelineViewport.AnimationPlayer); 
        
             //// [auto sync state]

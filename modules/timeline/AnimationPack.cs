@@ -26,6 +26,8 @@ public partial class AnimationPack : RefCounted
     }
     public double GetDuration()
     {
+        if (Clips.Count ==0)
+            return 0.0;
         return Clips.Max(c => c.GetDuration());
     }
 }

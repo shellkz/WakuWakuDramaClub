@@ -119,6 +119,12 @@ public static class AnimationExtensions
     /// <param name="targetPlayer">The AnimationPlayer that will own the new animation and its new track paths.</param>
     public static void ConvertTo(this Animation animation, AnimationPlayer sourcePlayer, AnimationPlayer targetPlayer)
     {
+        if (sourcePlayer == null || targetPlayer == null)
+        {
+            GD.PrintErr("One of the AnimationPlayer is null.");
+            return;
+        }
+
         // Get the root nodes for both the source and target AnimationPlayers
         Node sourceRoot = sourcePlayer.GetNode(sourcePlayer.RootNode);
         Node targetRoot = targetPlayer.GetNode(targetPlayer.RootNode);

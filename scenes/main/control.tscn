@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://by6r5p7e5c5w5"]
+[gd_scene load_steps=75 format=3 uid="uid://by6r5p7e5c5w5"]
 
 [ext_resource type="Script" uid="uid://dv3mu6gcxl0mf" path="res://modules/timeline/TimelineBuilder.cs" id="1_1kc3g"]
 [ext_resource type="Script" uid="uid://kd4rot4su7xo" path="res://scenes/editing_menu/EditingMenu.cs" id="1_yf4wl"]
@@ -7,10 +7,10 @@
 [ext_resource type="Script" uid="uid://cioomy225no3x" path="res://modules/render/VideoRenderer.cs" id="3_mg8al"]
 [ext_resource type="Script" uid="uid://b3wf1cmsev3p3" path="res://scenes/dialogue_panel/DialoguePanel.cs" id="6_fyarh"]
 [ext_resource type="Animation" path="res://test.res" id="6_jjy5e"]
-[ext_resource type="Texture2D" uid="uid://dw8ltgsm8ot6r" path="res://assets/backgrounds/red-winter_president_office_morning.jpg" id="7_h4hwy"]
+[ext_resource type="Texture2D" uid="uid://dw8ltgsm8ot6r" path="res://assets/backgrounds/赤冬 會長辦公室 早上.jpg" id="7_h4hwy"]
 [ext_resource type="Script" uid="uid://d378sk40wl48n" path="res://scenes/Actor.cs" id="8_c1dxk"]
 [ext_resource type="Script" uid="uid://c5n8husurio2r" path="res://scenes/main/StageBackground.cs" id="8_ln00x"]
-[ext_resource type="Texture2D" uid="uid://biyng53rn2ax0" path="res://assets/backgrounds/red-winter_president_office_night.jpg" id="9_shnwq"]
+[ext_resource type="Texture2D" uid="uid://biyng53rn2ax0" path="res://assets/backgrounds/赤冬 會長辦公室 晚上.jpg" id="9_shnwq"]
 [ext_resource type="Texture2D" uid="uid://bbbedu5bbutec" path="res://assets/actors/tsundamon/mouth/tsundamon mouth pout.png" id="10_1g6b5"]
 [ext_resource type="Texture2D" uid="uid://rhlat73gdcr5" path="res://assets/actors/tsundamon/hand_left/tsundamon hand left normal.png" id="10_c1dxk"]
 [ext_resource type="Texture2D" uid="uid://do3vmn56kegtj" path="res://assets/actors/tsundamon/mouth/tsundamon mouth happy.png" id="11_1ucan"]
@@ -31,9 +31,29 @@
 [ext_resource type="Texture2D" uid="uid://ba2usc4slnoav" path="res://assets/actors/tsundamon/hand_right/tsundamon hand right raised.png" id="25_ln00x"]
 [ext_resource type="Texture2D" uid="uid://c3r3t1iuvlq6x" path="res://assets/actors/tsundamon/hand_right/tsundamon hand right nervous.png" id="26_shnwq"]
 [ext_resource type="Texture2D" uid="uid://g0btr0w26q7n" path="res://assets/actors/tsundamon/hand_right/tsundamon hand right taunting.png" id="27_em5dr"]
+[ext_resource type="AudioStream" uid="uid://lq064kwtkavw" path="res://assets/sounds/emo dot.wav" id="32_shnwq"]
+[ext_resource type="AudioStream" uid="uid://dl8uv6l8j0hj6" path="res://assets/sounds/emo respond.wav" id="33_em5dr"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_fyarh"]
 viewport_path = NodePath("TimelineViewport")
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_h4hwy"]
+number_color = Color(0.6, 0.6, 0.6, 1)
+symbol_color = Color(0.6, 0.6, 0.6, 1)
+member_variable_color = Color(0.7, 0.7, 0.7, 1)
+keyword_colors = {
+"到": Color(0.5764706, 0.34901962, 0.7019608, 1),
+"動作": Color(0.5764706, 0.34901962, 0.7019608, 1),
+"在": Color(0.5764706, 0.34901962, 0.7019608, 1),
+"登場": Color(0.8, 0.5529412, 0.32156864, 1),
+"移動": Color(0.8, 0.5529412, 0.32156864, 1),
+"背景": Color(0.8, 0.5529412, 0.32156864, 1),
+"表情": Color(0.5764706, 0.34901962, 0.7019608, 1),
+"音效": Color(0.8, 0.5529412, 0.32156864, 1)
+}
+color_regions = {
+"\" \"": Color(0.2806, 0.46, 0.39123002, 1)
+}
 
 [sub_resource type="Animation" id="Animation_qtu10"]
 length = 0.001
@@ -929,6 +949,33 @@ _data = {
 color = Color(0.36, 0.36, 0.36, 0.741176)
 thickness = 4
 
+[sub_resource type="Animation" id="Animation_tmf5n"]
+resource_name = "new_animation"
+tracks/0/type = "audio"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AudioStreamPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"clips": [{
+"end_offset": 1.21,
+"start_offset": 0.0,
+"stream": ExtResource("32_shnwq")
+}, {
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("33_em5dr")
+}],
+"times": PackedFloat32Array(0.03333333, 0.23333333)
+}
+tracks/0/use_blend = true
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nkklq"]
+_data = {
+&"new_animation": SubResource("Animation_tmf5n")
+}
+
 [node name="EditingMenu" type="Panel" node_paths=PackedStringArray("ScriptEditor", "RenderButton", "PlayButton", "PauseButton", "TimelineBuilder", "TimelineViewport", "TimelinePreview", "VideoRenderer")]
 anchors_preset = 15
 anchor_right = 1.0
@@ -999,24 +1046,21 @@ offset_right = -25.0
 offset_bottom = -90.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
 theme_override_font_sizes/font_size = 32
-text = "背景 res://assets/backgrounds/red-winter_president_office_morning.jpg
-毛豆 「我我我」
-背景 res://assets/backgrounds/red-winter_president_office_night.jpg
-登場 毛豆
+text = "背景 赤冬 會長辦公室 早上
+音效 emo question
+毛豆 \"這個是？\" 
+等待 2.0
+背景 赤冬 會長辦公室 晚上
+毛豆 登場
 毛豆 移動 到 右 在 0.5
-毛豆 「你妳你」
+毛豆 \"你妳你\"
 毛豆 移動 到 左 在 1.0
-毛豆 「毛豆，唱歌」 表情 angry 動作 mic "
-placeholder_text = "毛豆 「我我我」
-登場 毛豆
-毛豆 移動 右 0.5
-毛豆 「你妳你」
-毛豆 移動 左 1.0
-毛豆 「毛豆，唱歌」（表情=angry）（動作=mic）
-毛豆 「打開官方IG看有沒有新的營運團隊報告計畫」（表情=neutral）（動作=jump）
-毛豆 「沒有，只有光之映畫」（表情=happy）"
+毛豆 \"毛豆，唱歌\" 表情 angry 動作 mic "
 wrap_mode = 1
+syntax_highlighter = SubResource("CodeHighlighter_h4hwy")
+highlight_current_line = true
 
 [node name="RenderButton" type="Button" parent="."]
 layout_mode = 1
@@ -1365,5 +1409,12 @@ offset_bottom = -245.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxLine_ee4bf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_nkklq")
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [connection signal="pressed" from="RenderButton" to="." method="_on_render_button_pressed"]
