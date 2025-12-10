@@ -1,6 +1,8 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using WakuWakuDramaClub.Parse;
 using WakuWakuDramaClub.Render;
 using WakuWakuDramaClub.Timline;
@@ -34,30 +36,14 @@ public partial class EditingMenu : Control
 	public VideoRenderer VideoRenderer { get; set; }
 
 
+
+
 	public override void _Ready()
 	{
-	// 	Microsoft Hanhan Desktop
-	//  Microsoft Hanhan
-	//  Microsoft Yating
-	//  Microsoft Zhiwei
-
-
-
-		SystemSpeechTTS tts = new SystemSpeechTTS();
-	
-		// tts.ListVoices();
-
-
-		
 
 		RenderButton.Pressed += OnRenderButtonPressed;
-
-		//await Task.Delay(1000);
-
-	 
 		PlayButton.Pressed += OnPlayButtonPressed;
 		PauseButton.Pressed += OnPauseButtonPressed;
-
 
 	}
 
@@ -67,10 +53,22 @@ public partial class EditingMenu : Control
 		ScriptParser parser = new ScriptParser();
 		List<Instruction> instructions = parser.Parse(ScriptEditor.Text);
 
-	
 
+		//ClearActors
+		TimelineViewport.ClearActors();
+
+		string[] actor_involved = instructions.Where(i=>i is ActorMoveInstruction).Select(i=>i as ActorMoveInstruction).Select(i=>i.Actor).ToArray();
+
+		foreach (string actor in actor_involved)
+		{
+			TimelineViewport.CreateActorIfNotExist(actor);
+		}
+
+
+		
+	
+	
 		Timeline timeline = await TimelineBuilder.BuildTimeline(instructions);
-		//ResourceSaver.Save(timeline.Animation, "res://test.res");		
 		
 		// Stopwatch watch = new Stopwatch();
 		// watch.Start();

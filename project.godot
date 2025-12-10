@@ -17,8 +17,7 @@ config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 [autoload]
 
 FFmpegService="*res://modules/render/FFmpegService.cs"
-TTSService="*res://modules/tts/TTSService.cs"
-SherpaTTSService="*res://modules/tts/SherpaTTSService.cs"
+ResourceManager="*res://modules/ResourceManager.cs"
 
 [display]
 

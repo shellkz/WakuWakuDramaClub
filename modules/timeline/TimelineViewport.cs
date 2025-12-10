@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 namespace WakuWakuDramaClub.Timline;
 public partial class TimelineViewport : SubViewport
 {
@@ -73,12 +74,43 @@ public partial class TimelineViewport : SubViewport
 
     public Actor GetActor(string name)
     {
-        return Actors.FindChild(name) as Actor;
+        
+        foreach (Node child in Actors.GetChildren()){
+            if (child is Actor)
+            {
+                Actor actor = child as Actor;
+                GD.Print(actor.Id);
+                if (actor.Id == name)
+                {
+                    return actor;
+                }
+            }
+        }
+        return null;
+
+        //return Actors.FindChildren("*", "Actor", true, false).Select(node=>node as Actor).First(actor=>actor.Id == name);
     }
 
     public Vector2 GetAnchorPosition(string name)
     {
         Control anchor = Anchors.FindChild(name) as Control;
         return anchor.Position;
+    }
+    public void ClearActors()
+    {
+        foreach (Node child in Actors.GetChildren())
+        {
+            child.QueueFree();
+        }
+    }
+
+    public void CreateActorIfNotExist(string id)
+    {
+        Actor actor = GetActor(id);
+        if (actor != null)
+            return;
+        PackedScene scene = GD.Load<PackedScene>(ResourceManager.Instance.actors[id]);
+        Actor node = scene.Instantiate<Actor>();
+        Actors.AddChild(node);
     }
 }

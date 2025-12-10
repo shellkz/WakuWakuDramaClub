@@ -4,6 +4,10 @@ using WakuWakuDramaClub.Timline;
 
 public partial class Actor : Control
 {
+
+	[Export]
+	public string Id;
+	
 	[Export]
 	public AnimationPlayer MotionPlayer;
 	[Export]
