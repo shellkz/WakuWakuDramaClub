@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://by6r5p7e5c5w5"]
+[gd_scene format=3 uid="uid://by6r5p7e5c5w5"]
 
 [ext_resource type="Script" uid="uid://dv3mu6gcxl0mf" path="res://modules/timeline/TimelineBuilder.cs" id="1_1kc3g"]
 [ext_resource type="Script" uid="uid://kd4rot4su7xo" path="res://scenes/editing_menu/EditingMenu.cs" id="1_yf4wl"]
@@ -285,7 +285,7 @@ _data = {
 &"new_animation": SubResource("Animation_tmf5n")
 }
 
-[node name="EditingMenu" type="Panel" node_paths=PackedStringArray("ScriptEditor", "RenderButton", "PlayButton", "PauseButton", "TimelineBuilder", "TimelineViewport", "TimelinePreview", "VideoRenderer")]
+[node name="EditingMenu" type="Panel" unique_id=1436386884 node_paths=PackedStringArray("ScriptEditor", "RenderButton", "PlayButton", "PauseButton", "TimelineBuilder", "TimelineViewport", "TimelinePreview", "VideoRenderer")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -301,7 +301,7 @@ TimelineViewport = NodePath("TimelineViewport")
 TimelinePreview = NodePath("TimelinePreview")
 VideoRenderer = NodePath("VideoRender")
 
-[node name="TimelinePreview" type="TextureRect" parent="." node_paths=PackedStringArray("TimelineViewport", "PlaybackSlider")]
+[node name="TimelinePreview" type="TextureRect" parent="." unique_id=1421730459 node_paths=PackedStringArray("TimelineViewport", "PlaybackSlider")]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -318,7 +318,7 @@ script = ExtResource("2_4na11")
 TimelineViewport = NodePath("../TimelineViewport")
 PlaybackSlider = NodePath("VBoxContainer/PlaybackSlider")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TimelinePreview"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TimelinePreview" unique_id=1380684716]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -327,23 +327,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="PlaybackSlider" type="HSlider" parent="TimelinePreview/VBoxContainer"]
+[node name="PlaybackSlider" type="HSlider" parent="TimelinePreview/VBoxContainer" unique_id=1991333713]
 layout_mode = 2
 step = 0.033
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TimelinePreview/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TimelinePreview/VBoxContainer" unique_id=396040856]
 layout_mode = 2
 alignment = 1
 
-[node name="PlayButton" type="Button" parent="TimelinePreview/VBoxContainer/HBoxContainer"]
+[node name="PlayButton" type="Button" parent="TimelinePreview/VBoxContainer/HBoxContainer" unique_id=1944021930]
 layout_mode = 2
 text = "播放"
 
-[node name="PauseButton" type="Button" parent="TimelinePreview/VBoxContainer/HBoxContainer"]
+[node name="PauseButton" type="Button" parent="TimelinePreview/VBoxContainer/HBoxContainer" unique_id=1357129784]
 layout_mode = 2
 text = "暫停"
 
-[node name="ScriptEditor" type="CodeEdit" parent="."]
+[node name="ScriptEditor" type="CodeEdit" parent="." unique_id=1075755904]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -378,7 +378,7 @@ wrap_mode = 1
 syntax_highlighter = SubResource("CodeHighlighter_h4hwy")
 highlight_current_line = true
 
-[node name="RenderButton" type="Button" parent="."]
+[node name="RenderButton" type="Button" parent="." unique_id=1743093683]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -393,23 +393,23 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "Render"
 
-[node name="----------------" type="Control" parent="."]
+[node name="----------------" type="Control" parent="." unique_id=1757255441]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="ScriptParser" type="Node" parent="."]
+[node name="ScriptParser" type="Node" parent="." unique_id=1551549520]
 
-[node name="TimelineBuilder" type="Node" parent="." node_paths=PackedStringArray("TimelineViewport")]
+[node name="TimelineBuilder" type="Node" parent="." unique_id=1586122563 node_paths=PackedStringArray("TimelineViewport")]
 script = ExtResource("1_1kc3g")
 TimelineViewport = NodePath("../TimelineViewport")
 
-[node name="VideoRender" type="Node" parent="." node_paths=PackedStringArray("SubViewportToRecord", "AnimationPlayer")]
+[node name="VideoRender" type="Node" parent="." unique_id=843260470 node_paths=PackedStringArray("SubViewportToRecord", "AnimationPlayer")]
 script = ExtResource("3_mg8al")
 SubViewportToRecord = NodePath("../TimelineViewport")
 AnimationPlayer = NodePath("../TimelineViewport/TimelineAnimationPlayer")
 
-[node name="TimelineViewport" type="SubViewport" parent="." node_paths=PackedStringArray("AnimationPlayer", "Actors", "Anchors", "DialoguePanel", "Background")]
+[node name="TimelineViewport" type="SubViewport" parent="." unique_id=209533123 node_paths=PackedStringArray("AnimationPlayer", "Actors", "Anchors", "DialoguePanel", "Background")]
 canvas_cull_mask = 1
 size = Vector2i(1920, 1080)
 script = ExtResource("3_fbaj0")
@@ -419,12 +419,10 @@ Anchors = NodePath("Anchors")
 DialoguePanel = NodePath("DialoguePanel")
 Background = NodePath("Background")
 
-[node name="TimelineAnimationPlayer" type="AnimationPlayer" parent="TimelineViewport"]
-libraries = {
-&"": SubResource("AnimationLibrary_ee4bf")
-}
+[node name="TimelineAnimationPlayer" type="AnimationPlayer" parent="TimelineViewport" unique_id=10355310]
+libraries/ = SubResource("AnimationLibrary_ee4bf")
 
-[node name="Background" type="TextureRect" parent="TimelineViewport" node_paths=PackedStringArray("animationPlayer")]
+[node name="Background" type="TextureRect" parent="TimelineViewport" unique_id=134337927 node_paths=PackedStringArray("animationPlayer")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -435,16 +433,14 @@ stretch_mode = 6
 script = ExtResource("8_ln00x")
 animationPlayer = NodePath("AnimationPlayer")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="TimelineViewport/Background"]
-libraries = {
-&"": SubResource("AnimationLibrary_tmf5n")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TimelineViewport/Background" unique_id=637305422]
+libraries/ = SubResource("AnimationLibrary_tmf5n")
 
-[node name="Anchors" type="Control" parent="TimelineViewport"]
+[node name="Anchors" type="Control" parent="TimelineViewport" unique_id=1420946146]
 layout_mode = 3
 anchors_preset = 0
 
-[node name="左" type="Control" parent="TimelineViewport/Anchors"]
+[node name="左" type="Control" parent="TimelineViewport/Anchors" unique_id=1781624013]
 layout_mode = 1
 anchors_preset = 0
 offset_left = 400.0
@@ -452,7 +448,7 @@ offset_top = 800.0
 offset_right = 400.0
 offset_bottom = 800.0
 
-[node name="TextureRect" type="TextureRect" parent="TimelineViewport/Anchors/左"]
+[node name="TextureRect" type="TextureRect" parent="TimelineViewport/Anchors/左" unique_id=2001512703]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -467,7 +463,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_jjy5e")
 
-[node name="中" type="Control" parent="TimelineViewport/Anchors"]
+[node name="中" type="Control" parent="TimelineViewport/Anchors" unique_id=999124605]
 layout_mode = 1
 anchors_preset = 0
 offset_left = 960.0
@@ -475,7 +471,7 @@ offset_top = 800.0
 offset_right = 960.0
 offset_bottom = 800.0
 
-[node name="TextureRect" type="TextureRect" parent="TimelineViewport/Anchors/中"]
+[node name="TextureRect" type="TextureRect" parent="TimelineViewport/Anchors/中" unique_id=1564674669]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -490,7 +486,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_jjy5e")
 
-[node name="右" type="Control" parent="TimelineViewport/Anchors"]
+[node name="右" type="Control" parent="TimelineViewport/Anchors" unique_id=1875435242]
 layout_mode = 1
 anchors_preset = 0
 offset_left = 1520.0
@@ -498,7 +494,7 @@ offset_top = 800.0
 offset_right = 1520.0
 offset_bottom = 800.0
 
-[node name="TextureRect" type="TextureRect" parent="TimelineViewport/Anchors/右"]
+[node name="TextureRect" type="TextureRect" parent="TimelineViewport/Anchors/右" unique_id=345196256]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -513,11 +509,11 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_jjy5e")
 
-[node name="Actors" type="Control" parent="TimelineViewport"]
+[node name="Actors" type="Control" parent="TimelineViewport" unique_id=1563210788]
 layout_mode = 3
 anchors_preset = 0
 
-[node name="DialoguePanel" type="Panel" parent="TimelineViewport" node_paths=PackedStringArray("Player")]
+[node name="DialoguePanel" type="Panel" parent="TimelineViewport" unique_id=477633727 node_paths=PackedStringArray("Player")]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -529,12 +525,10 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_fj5cn")
 script = ExtResource("6_fyarh")
 Player = NodePath("AnimationPlayer")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="TimelineViewport/DialoguePanel"]
-libraries = {
-&"": SubResource("AnimationLibrary_yf4wl")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TimelineViewport/DialoguePanel" unique_id=776432566]
+libraries/ = SubResource("AnimationLibrary_yf4wl")
 
-[node name="SpeakerLabel" type="RichTextLabel" parent="TimelineViewport/DialoguePanel"]
+[node name="SpeakerLabel" type="RichTextLabel" parent="TimelineViewport/DialoguePanel" unique_id=1136329229]
 layout_mode = 0
 offset_left = 232.0
 offset_top = 47.0
@@ -544,7 +538,7 @@ theme_override_colors/default_color = Color(0.91, 0.91, 0.91, 1)
 theme_override_font_sizes/normal_font_size = 56
 text = "角色"
 
-[node name="SpeechLabel" type="RichTextLabel" parent="TimelineViewport/DialoguePanel"]
+[node name="SpeechLabel" type="RichTextLabel" parent="TimelineViewport/DialoguePanel" unique_id=496947175]
 layout_mode = 0
 offset_left = 238.0
 offset_top = 154.0
@@ -554,7 +548,7 @@ theme_override_colors/default_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_font_sizes/normal_font_size = 44
 text = "對話"
 
-[node name="Panel" type="Panel" parent="TimelineViewport/DialoguePanel"]
+[node name="Panel" type="Panel" parent="TimelineViewport/DialoguePanel" unique_id=1501978306]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -568,11 +562,9 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxLine_ee4bf")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_nkklq")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=940341998]
+libraries/ = SubResource("AnimationLibrary_nkklq")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1093602088]
 
 [connection signal="pressed" from="RenderButton" to="." method="_on_render_button_pressed"]

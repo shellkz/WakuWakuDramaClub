@@ -60,8 +60,8 @@ public partial class VideoRenderer : Node
         AnimationPlayer.AddAnimationLibrary("custom", animationLibrary);
         AnimationPlayer.Play("custom/timeline");
         AnimationPlayer.Pause();
-
-        float animationDuration = animation.Length;
+        
+        float animationDuration = (float)animation.Length;
         float frameDuration = 1.0f / TargetFPS;
         int totalFrames = (int)(animationDuration * TargetFPS);
 
