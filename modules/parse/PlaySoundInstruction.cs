@@ -36,6 +36,8 @@ public partial class PlaySoundInstruction : Instruction
 
     private byte[] LoadSound(string sound)
     {
+        if (!Godot.FileAccess.FileExists(sound))
+            throw new ArgumentException($"Sound not found: {sound}");
         return Godot.FileAccess.GetFileAsBytes(sound);
     }
 

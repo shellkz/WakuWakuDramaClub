@@ -52,11 +52,10 @@ public partial class ScriptParser : RefCounted
 
             bool factoryFound = Factory.TryGetValue(rawInstruction.Type, out factory);
 
-            if (factoryFound)
-            {
-                Instruction instruction = (Instruction)Activator.CreateInstance(factory, rawInstruction);
-                instructions.Add(instruction);
-            }
+            if (!factoryFound)
+                throw new InvalidOperationException($"Unknown instruction: {rawInstruction.Type}");
+
+            instructions.Add((Instruction)Activator.CreateInstance(factory, rawInstruction));
         }
         return instructions;
     }

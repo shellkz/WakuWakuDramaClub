@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using WakuWakuDramaClub.Parse;
 using WakuWakuDramaClub.Render;
 using WakuWakuDramaClub.Timline;
@@ -44,12 +45,35 @@ public partial class EditingMenu : Control
 		RenderButton.Pressed += OnRenderButtonPressed;
 		PlayButton.Pressed += OnPlayButtonPressed;
 		PauseButton.Pressed += OnPauseButtonPressed;
+		ScriptEditor.TextChanged += OnScriptChanged;
 
 	}
 
-	public async void OnRenderButtonPressed() {
+    private async void OnScriptChanged()
+    {
+	
+		try
+		{
+			Timeline tl = await BuildTimeline();
+			TimelineViewport.Timeline = tl;
+		}
+		catch
+		{
+			GD.PrintErr("Invalid script.");
+			return;
+		}
+    }
+
+    public async void OnRenderButtonPressed() {
 
 		
+		Timeline timeline = await BuildTimeline();
+		TimelineViewport.Timeline = timeline;
+		await VideoRenderer.ExportAnimationToVideo(timeline.Animation, timeline.Audio);
+
+	}
+	private async Task<Timeline> BuildTimeline()
+	{
 		ScriptParser parser = new ScriptParser();
 		List<Instruction> instructions = parser.Parse(ScriptEditor.Text);
 
@@ -64,20 +88,11 @@ public partial class EditingMenu : Control
 			TimelineViewport.CreateActorIfNotExist(actor);
 		}
 
+		return await TimelineBuilder.BuildTimeline(instructions);
+		// TimelineViewport.Timeline = timeline;
+		// return timeline;
 
-		
-	
-	
-		Timeline timeline = await TimelineBuilder.BuildTimeline(instructions);
-		
-		// Stopwatch watch = new Stopwatch();
-		// watch.Start();
-		TimelineViewport.Timeline = timeline;
-		await VideoRenderer.ExportAnimationToVideo(timeline.Animation, timeline.Audio);
-		// watch.Stop();
-		// GD.Print(watch.Elapsed.TotalSeconds);
 	}
-
 	public void OnPlayButtonPressed()
 	{
 		TimelineViewport.Play();

@@ -109,7 +109,15 @@ public partial class TimelineViewport : SubViewport
         Actor actor = GetActor(id);
         if (actor != null)
             return;
-        PackedScene scene = GD.Load<PackedScene>(ResourceManager.Instance.actors[id]);
+
+        if (!ResourceManager.Instance.actors.ContainsKey(id))
+            throw new ArgumentException($"Actor not found: {id}");
+
+        string path = ResourceManager.Instance.actors[id];
+        if (!ResourceLoader.Exists(path))
+            throw new ArgumentException($"Actor scene not found: {path}");
+
+        PackedScene scene = GD.Load<PackedScene>(path);
         Actor node = scene.Instantiate<Actor>();
         Actors.AddChild(node);
     }
