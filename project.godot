@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="WakuWaku Drama Club"
-run/main_scene="uid://by6r5p7e5c5w5"
+run/main_scene="uid://bkglwywlfrw0d"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 
 [autoload]

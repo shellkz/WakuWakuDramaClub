@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://bkglwywlfrw0d"]
+
+[ext_resource type="PackedScene" uid="uid://by6r5p7e5c5w5" path="res://scenes/main/control.tscn" id="1_4n8gi"]
+
+[node name="App" type="Panel" unique_id=2033538703]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1052142871]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=2109554029]
+layout_mode = 2
+
+[node name="MenuBar" type="MenuBar" parent="VBoxContainer/HBoxContainer" unique_id=1201587717]
+layout_mode = 2
+
+[node name="Project" type="PopupMenu" parent="VBoxContainer/HBoxContainer/MenuBar" unique_id=1024988648]
+item_count = 3
+item_0/text = "New"
+item_0/id = 0
+item_1/text = "Open"
+item_1/id = 1
+item_2/text = "Save"
+item_2/id = 2
+
+[node name="TabBar" type="TabBar" parent="VBoxContainer/HBoxContainer" unique_id=434795012]
+layout_mode = 2
+current_tab = 0
+clip_tabs = false
+close_with_middle_mouse = false
+tab_count = 3
+tab_0/title = "Asset"
+tab_1/title = "Script"
+tab_2/title = "Render"
+
+[node name="ContentPanel" type="Panel" parent="VBoxContainer" unique_id=746861848]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EditingMenu" parent="VBoxContainer/ContentPanel" unique_id=1436386884 instance=ExtResource("1_4n8gi")]
+layout_mode = 1
