@@ -1,5 +1,15 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# IDE / tools
 .vs/
-hi
+.vscode/
+.claude/
+
+# Export
+export_presets.cfg
+
+# Backup files
+*.csproj.old
+*.csproj.old.1

@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://b5ynslh55orys" path="res://modules/timeline/TimelineViewport.cs" id="3_fbaj0"]
 [ext_resource type="Script" uid="uid://cioomy225no3x" path="res://modules/render/VideoRenderer.cs" id="3_mg8al"]
 [ext_resource type="Script" uid="uid://b3wf1cmsev3p3" path="res://scenes/dialogue_panel/DialoguePanel.cs" id="6_fyarh"]
-[ext_resource type="Animation" uid="uid://7xojjgs3awx4" path="res://test.res" id="6_jjy5e"]
 [ext_resource type="Texture2D" uid="uid://dw8ltgsm8ot6r" path="res://assets/backgrounds/赤冬 會長辦公室 早上.jpg" id="7_h4hwy"]
 [ext_resource type="Script" uid="uid://c5n8husurio2r" path="res://scenes/main/StageBackground.cs" id="8_ln00x"]
 [ext_resource type="Texture2D" uid="uid://biyng53rn2ax0" path="res://assets/backgrounds/赤冬 會長辦公室 晚上.jpg" id="9_shnwq"]
@@ -39,8 +38,7 @@ length = 0.001
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ee4bf"]
 _data = {
-&"RESET": SubResource("Animation_qtu10"),
-&"test": ExtResource("6_jjy5e")
+&"RESET": SubResource("Animation_qtu10")
 }
 
 [sub_resource type="Animation" id="Animation_46hgv"]
