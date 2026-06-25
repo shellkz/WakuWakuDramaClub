@@ -22,6 +22,7 @@ config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 
 FFmpegService="*res://modules/render/FFmpegService.cs"
 ResourceManager="*res://modules/ResourceManager.cs"
+ProjectSession="*uid://cwsl2ectq22r4"
 
 [display]
 

@@ -1,13 +1,26 @@
 [gd_scene format=3 uid="uid://bkglwywlfrw0d"]
 
 [ext_resource type="PackedScene" uid="uid://by6r5p7e5c5w5" path="res://scenes/main/control.tscn" id="1_4n8gi"]
+[ext_resource type="Script" uid="uid://cal774vwr5ucn" path="res://scenes/main/App.cs" id="1_kjr42"]
+[ext_resource type="PackedScene" uid="uid://m257tr5ipbq3" path="res://scenes/popups/create_project/create_project_popup.tscn" id="3_8qm6s"]
+[ext_resource type="PackedScene" uid="uid://dnd22605cnr5r" path="res://scenes/popups/open_project/open_project_popup.tscn" id="4_rulcv"]
 
-[node name="App" type="Panel" unique_id=2033538703]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjr42"]
+bg_color = Color(0.06, 0.06, 0.06, 1)
+
+[node name="App" type="Panel" unique_id=2033538703 node_paths=PackedStringArray("projectMenu", "tabBar", "hintLabel", "editingMenu", "createProjectPopup", "openProjectPopup")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_kjr42")
+projectMenu = NodePath("VBoxContainer/HBoxContainer/MenuBar/ProjectMenu")
+tabBar = NodePath("VBoxContainer/HBoxContainer/TabBar")
+hintLabel = NodePath("VBoxContainer/ContentPanel/HintLabel")
+editingMenu = NodePath("VBoxContainer/ContentPanel/EditingMenu")
+createProjectPopup = NodePath("Popups/CreateProjectPopup")
+openProjectPopup = NodePath("Popups/OpenProjectPopup")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1052142871]
 layout_mode = 1
@@ -23,7 +36,8 @@ layout_mode = 2
 [node name="MenuBar" type="MenuBar" parent="VBoxContainer/HBoxContainer" unique_id=1201587717]
 layout_mode = 2
 
-[node name="Project" type="PopupMenu" parent="VBoxContainer/HBoxContainer/MenuBar" unique_id=1024988648]
+[node name="ProjectMenu" type="PopupMenu" parent="VBoxContainer/HBoxContainer/MenuBar" unique_id=1024988648]
+title = "Project"
 item_count = 3
 item_0/text = "New"
 item_0/id = 0
@@ -46,5 +60,104 @@ tab_2/title = "Render"
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="EditingMenu" parent="VBoxContainer/ContentPanel" unique_id=1436386884 instance=ExtResource("1_4n8gi")]
+[node name="HintLabel" type="RichTextLabel" parent="VBoxContainer/ContentPanel" unique_id=26426902]
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 36
+theme_override_font_sizes/bold_font_size = 36
+bbcode_enabled = true
+text = "[b][color=#aaaaff]Project > New[/color][/b] to create new project
+ [b][color=#aaaaff]Project > Open[/color][/b] to open existing project
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EditingMenu" parent="VBoxContainer/ContentPanel" unique_id=1436386884 instance=ExtResource("1_4n8gi")]
+visible = false
+layout_mode = 1
+
+[node name="Popups" type="Control" parent="." unique_id=1254456795]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CreateProjectPopup" parent="Popups" unique_id=225408989 instance=ExtResource("3_8qm6s")]
+visible = false
+layout_mode = 1
+offset_top = -84.0
+offset_bottom = 84.0
+
+[node name="OpenProjectPopup" parent="Popups" unique_id=2100809479 instance=ExtResource("4_rulcv")]
+visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 956.0
+offset_bottom = 90.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="MessagePopup" type="PanelContainer" parent="Popups" unique_id=1554338864]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -478.0
+offset_top = -45.0
+offset_right = 478.0
+offset_bottom = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kjr42")
+
+[node name="MarginContainer" type="MarginContainer" parent="Popups/MessagePopup" unique_id=1988146416]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Popups/MessagePopup/MarginContainer" unique_id=1598453535]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="TopContainer" type="HBoxContainer" parent="Popups/MessagePopup/MarginContainer/VBoxContainer" unique_id=49153455]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Popups/MessagePopup/MarginContainer/VBoxContainer/TopContainer" unique_id=152645081]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "標題"
+fit_content = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Popups/MessagePopup/MarginContainer/VBoxContainer/TopContainer" unique_id=1234820446]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="CloseButton" type="Button" parent="Popups/MessagePopup/MarginContainer/VBoxContainer/TopContainer/HBoxContainer" unique_id=716422086]
+layout_mode = 2
+text = "關閉"
+
+[node name="ContentLabel" type="RichTextLabel" parent="Popups/MessagePopup/MarginContainer/VBoxContainer" unique_id=1158200669]
+layout_mode = 2
+text = "內容"
+fit_content = true

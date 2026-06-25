@@ -1,0 +1,133 @@
+[gd_scene format=3 uid="uid://m257tr5ipbq3"]
+
+[ext_resource type="Script" uid="uid://bf1fosrpu1mfh" path="res://scenes/popups/create_project/CreateProjectPopup.cs" id="1_bimni"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjr42"]
+bg_color = Color(0.06, 0.06, 0.06, 1)
+
+[node name="CreateProjectPopup" type="PanelContainer" unique_id=225408989 node_paths=PackedStringArray("CloseButton", "ProjectNameEdit", "ProjectPathEdit", "PickProjectPathButton", "ConfirmButton", "CancelButton", "FileDialog")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -478.0
+offset_top = -62.5
+offset_right = 478.0
+offset_bottom = 62.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kjr42")
+script = ExtResource("1_bimni")
+CloseButton = NodePath("MarginContainer/VBoxContainer/TopContainer/HBoxContainer/CloseButton")
+ProjectNameEdit = NodePath("MarginContainer/VBoxContainer/HBoxContainer/ProjectNameEdit")
+ProjectPathEdit = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/ProjectPathEdit")
+PickProjectPathButton = NodePath("MarginContainer/VBoxContainer/HBoxContainer2/Control/PickProjectPathButton")
+ConfirmButton = NodePath("MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/ConfirmButton")
+CancelButton = NodePath("MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer/CancelButton")
+FileDialog = NodePath("FileDialog")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1834398506]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2044439361]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="TopContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=720076173]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/TopContainer" unique_id=1022762913]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "創造專案"
+fit_content = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/TopContainer" unique_id=2110360234]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/TopContainer/HBoxContainer" unique_id=1537766175]
+layout_mode = 2
+text = "關閉"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=582277814]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=442117112]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "專案名稱"
+fit_content = true
+
+[node name="ProjectNameEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1982500211]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=536032935]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=413242317]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=563594186]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "專案路徑"
+fit_content = true
+
+[node name="ProjectPathEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=787269165]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="Control" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=370190861]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PickProjectPathButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2/Control" unique_id=618654517]
+layout_mode = 2
+text = "選取"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=918192042]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1566390627]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=640468441]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer3" unique_id=876560469]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="ConfirmButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer" unique_id=1451629246]
+layout_mode = 2
+text = "確定"
+
+[node name="CancelButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3/HBoxContainer" unique_id=819092637]
+layout_mode = 2
+text = "取消"
+
+[node name="FileDialog" type="FileDialog" parent="." unique_id=1486993256]
+oversampling_override = 1.0
+title = "Open a Directory"
+position = Vector2i(0, 36)
+file_mode = 2
+access = 2
