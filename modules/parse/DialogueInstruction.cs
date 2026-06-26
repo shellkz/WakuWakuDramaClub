@@ -57,7 +57,7 @@ public partial class DialogueInstruction : Instruction
             result.AddClip(actor.TakePose(Pose));
         }
 
-        result.AddClip(viewport.DialoguePanel.ShowDialogue(Speaker, Speech, duration));
+        result.AddClip(viewport.DialoguePanel.ShowDialogue(actor.Definition.DisplayName, Speech, duration));
         //GD.Print("AnimationPack length " + result.GetDuration());
         return result;
     }

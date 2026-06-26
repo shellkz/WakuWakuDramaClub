@@ -537,6 +537,8 @@ offset_bottom = 137.0
 theme_override_colors/default_color = Color(0.91, 0.91, 0.91, 1)
 theme_override_font_sizes/normal_font_size = 56
 text = "角色"
+fit_content = true
+autowrap_mode = 0
 
 [node name="SpeechLabel" type="RichTextLabel" parent="TimelineViewport/DialoguePanel" unique_id=496947175]
 layout_mode = 0

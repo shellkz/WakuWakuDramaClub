@@ -23,6 +23,7 @@ public sealed class ActorDefinition
 	public string PackName { get; init; } = "";
 	public string ActorName { get; init; } = "";
 	public string ActorId { get; init; } = "";
+	public string DisplayName { get; init; } = "";
 	public string ActorRootPath { get; init; } = "";
 	public Dictionary<string, AssetRecord> Expressions { get; init; } = new Dictionary<string, AssetRecord>();
 	public Dictionary<string, AssetRecord> Bodies { get; init; } = new Dictionary<string, AssetRecord>();
@@ -139,6 +140,7 @@ public partial class ResourceManager : Node
 			PackName = packName,
 			ActorName = actorName,
 			ActorId = actorId,
+			DisplayName = actorName,
 			ActorRootPath = actorRootPath,
 			Expressions = expressions,
 			Bodies = bodies
