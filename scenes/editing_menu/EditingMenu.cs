@@ -45,24 +45,56 @@ public partial class EditingMenu : Control
 		RenderButton.Pressed += OnRenderButtonPressed;
 		PlayButton.Pressed += OnPlayButtonPressed;
 		PauseButton.Pressed += OnPauseButtonPressed;
+		
+		ScriptEditor.CodeCompletionEnabled = true;
+	
 		ScriptEditor.TextChanged += OnScriptChanged;
+		ScriptEditor.CodeCompletionRequested += OnCodeCompletionRequested;
 
 	}
 
-    private async void OnScriptChanged()
+    private void OnScriptChanged()
     {
-	
-		try
-		{
-			Timeline tl = await BuildTimeline();
-			TimelineViewport.Timeline = tl;
-		}
-		catch
-		{
-			GD.PrintErr("Invalid script.");
-			return;
-		}
-    }
+		if (ShouldRequestCompletion()){
+			GD.Print("Request Code complete");
+		
+			CallDeferred(MethodName.RequestCodeCompletionDeferred);
+			
+    	}
+	}
+	private void RequestCodeCompletionDeferred()
+	{
+		ScriptEditor.RequestCodeCompletion(true);
+	}
+	private bool ShouldRequestCompletion()
+	{
+		int column = ScriptEditor.GetCaretColumn();
+		if (column == 0)
+			return true;
+
+		int lineIndex = ScriptEditor.GetCaretLine();
+		string line = ScriptEditor.GetLine(lineIndex);
+		string beforeCursor = line.Substring(0, Math.Min(column, line.Length));
+
+		return !string.IsNullOrWhiteSpace(beforeCursor);
+	}
+
+	private void OnCodeCompletionRequested()
+	{
+		GD.Print(ScriptEditor.GetTextForCodeCompletion());
+		int lineIndex = ScriptEditor.GetCaretLine();
+		int column = ScriptEditor.GetCaretColumn();
+		string line = ScriptEditor.GetLine(lineIndex);
+		string beforeCursor = line.Substring(0, Math.Min(column, line.Length));
+		GD.Print("Provide Code complete");
+		ScriptEditor.AddCodeCompletionOption(CodeEdit.CodeCompletionKind.PlainText, "op1", "op1", Colors.White);
+		// ScriptEditor.AddCodeCompletionOption(CodeEdit.CodeCompletionKind.PlainText, "op 2", "op 2", Colors.White);
+		// GD.Print("Option count before update: " + ScriptEditor.GetCodeCompletionOptions().Count);
+		// ScriptEditor.AddCodeCompletionOption(CodeEdit.CodeCompletionKind.PlainText, "op 3", "op 3", Colors.White);
+		ScriptEditor.UpdateCodeCompletionOptions(true);
+		GD.Print("Option count: " + ScriptEditor.GetCodeCompletionOptions().Count);
+
+	}
 
     public async void OnRenderButtonPressed() {
 
@@ -94,47 +126,4 @@ public partial class EditingMenu : Control
 	{
 		TimelineViewport.Pause();
 	}
-	//private static List<VideoRenderer.AudioClip> LoadAudioClipsFromDirectory(List<AudioClipData> clipConfigs)
-	//{
-	//    List<VideoRenderer.AudioClip> loadedClips = new List<VideoRenderer.AudioClip>();
-
-	//    foreach (var config in clipConfigs)
-	//    {
-	//        if (!File.Exists(config.FilePath))
-	//        {
-	//            GD.PrintErr($"Audio file not found: {config.FilePath}");
-	//            continue;
-	//        }
-
-	//        try
-	//        {
-	//            byte[] fileData = File.ReadAllBytes(config.FilePath);
-
-	//            // Create a new AudioClip instance for the VideoRenderer
-	//            var newClip = new VideoRenderer.AudioClip
-	//            {
-	//                // The format is hardcoded to "wav" based on your previous code's assumption
-	//                // of parsing WAV headers. You might need to make this more dynamic
-	//                // if you plan to support other formats.
-	//                Format = "wav",
-	//                Data = fileData,
-	//                StartingTime = config.StartingTime
-	//            };
-
-	//            loadedClips.Add(newClip);
-	//        }
-	//        catch (Exception ex)
-	//        {
-	//            GD.PrintErr($"Failed to load audio file {config.FilePath}: {ex.Message}");
-	//        }
-	//    }
-
-	//    return loadedClips;
-	//}
-	//public class AudioClipData
-	//{
-	//    public string FilePath { get; set; }
-	//    public double StartingTime { get; set; }
-	//}
-
 }
