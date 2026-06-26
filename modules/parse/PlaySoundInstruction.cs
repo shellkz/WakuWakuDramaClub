@@ -17,9 +17,7 @@ public partial class PlaySoundInstruction : Instruction
     }
     public override void BindData(RawInstruction raw)
     {
-		
-		Sound = String.Format("res://assets/sounds/{0}.wav", raw.TryGetStatementArgumentsValue(Tr(InstructionType.PlaySound.ToString()), ""));
-
+		Sound = raw.TryGetStatementArgumentsValue(Tr(InstructionType.PlaySound.ToString()), "");
     }
  	public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
 	{
@@ -28,17 +26,11 @@ public partial class PlaySoundInstruction : Instruction
         VideoRenderer.AudioClip voiceClip = new VideoRenderer.AudioClip();
 
         voiceClip.Format = "wav";
-        voiceClip.Data = LoadSound(Sound);
+        AssetRecord record = ResourceManager.Instance.GetAudioRecord(Sound);
+        voiceClip.Data = ResourceManager.Instance.LoadAudioBytes(record);
         result.Audios.Add(voiceClip);
 	
 		return result;
 	}
-
-    private byte[] LoadSound(string sound)
-    {
-        if (!Godot.FileAccess.FileExists(sound))
-            throw new ArgumentException($"Sound not found: {sound}");
-        return Godot.FileAccess.GetFileAsBytes(sound);
-    }
 
 }

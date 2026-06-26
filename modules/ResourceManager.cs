@@ -158,6 +158,44 @@ public partial class ResourceManager : Node
 		return ImageTexture.CreateFromImage(image);
 	}
 
+	public byte[] LoadAudioBytes(AssetRecord record)
+	{
+		if (record.Type != AssetType.Audio)
+			throw new ArgumentException($"Asset is not audio: {record.RelativePath}");
+
+		string path = ProjectSession.Instance.ToAbsolutePath(record.RelativePath);
+		if (!File.Exists(path))
+			throw new ArgumentException($"Audio not found: {record.RelativePath}");
+
+		return File.ReadAllBytes(path);
+	}
+
+	public AssetRecord GetBackgroundRecord(string backgroundId)
+	{
+		if (!TryParsePackResourceId(backgroundId, out string packName, out string backgroundName))
+			throw new ArgumentException($"Background id must use pack/name format: {backgroundId}");
+
+		return GetBackgroundRecord(packName, backgroundName);
+	}
+
+	public AssetRecord GetBackgroundRecord(string packName, string backgroundName)
+	{
+		return GetPackAssetRecord(packName, "backgrounds", backgroundName, AssetType.Background);
+	}
+
+	public AssetRecord GetAudioRecord(string audioId)
+	{
+		if (!TryParsePackResourceId(audioId, out string packName, out string audioName))
+			throw new ArgumentException($"Audio id must use pack/name format: {audioId}");
+
+		return GetAudioRecord(packName, audioName);
+	}
+
+	public AssetRecord GetAudioRecord(string packName, string audioName)
+	{
+		return GetPackAssetRecord(packName, "audio", audioName, AssetType.Audio);
+	}
+
 	private void ScanPack(string workingDirectory, string packDirectory)
 	{
 		ScanActorAssets(workingDirectory, Path.Combine(packDirectory, "actors"));
@@ -223,15 +261,44 @@ public partial class ResourceManager : Node
 
 	private static bool TryParseQualifiedActorId(string actorId, out string packName, out string actorName)
 	{
-		packName = "";
-		actorName = "";
+		return TryParsePackResourceId(actorId, out packName, out actorName);
+	}
 
-		string[] segments = actorId.Split('/', StringSplitOptions.RemoveEmptyEntries);
-		if (segments.Length != 2)
+	private AssetRecord GetPackAssetRecord(string packName, string directoryName, string resourceName, AssetType type)
+	{
+		if (string.IsNullOrWhiteSpace(packName))
+			throw new ArgumentException("Pack name is required.");
+
+		if (string.IsNullOrWhiteSpace(resourceName))
+			throw new ArgumentException("Resource name is required.");
+
+		string pathPrefix = string.Join('/', "assets", packName, directoryName) + "/";
+		foreach (AssetRecord record in AssetIndex.Values)
+		{
+			if (record.Type != type)
+				continue;
+
+			if (!record.RelativePath.StartsWith(pathPrefix, StringComparison.Ordinal))
+				continue;
+
+			if (Path.GetFileNameWithoutExtension(record.RelativePath) == resourceName)
+				return record;
+		}
+
+		throw new ArgumentException($"Asset not found: {packName}/{resourceName}");
+	}
+
+	private static bool TryParsePackResourceId(string id, out string packName, out string resourceName)
+	{
+		packName = "";
+		resourceName = "";
+
+		int separatorIndex = id.IndexOf('/');
+		if (separatorIndex <= 0 || separatorIndex >= id.Length - 1)
 			return false;
 
-		packName = segments[0];
-		actorName = segments[1];
+		packName = id.Substring(0, separatorIndex);
+		resourceName = id.Substring(separatorIndex + 1);
 		return true;
 	}
 }

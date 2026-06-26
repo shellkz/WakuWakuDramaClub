@@ -6,13 +6,13 @@ public partial class StageBackground : TextureRect
 {
 	[Export]
 	AnimationPlayer animationPlayer;
-	public AnimationClip Change(string scene)
+	public AnimationClip Change(Texture2D texture)
 	{
-		if (!ResourceLoader.Exists(scene))
-			throw new ArgumentException($"Background not found: {scene}");
+		if (texture == null)
+			throw new ArgumentException("Background texture is null.");
 
 		Animation animation = (Animation)animationPlayer.GetAnimation("black-in-out").Duplicate();
-		animation.UpdateTrackKeyValue(".:texture", Animation.TrackType.Value, 0, GD.Load(scene));
+		animation.UpdateTrackKeyValue(".:texture", Animation.TrackType.Value, 0, texture);
 		return new AnimationClip(animationPlayer, animation);
 	}
 }
