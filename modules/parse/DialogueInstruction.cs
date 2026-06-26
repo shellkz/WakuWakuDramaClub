@@ -46,6 +46,7 @@ public partial class DialogueInstruction : Instruction
         result.Audios.Add(voiceClip);
         
 
+		viewport.CreateActorIfNotExist(Speaker);
 		Actor actor = viewport.GetActor(Speaker);
 
         if(!String.IsNullOrEmpty(Expression))

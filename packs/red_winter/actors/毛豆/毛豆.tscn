@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://bcfxaaubd4hga"]
+[gd_scene format=3 uid="uid://bcfxaaubd4hga"]
 
 [ext_resource type="Script" uid="uid://d378sk40wl48n" path="res://scenes/Actor.cs" id="1_hdopu"]
 [ext_resource type="Texture2D" uid="uid://clbjlpgxiujyn" path="res://packs/red_winter/actors/毛豆/body/tsundamon body normal.png" id="2_g6tyc"]
@@ -65,6 +65,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [ExtResource("6_7eupe")]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Expression:texture")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_s5lgg")]
 }
 
 [sub_resource type="Animation" id="Animation_pxugv"]
@@ -220,12 +232,28 @@ tracks/3/keys = {
 "values": [ExtResource("15_72vw8")]
 }
 
+[sub_resource type="Animation" id="Animation_oepyt"]
+resource_name = "template"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Expression:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_s5lgg")]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sky72"]
 _data = {
 &"RESET": SubResource("Animation_sky72"),
 &"angry": SubResource("Animation_pxugv"),
 &"happy": SubResource("Animation_0ytqx"),
-&"neutral": SubResource("Animation_6a6wx")
+&"neutral": SubResource("Animation_6a6wx"),
+&"template": SubResource("Animation_oepyt")
 }
 
 [sub_resource type="Animation" id="Animation_fj5cn"]
@@ -494,7 +522,7 @@ _data = {
 &"move": SubResource("Animation_eeixe")
 }
 
-[node name="毛豆" type="Control" node_paths=PackedStringArray("MotionPlayer", "PosePlayer", "ExpressionPlayer")]
+[node name="毛豆" type="Control" unique_id=804688459 node_paths=PackedStringArray("MotionPlayer", "PosePlayer", "ExpressionPlayer")]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 960.0
@@ -507,7 +535,7 @@ MotionPlayer = NodePath("MotionAnimationPlayer")
 PosePlayer = NodePath("PoseAnimationPlayer")
 ExpressionPlayer = NodePath("Pivot/ExpressionAnimationPlayer")
 
-[node name="Pivot" type="Control" parent="."]
+[node name="Pivot" type="Control" parent="." unique_id=916653153]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -517,7 +545,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Body" type="TextureRect" parent="Pivot"]
+[node name="Body" type="TextureRect" parent="Pivot" unique_id=135659640]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -532,7 +560,22 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_g6tyc")
 
-[node name="Ear" type="TextureRect" parent="Pivot"]
+[node name="Expression" type="TextureRect" parent="Pivot" unique_id=485513936]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_s5lgg")
+
+[node name="Ear" type="TextureRect" parent="Pivot" unique_id=877361436]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -547,7 +590,8 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_l2wdo")
 
-[node name="Mouth" type="TextureRect" parent="Pivot"]
+[node name="Mouth" type="TextureRect" parent="Pivot" unique_id=1704599139]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -562,7 +606,8 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_jp8ui")
 
-[node name="EyeWhite" type="TextureRect" parent="Pivot"]
+[node name="EyeWhite" type="TextureRect" parent="Pivot" unique_id=940816450]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -577,7 +622,8 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("5_kstv3")
 
-[node name="Pupil" type="TextureRect" parent="Pivot"]
+[node name="Pupil" type="TextureRect" parent="Pivot" unique_id=1965908174]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -592,7 +638,8 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("5_kstv3")
 
-[node name="Eyebrow" type="TextureRect" parent="Pivot"]
+[node name="Eyebrow" type="TextureRect" parent="Pivot" unique_id=1171349040]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -607,7 +654,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("6_7eupe")
 
-[node name="HandLeft" type="TextureRect" parent="Pivot"]
+[node name="HandLeft" type="TextureRect" parent="Pivot" unique_id=286254248]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -622,7 +669,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("7_058j3")
 
-[node name="HandRight" type="TextureRect" parent="Pivot"]
+[node name="HandRight" type="TextureRect" parent="Pivot" unique_id=985758720]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -638,17 +685,11 @@ grow_vertical = 2
 texture = ExtResource("8_as7tu")
 stretch_mode = 5
 
-[node name="ExpressionAnimationPlayer" type="AnimationPlayer" parent="Pivot"]
-libraries = {
-&"": SubResource("AnimationLibrary_sky72")
-}
+[node name="ExpressionAnimationPlayer" type="AnimationPlayer" parent="Pivot" unique_id=1893811908]
+libraries/ = SubResource("AnimationLibrary_sky72")
 
-[node name="PoseAnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_iy58a")
-}
+[node name="PoseAnimationPlayer" type="AnimationPlayer" parent="." unique_id=924789598]
+libraries/ = SubResource("AnimationLibrary_iy58a")
 
-[node name="MotionAnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_lcxxf")
-}
+[node name="MotionAnimationPlayer" type="AnimationPlayer" parent="." unique_id=1074078184]
+libraries/ = SubResource("AnimationLibrary_lcxxf")

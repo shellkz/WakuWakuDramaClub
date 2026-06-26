@@ -23,6 +23,7 @@ public partial class ActorEnterInstruction : Instruction
 		AnimationPack result = new AnimationPack();
 
 
+		viewport.CreateActorIfNotExist(Actor);
 		Actor actor = viewport.GetActor(Actor);
 		result.AddClip(actor.Enter());
 

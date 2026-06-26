@@ -54,6 +54,14 @@ public partial class ProjectSession : Node
         File.WriteAllText(path, Data.ToJson());
     }
 
+    public string ToAbsolutePath(string relativePath)
+    {
+        if (string.IsNullOrWhiteSpace(WorkingDirectory))
+            throw new InvalidOperationException("Project working directory is not set.");
+
+        return Path.Combine(WorkingDirectory, relativePath);
+    }
+
     public void Close()
     {
         WorkingDirectory = "";

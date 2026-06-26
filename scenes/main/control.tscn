@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://caqlwvawboogb" path="res://scenes/main/TimelinePreview.cs" id="2_4na11"]
 [ext_resource type="Script" uid="uid://b5ynslh55orys" path="res://modules/timeline/TimelineViewport.cs" id="3_fbaj0"]
 [ext_resource type="Script" uid="uid://cioomy225no3x" path="res://modules/render/VideoRenderer.cs" id="3_mg8al"]
+[ext_resource type="PackedScene" uid="uid://rd10yuft47xg" path="res://assets/actors/template/actor.tscn" id="6_4na11"]
 [ext_resource type="Script" uid="uid://b3wf1cmsev3p3" path="res://scenes/dialogue_panel/DialoguePanel.cs" id="6_fyarh"]
 [ext_resource type="Texture2D" uid="uid://dw8ltgsm8ot6r" path="res://assets/backgrounds/赤冬 會長辦公室 早上.jpg" id="7_h4hwy"]
 [ext_resource type="Script" uid="uid://c5n8husurio2r" path="res://scenes/main/StageBackground.cs" id="8_ln00x"]
@@ -416,6 +417,7 @@ Actors = NodePath("Actors")
 Anchors = NodePath("Anchors")
 DialoguePanel = NodePath("DialoguePanel")
 Background = NodePath("Background")
+ActorTemplate = ExtResource("6_4na11")
 
 [node name="TimelineAnimationPlayer" type="AnimationPlayer" parent="TimelineViewport" unique_id=10355310]
 libraries/ = SubResource("AnimationLibrary_ee4bf")

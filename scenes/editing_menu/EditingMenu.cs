@@ -81,13 +81,6 @@ public partial class EditingMenu : Control
 		//ClearActors
 		TimelineViewport.ClearActors();
 
-		string[] actor_involved = instructions.Where(i=>i is ActorMoveInstruction).Select(i=>i as ActorMoveInstruction).Select(i=>i.Actor).ToArray();
-
-		foreach (string actor in actor_involved)
-		{
-			TimelineViewport.CreateActorIfNotExist(actor);
-		}
-
 		return await TimelineBuilder.BuildTimeline(instructions);
 		// TimelineViewport.Timeline = timeline;
 		// return timeline;

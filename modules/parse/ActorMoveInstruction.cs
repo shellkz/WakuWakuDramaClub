@@ -30,6 +30,7 @@ public partial class ActorMoveInstruction : Instruction
 		GD.Print(String.Format("Move to [{0}]", Destination));
 		GD.Print(String.Format("in [{0}]", Duration));
 
+		viewport.CreateActorIfNotExist(Actor);
 		Actor actor = viewport.GetActor(Actor);
 		Vector2 destination = viewport.GetAnchorPosition(Destination);
 		double duration = Duration.ToFloat();

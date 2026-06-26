@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 namespace WakuWakuDramaClub.Timline;
 public partial class TimelineViewport : SubViewport
@@ -20,6 +21,11 @@ public partial class TimelineViewport : SubViewport
 
     [Export]
     public StageBackground Background;
+
+    [Export]
+    public PackedScene ActorTemplate;
+
+    private readonly Dictionary<string, Actor> _actorsById = new Dictionary<string, Actor>();
     
     private Timeline _timeline;
     public Timeline Timeline
@@ -74,21 +80,15 @@ public partial class TimelineViewport : SubViewport
 
     public Actor GetActor(string name)
     {
-        
-        foreach (Node child in Actors.GetChildren()){
-            if (child is Actor)
-            {
-                Actor actor = child as Actor;
-                GD.Print(actor.Id);
-                if (actor.Id == name)
-                {
-                    return actor;
-                }
-            }
-        }
-        return null;
+        if (_actorsById.TryGetValue(name, out Actor actor))
+        {
+            if (IsInstanceValid(actor) && !actor.IsQueuedForDeletion())
+                return actor;
 
-        //return Actors.FindChildren("*", "Actor", true, false).Select(node=>node as Actor).First(actor=>actor.Id == name);
+            _actorsById.Remove(name);
+        }
+
+        return null;
     }
 
     public Vector2 GetAnchorPosition(string name)
@@ -98,10 +98,13 @@ public partial class TimelineViewport : SubViewport
     }
     public void ClearActors()
     {
-        foreach (Node child in Actors.GetChildren())
+        foreach (Actor actor in _actorsById.Values)
         {
-            child.QueueFree();
+            if (IsInstanceValid(actor))
+                actor.QueueFree();
         }
+
+        _actorsById.Clear();
     }
 
     public void CreateActorIfNotExist(string id)
@@ -110,15 +113,13 @@ public partial class TimelineViewport : SubViewport
         if (actor != null)
             return;
 
-        if (!ResourceManager.Instance.actors.ContainsKey(id))
-            throw new ArgumentException($"Actor not found: {id}");
+        if (ActorTemplate == null)
+            throw new InvalidOperationException("Actor template is not assigned.");
 
-        string path = ResourceManager.Instance.actors[id];
-        if (!ResourceLoader.Exists(path))
-            throw new ArgumentException($"Actor scene not found: {path}");
-
-        PackedScene scene = GD.Load<PackedScene>(path);
-        Actor node = scene.Instantiate<Actor>();
+        ActorDefinition definition = ResourceManager.Instance.GetActorDefinition(id);
+        Actor node = ActorTemplate.Instantiate<Actor>();
+        node.Setup(definition);
         Actors.AddChild(node);
+        _actorsById[id] = node;
     }
 }

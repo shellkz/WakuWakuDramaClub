@@ -1,0 +1,534 @@
+[gd_scene format=3 uid="uid://rd10yuft47xg"]
+
+[ext_resource type="Script" uid="uid://d378sk40wl48n" path="res://scenes/Actor.cs" id="1_hvjp6"]
+[ext_resource type="Texture2D" uid="uid://c67aip5jio3ha" path="res://assets/actors/template/body/tsundamon body normal.png" id="2_744lp"]
+[ext_resource type="Texture2D" uid="uid://dd8fyxqxjhajl" path="res://assets/actors/template/eye/tsundamon eye joyful.png" id="3_5p62e"]
+[ext_resource type="Texture2D" uid="uid://bdxmmf5qx3ilc" path="res://assets/actors/template/tsundamon ear normal.png" id="4_28llj"]
+[ext_resource type="Texture2D" uid="uid://c3kb8jtldgrdq" path="res://assets/actors/template/mouth/tsundamon mouth pout.png" id="5_b3mi6"]
+[ext_resource type="Texture2D" uid="uid://dvvfqub3i2h5j" path="res://assets/actors/template/eye/tsundamon eye staring.png" id="6_rlf37"]
+[ext_resource type="Texture2D" uid="uid://de5hednqj16w3" path="res://assets/actors/template/eyebrow/tsundamon eyebrow angry.png" id="7_1833c"]
+[ext_resource type="Texture2D" uid="uid://d1qdk2j5i7au0" path="res://assets/actors/template/hand_left/tsundamon hand left normal.png" id="8_w05aj"]
+[ext_resource type="Texture2D" uid="uid://b4m8ccv3h7voi" path="res://assets/actors/template/hand_right/tsundamon hand right normal.png" id="9_devls"]
+
+[sub_resource type="Animation" id="Animation_sky72"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mouth:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_b3mi6")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EyeWhite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_rlf37")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pupil:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_rlf37")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Eyebrow:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_1833c")]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Expression:texture")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_5p62e")]
+}
+
+[sub_resource type="Animation" id="Animation_oepyt"]
+resource_name = "template"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Expression:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_5p62e")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sky72"]
+_data = {
+&"RESET": SubResource("Animation_sky72"),
+&"template": SubResource("Animation_oepyt")
+}
+
+[sub_resource type="Animation" id="Animation_fj5cn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(960, 800)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Pivot:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Pivot:rotation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Pivot:scale")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_c1dxk"]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_am1vj"]
+resource_name = "faint"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.117126, 0.294835),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 64), Vector2(7, 1000)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.133281, 0.31099),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, -0.287429, 0.937242]
+}
+
+[sub_resource type="Animation" id="Animation_kg8o2"]
+resource_name = "idle"
+
+[sub_resource type="Animation" id="Animation_ee4bf"]
+resource_name = "jump"
+length = 0.3333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.3333),
+"transitions": PackedFloat32Array(0.435275, 2.63902, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -95), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ndwp8"]
+resource_name = "mic"
+
+[sub_resource type="Animation" id="Animation_jjnts"]
+resource_name = "nervous"
+
+[sub_resource type="Animation" id="Animation_iy58a"]
+resource_name = "node"
+length = 0.2333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.109048, 0.2333),
+"transitions": PackedFloat32Array(0.554785, 2.73208, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 32), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_relpc"]
+resource_name = "onhip"
+
+[sub_resource type="Animation" id="Animation_2vckp"]
+resource_name = "pointing"
+
+[sub_resource type="Animation" id="Animation_2wjgs"]
+resource_name = "raised"
+
+[sub_resource type="Animation" id="Animation_yd3sn"]
+resource_name = "taunting"
+
+[sub_resource type="Animation" id="Animation_mdiea"]
+resource_name = "thinking"
+
+[sub_resource type="Animation" id="Animation_qy1p4"]
+resource_name = "whispering"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iy58a"]
+_data = {
+&"RESET": SubResource("Animation_fj5cn"),
+&"fade_in": SubResource("Animation_c1dxk"),
+&"faint": SubResource("Animation_am1vj"),
+&"idle": SubResource("Animation_kg8o2"),
+&"jump": SubResource("Animation_ee4bf"),
+&"mic": SubResource("Animation_ndwp8"),
+&"nervous": SubResource("Animation_jjnts"),
+&"nod": SubResource("Animation_iy58a"),
+&"onhip": SubResource("Animation_relpc"),
+&"pointing": SubResource("Animation_2vckp"),
+&"raised": SubResource("Animation_2wjgs"),
+&"taunting": SubResource("Animation_yd3sn"),
+&"thinking": SubResource("Animation_mdiea"),
+&"whispering": SubResource("Animation_qy1p4")
+}
+
+[sub_resource type="Animation" id="Animation_jjy5e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(960, 800)]
+}
+
+[sub_resource type="Animation" id="Animation_eeixe"]
+resource_name = "move_to"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(960, 800), Vector2(960, 800)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lcxxf"]
+_data = {
+&"RESET": SubResource("Animation_jjy5e"),
+&"move": SubResource("Animation_eeixe")
+}
+
+[node name="毛豆" type="Control" unique_id=804688459 node_paths=PackedStringArray("MotionPlayer", "PosePlayer", "ExpressionPlayer", "BodyTextureRect")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 960.0
+offset_top = 800.0
+offset_right = 960.0
+offset_bottom = 800.0
+script = ExtResource("1_hvjp6")
+Id = "毛豆"
+MotionPlayer = NodePath("MotionAnimationPlayer")
+PosePlayer = NodePath("PoseAnimationPlayer")
+ExpressionPlayer = NodePath("Pivot/ExpressionAnimationPlayer")
+BodyTextureRect = NodePath("Pivot/Body")
+
+[node name="Pivot" type="Control" parent="." unique_id=916653153]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Body" type="TextureRect" parent="Pivot" unique_id=135659640]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_744lp")
+
+[node name="Expression" type="TextureRect" parent="Pivot" unique_id=485513936]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_5p62e")
+
+[node name="Ear" type="TextureRect" parent="Pivot" unique_id=877361436]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_28llj")
+
+[node name="Mouth" type="TextureRect" parent="Pivot" unique_id=1704599139]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_b3mi6")
+
+[node name="EyeWhite" type="TextureRect" parent="Pivot" unique_id=940816450]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_rlf37")
+
+[node name="Pupil" type="TextureRect" parent="Pivot" unique_id=1965908174]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_rlf37")
+
+[node name="Eyebrow" type="TextureRect" parent="Pivot" unique_id=1171349040]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_1833c")
+
+[node name="HandLeft" type="TextureRect" parent="Pivot" unique_id=286254248]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_w05aj")
+
+[node name="HandRight" type="TextureRect" parent="Pivot" unique_id=985758720]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -541.0
+offset_top = -825.0
+offset_right = 541.0
+offset_bottom = 825.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_devls")
+stretch_mode = 5
+
+[node name="ExpressionAnimationPlayer" type="AnimationPlayer" parent="Pivot" unique_id=1893811908]
+libraries/ = SubResource("AnimationLibrary_sky72")
+
+[node name="PoseAnimationPlayer" type="AnimationPlayer" parent="." unique_id=924789598]
+libraries/ = SubResource("AnimationLibrary_iy58a")
+
+[node name="MotionAnimationPlayer" type="AnimationPlayer" parent="." unique_id=1074078184]
+libraries/ = SubResource("AnimationLibrary_lcxxf")
