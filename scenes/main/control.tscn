@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dv3mu6gcxl0mf" path="res://modules/timeline/TimelineBuilder.cs" id="1_1kc3g"]
 [ext_resource type="Script" uid="uid://kd4rot4su7xo" path="res://scenes/editing_menu/EditingMenu.cs" id="1_yf4wl"]
 [ext_resource type="Script" uid="uid://caqlwvawboogb" path="res://scenes/main/TimelinePreview.cs" id="2_4na11"]
+[ext_resource type="Script" uid="uid://cvve0e7ccvqid" path="res://scenes/editing_menu/ScriptEditor.cs" id="3_c1dxk"]
 [ext_resource type="Script" uid="uid://b5ynslh55orys" path="res://modules/timeline/TimelineViewport.cs" id="3_fbaj0"]
 [ext_resource type="Script" uid="uid://cioomy225no3x" path="res://modules/render/VideoRenderer.cs" id="3_mg8al"]
 [ext_resource type="PackedScene" uid="uid://rd10yuft47xg" path="res://assets/actors/template/actor.tscn" id="6_4na11"]
@@ -360,6 +361,7 @@ wrap_mode = 1
 syntax_highlighter = SubResource("CodeHighlighter_h4hwy")
 highlight_current_line = true
 code_completion_enabled = true
+script = ExtResource("3_c1dxk")
 
 [node name="RenderButton" type="Button" parent="." unique_id=1743093683]
 layout_mode = 1

@@ -11,7 +11,7 @@ using WakuWakuDramaClub.Timline;
 public partial class EditingMenu : Control
 {
 	[Export]
-	public CodeEdit ScriptEditor { get; set; }
+	public ScriptEditor ScriptEditor { get; set; }
 
 
 
@@ -50,7 +50,17 @@ public partial class EditingMenu : Control
 	
 		ScriptEditor.TextChanged += OnScriptChanged;
 		ScriptEditor.CodeCompletionRequested += OnCodeCompletionRequested;
+		ScriptEditor.CodeCompletionOptionConfirmed += OnCodeCompletionOptionConfirmed;
 
+	}
+
+	private void OnCodeCompletionOptionConfirmed(string insertText, string displayText)
+	{
+		// Dialouge option selected, insert "", and move caret forward by 1 character
+		if (insertText == "\"\"")
+		{
+			ScriptEditor.SetCaretColumn(Mathf.Max(0, ScriptEditor.GetCaretColumn() - 1));
+		}
 	}
 
     private void OnScriptChanged()
@@ -92,6 +102,10 @@ public partial class EditingMenu : Control
 		{
 			AddCompletionOptions(ResourceManager.Instance.GetAudioIds());
 		}
+		else if (context == CompletionContext.Actor)
+		{
+			AddCompletionOptions(new[] { "\"\"", "登場", "移動" });
+		}
 
 		ScriptEditor.UpdateCodeCompletionOptions(true);
 	}
@@ -126,7 +140,36 @@ public partial class EditingMenu : Control
 		if (TryGetKeywordRemainder(beforeCursor, "音效", out _))
 			return CompletionContext.Audio;
 
+		if (TryGetActorInstructionRemainder(beforeCursor, out _))
+			return CompletionContext.Actor;
+
 		return CompletionContext.FirstToken;
+	}
+
+	private static bool TryGetActorInstructionRemainder(string beforeCursor, out string remainder)
+	{
+		remainder = "";
+
+		if (ResourceManager.Instance == null)
+			return false;
+
+		string trimmedStart = beforeCursor.TrimStart();
+		foreach (string actorId in ResourceManager.Instance.GetActorIds().OrderByDescending(id => id.Length))
+		{
+			if (!trimmedStart.StartsWith(actorId, StringComparison.Ordinal))
+				continue;
+
+			if (trimmedStart.Length == actorId.Length)
+				continue;
+
+			if (!char.IsWhiteSpace(trimmedStart[actorId.Length]))
+				continue;
+
+			remainder = trimmedStart.Substring(actorId.Length).TrimStart();
+			return true;
+		}
+
+		return false;
 	}
 
 	private static bool TryGetKeywordRemainder(string beforeCursor, string keyword, out string remainder)
@@ -160,7 +203,8 @@ public partial class EditingMenu : Control
 	{
 		FirstToken,
 		Background,
-		Audio
+		Audio,
+		Actor
 	}
 
     public async void OnRenderButtonPressed() {
