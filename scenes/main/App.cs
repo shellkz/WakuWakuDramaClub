@@ -4,6 +4,8 @@ using System;
 
 public partial class App : Panel
 {
+    [Export(PropertyHint.GlobalDir)]
+    public string DebugProjectDirectory = "";
 
     [Export]
     PopupMenu projectMenu;
@@ -24,11 +26,18 @@ public partial class App : Panel
     [Export]
     OpenProjectPopup openProjectPopup;
     
+
+    
     public override void _Ready()
     {
         projectMenu.IdPressed += OnProjectMenuSelected;
         ProjectSession.Instance.ProjectLoaded += OnProjectLoaded;
         UpdateProjectState();
+
+        if (!string.IsNullOrWhiteSpace(DebugProjectDirectory))
+        {
+            TryOpenProject(DebugProjectDirectory);
+        }
     }
 
     private void OnProjectLoaded()
@@ -75,9 +84,14 @@ public partial class App : Panel
 
     private void OnTryOpenProject(Dictionary data)
     {
+        TryOpenProject((string)data["path"]);
+    }
+
+    private void TryOpenProject(string path)
+    {
         try
         {
-            ProjectSession.Instance.Load((string)data["path"]);
+            ProjectSession.Instance.Load(path);
         }
         catch (InvalidOperationException e)
         {

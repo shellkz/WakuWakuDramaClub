@@ -56,44 +56,111 @@ public partial class EditingMenu : Control
     private void OnScriptChanged()
     {
 		if (ShouldRequestCompletion()){
-			GD.Print("Request Code complete");
-		
-			CallDeferred(MethodName.RequestCodeCompletionDeferred);
+			ScriptEditor.RequestCodeCompletion(true);
+			//CallDeferred(MethodName.RequestCodeCompletionDeferred);
 			
     	}
 	}
-	private void RequestCodeCompletionDeferred()
-	{
-		ScriptEditor.RequestCodeCompletion(true);
-	}
+	// private void RequestCodeCompletionDeferred()
+	// {
+	// 	ScriptEditor.RequestCodeCompletion(true);
+	// }
 	private bool ShouldRequestCompletion()
 	{
-		int column = ScriptEditor.GetCaretColumn();
-		if (column == 0)
-			return true;
+		string beforeCursor = GetTextBeforeCursor();
+		if (IsCompletedResourceReference(beforeCursor))
+			return false;
 
-		int lineIndex = ScriptEditor.GetCaretLine();
-		string line = ScriptEditor.GetLine(lineIndex);
-		string beforeCursor = line.Substring(0, Math.Min(column, line.Length));
-
-		return !string.IsNullOrWhiteSpace(beforeCursor);
+		return beforeCursor.Length == 0 || !string.IsNullOrWhiteSpace(beforeCursor);
 	}
 
 	private void OnCodeCompletionRequested()
 	{
-		GD.Print(ScriptEditor.GetTextForCodeCompletion());
+		string beforeCursor = GetTextBeforeCursor();
+		CompletionContext context = GetCompletionContext(beforeCursor);
+
+		if (context == CompletionContext.FirstToken)
+		{
+			AddCompletionOptions(new[] { "背景", "音效" });
+			AddCompletionOptions(ResourceManager.Instance.GetActorIds());
+		}
+		else if (context == CompletionContext.Background)
+		{
+			AddCompletionOptions(ResourceManager.Instance.GetBackgroundIds());
+		}
+		else if (context == CompletionContext.Audio)
+		{
+			AddCompletionOptions(ResourceManager.Instance.GetAudioIds());
+		}
+
+		ScriptEditor.UpdateCodeCompletionOptions(true);
+	}
+
+	private string GetTextBeforeCursor()
+	{
 		int lineIndex = ScriptEditor.GetCaretLine();
 		int column = ScriptEditor.GetCaretColumn();
 		string line = ScriptEditor.GetLine(lineIndex);
-		string beforeCursor = line.Substring(0, Math.Min(column, line.Length));
-		GD.Print("Provide Code complete");
-		ScriptEditor.AddCodeCompletionOption(CodeEdit.CodeCompletionKind.PlainText, "op1", "op1", Colors.White);
-		// ScriptEditor.AddCodeCompletionOption(CodeEdit.CodeCompletionKind.PlainText, "op 2", "op 2", Colors.White);
-		// GD.Print("Option count before update: " + ScriptEditor.GetCodeCompletionOptions().Count);
-		// ScriptEditor.AddCodeCompletionOption(CodeEdit.CodeCompletionKind.PlainText, "op 3", "op 3", Colors.White);
-		ScriptEditor.UpdateCodeCompletionOptions(true);
-		GD.Print("Option count: " + ScriptEditor.GetCodeCompletionOptions().Count);
+		return line.Substring(0, Math.Min(column, line.Length));
+	}
 
+	private bool IsCompletedResourceReference(string beforeCursor)
+	{
+		if (ResourceManager.Instance == null)
+			return false;
+
+		if (TryGetKeywordRemainder(beforeCursor, "背景", out string backgroundId))
+			return ResourceManager.Instance.GetBackgroundIds().Contains(backgroundId);
+
+		if (TryGetKeywordRemainder(beforeCursor, "音效", out string audioId))
+			return ResourceManager.Instance.GetAudioIds().Contains(audioId);
+
+		return false;
+	}
+
+	private CompletionContext GetCompletionContext(string beforeCursor)
+	{
+		if (TryGetKeywordRemainder(beforeCursor, "背景", out _))
+			return CompletionContext.Background;
+
+		if (TryGetKeywordRemainder(beforeCursor, "音效", out _))
+			return CompletionContext.Audio;
+
+		return CompletionContext.FirstToken;
+	}
+
+	private static bool TryGetKeywordRemainder(string beforeCursor, string keyword, out string remainder)
+	{
+		remainder = "";
+		string trimmedStart = beforeCursor.TrimStart();
+
+		if (!trimmedStart.StartsWith(keyword, StringComparison.Ordinal))
+			return false;
+
+		if (trimmedStart.Length == keyword.Length)
+			return false;
+
+		if (!char.IsWhiteSpace(trimmedStart[keyword.Length]))
+			return false;
+
+		remainder = trimmedStart.Substring(keyword.Length).TrimStart();
+		return true;
+	}
+
+	private void AddCompletionOptions(IEnumerable<string> options)
+	{
+		foreach (string option in options)
+		{
+			ScriptEditor.AddCodeCompletionOption(CodeEdit.CodeCompletionKind.PlainText, option, option, Colors.White);
+		}
+
+	}
+
+	private enum CompletionContext
+	{
+		FirstToken,
+		Background,
+		Audio
 	}
 
     public async void OnRenderButtonPressed() {

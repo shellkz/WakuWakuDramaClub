@@ -198,6 +198,35 @@ public partial class ResourceManager : Node
 		return GetPackAssetRecord(packName, "audio", audioName, AssetType.Audio);
 	}
 
+	public List<string> GetActorIds()
+	{
+		HashSet<string> ids = new HashSet<string>();
+		foreach (AssetRecord record in AssetIndex.Values)
+		{
+			if (record.Type != AssetType.ActorExpression && record.Type != AssetType.ActorBody)
+				continue;
+
+			if (!TryParseActorAssetPath(record.RelativePath, out string packName, out string actorName, out _))
+				continue;
+
+			ids.Add(string.Join('/', packName, actorName));
+		}
+
+		List<string> sortedIds = new List<string>(ids);
+		sortedIds.Sort(StringComparer.Ordinal);
+		return sortedIds;
+	}
+
+	public List<string> GetBackgroundIds()
+	{
+		return GetPackAssetIds("backgrounds", AssetType.Background);
+	}
+
+	public List<string> GetAudioIds()
+	{
+		return GetPackAssetIds("audio", AssetType.Audio);
+	}
+
 	private void ScanPack(string workingDirectory, string packDirectory)
 	{
 		ScanActorAssets(workingDirectory, Path.Combine(packDirectory, "actors"));
@@ -290,6 +319,24 @@ public partial class ResourceManager : Node
 		throw new ArgumentException($"Asset not found: {packName}/{resourceName}");
 	}
 
+	private List<string> GetPackAssetIds(string directoryName, AssetType type)
+	{
+		List<string> ids = new List<string>();
+		foreach (AssetRecord record in AssetIndex.Values)
+		{
+			if (record.Type != type)
+				continue;
+
+			if (!TryParsePackAssetPath(record.RelativePath, directoryName, out string packName, out string resourceName))
+				continue;
+
+			ids.Add(string.Join('/', packName, resourceName));
+		}
+
+		ids.Sort(StringComparer.Ordinal);
+		return ids;
+	}
+
 	private static bool TryParsePackResourceId(string id, out string packName, out string resourceName)
 	{
 		packName = "";
@@ -302,5 +349,22 @@ public partial class ResourceManager : Node
 		packName = id.Substring(0, separatorIndex);
 		resourceName = id.Substring(separatorIndex + 1);
 		return true;
+	}
+
+	private static bool TryParsePackAssetPath(string relativePath, string directoryName, out string packName, out string resourceName)
+	{
+		packName = "";
+		resourceName = "";
+
+		string[] segments = relativePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+		if (segments.Length != 4)
+			return false;
+
+		if (segments[0] != "assets" || segments[2] != directoryName)
+			return false;
+
+		packName = segments[1];
+		resourceName = Path.GetFileNameWithoutExtension(segments[3]);
+		return !string.IsNullOrWhiteSpace(packName) && !string.IsNullOrWhiteSpace(resourceName);
 	}
 }

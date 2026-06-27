@@ -433,6 +433,7 @@ offset_right = 400.0
 offset_bottom = 800.0
 
 [node name="TextureRect" type="TextureRect" parent="TimelineViewport/Anchors/左" unique_id=2001512703]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -456,6 +457,7 @@ offset_right = 960.0
 offset_bottom = 800.0
 
 [node name="TextureRect" type="TextureRect" parent="TimelineViewport/Anchors/中" unique_id=1564674669]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -479,6 +481,7 @@ offset_right = 1520.0
 offset_bottom = 800.0
 
 [node name="TextureRect" type="TextureRect" parent="TimelineViewport/Anchors/右" unique_id=345196256]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

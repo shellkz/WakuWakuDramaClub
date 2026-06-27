@@ -71,6 +71,7 @@ fit_content = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
+text = "C:\\Users\\shoke\\Projects\\WakuWakuTest\\arisu_quest"
 
 [node name="Control" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1063926544]
 layout_mode = 2
