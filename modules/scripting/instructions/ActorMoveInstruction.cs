@@ -2,10 +2,16 @@ using Godot;
 using System;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Scripting;
+using WakuWakuDramaClub.Scripting.Schema;
 using WakuWakuDramaClub.Timline;
 namespace WakuWakuDramaClub.Scripting.Instructions;
 public partial class ActorMoveInstruction : Instruction
 {
+	private const string Id = "ActorMove";
+	private const string Keyword = "移動";
+	private const string ToOption = "到";
+	private const string DurationOption = "在";
+
 	public String Actor {  get; set; }
 	public String Destination {  get; set; }
 	public String Duration {  get; set; }
@@ -13,15 +19,30 @@ public partial class ActorMoveInstruction : Instruction
     public ActorMoveInstruction(RawInstruction raw) : base(raw)
     {
     }
-	public override string GetName()
+	public override string GetId()
+	{
+		return Id;
+	}
+	public override string GetKeyword()
     {
-        return Tr(InstructionType.ActorMove.ToString());
+        return Keyword;
+    }
+	public override InstructionSchema GetSchema()
+	{
+		return InstructionSchema.Create()
+			.Primary(Keyword)
+				.Argument("actor", ScriptValueKind.Actor)
+			.Option(ToOption)
+				.Argument("destination", ScriptValueKind.Anchor, required: false)
+			.Option(DurationOption)
+				.Argument("duration", ScriptValueKind.Float, required: false, defaultValue: "0");
     }
     public override void BindData(RawInstruction raw)
     {
-		Actor = raw.TryGetStatementArgumentValue(Tr(InstructionType.ActorMove.ToString()), 0, "");
-		Destination = raw.TryGetStatementArgumentValue("到", 0, "");
-		Duration = raw.TryGetStatementArgumentValue("在", 0, "");
+		RawInstructionBinder bind = Bind(raw);
+		Actor = bind.Get("actor");
+		Destination = bind.Get(ToOption, "destination");
+		Duration = bind.Get(DurationOption, "duration");
     }
  	public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
 	{

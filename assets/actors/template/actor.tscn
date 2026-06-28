@@ -266,12 +266,6 @@ tracks/0/keys = {
 "values": [Vector2(0, 0), Vector2(0, -95), Vector2(0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_ndwp8"]
-resource_name = "mic"
-
-[sub_resource type="Animation" id="Animation_jjnts"]
-resource_name = "nervous"
-
 [sub_resource type="Animation" id="Animation_iy58a"]
 resource_name = "node"
 length = 0.2333
@@ -288,24 +282,6 @@ tracks/0/keys = {
 "values": [Vector2(0, 0), Vector2(0, 32), Vector2(0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_relpc"]
-resource_name = "onhip"
-
-[sub_resource type="Animation" id="Animation_2vckp"]
-resource_name = "pointing"
-
-[sub_resource type="Animation" id="Animation_2wjgs"]
-resource_name = "raised"
-
-[sub_resource type="Animation" id="Animation_yd3sn"]
-resource_name = "taunting"
-
-[sub_resource type="Animation" id="Animation_mdiea"]
-resource_name = "thinking"
-
-[sub_resource type="Animation" id="Animation_qy1p4"]
-resource_name = "whispering"
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_iy58a"]
 _data = {
 &"RESET": SubResource("Animation_fj5cn"),
@@ -313,15 +289,7 @@ _data = {
 &"faint": SubResource("Animation_am1vj"),
 &"idle": SubResource("Animation_kg8o2"),
 &"jump": SubResource("Animation_ee4bf"),
-&"mic": SubResource("Animation_ndwp8"),
-&"nervous": SubResource("Animation_jjnts"),
-&"nod": SubResource("Animation_iy58a"),
-&"onhip": SubResource("Animation_relpc"),
-&"pointing": SubResource("Animation_2vckp"),
-&"raised": SubResource("Animation_2wjgs"),
-&"taunting": SubResource("Animation_yd3sn"),
-&"thinking": SubResource("Animation_mdiea"),
-&"whispering": SubResource("Animation_qy1p4")
+&"nod": SubResource("Animation_iy58a")
 }
 
 [sub_resource type="Animation" id="Animation_jjy5e"]

@@ -4,23 +4,36 @@ using System.Threading.Tasks;
 using WakuWakuDramaClub.Render;
 using WakuWakuDramaClub.Timline;
 using WakuWakuDramaClub.Scripting;
+using WakuWakuDramaClub.Scripting.Schema;
 namespace WakuWakuDramaClub.Scripting.Instructions;
 
 public partial class WaitInstruction : Instruction
 {
+	private const string Id = "Wait";
+	private const string Keyword = "等待";
+
 	public string Duration {get; set;}
  	public WaitInstruction(RawInstruction raw) : base(raw)
     {
     }
-	public override string GetName()
+	public override string GetId()
+	{
+		return Id;
+	}
+	public override string GetKeyword()
     {
-        return Tr(InstructionType.Wait.ToString());
+        return Keyword;
     }
+	public override InstructionSchema GetSchema()
+	{
+		return InstructionSchema.Create()
+			.Primary(Keyword)
+				.Argument("duration", ScriptValueKind.Float);
+	}
     public override void BindData(RawInstruction raw)
     {
-		
-		Duration = raw.TryGetStatementArgumentsValue(Tr(InstructionType.Wait.ToString()), "");
-
+		RawInstructionBinder bind = Bind(raw);
+		Duration = bind.Get("duration");
     }
  	public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
 	{

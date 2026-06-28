@@ -3,10 +3,16 @@ using WakuWakuDramaClub.Timline;
 using System.Threading.Tasks;
 using Godot;
 using WakuWakuDramaClub.Render;
+using WakuWakuDramaClub.Scripting.Schema;
 
 namespace WakuWakuDramaClub.Scripting.Instructions;
 public partial class DialogueInstruction : Instruction
 {
+    private const string Id = "Dialogue";
+    private const string Keyword = "對話";
+    private const string ExpressionOption = "表情";
+    private const string PoseOption = "動作";
+
     public String Speaker {  get; set; }
     public String Speech { get; set; }
     public String Expression { get; set; }
@@ -14,17 +20,35 @@ public partial class DialogueInstruction : Instruction
 
     public DialogueInstruction(RawInstruction raw) : base(raw) {}
 
-    public override string GetName()
+    public override string GetId()
     {
-        return Tr(InstructionType.Dialogue.ToString());
+        return Id;
+    }
+
+    public override string GetKeyword()
+    {
+        return Keyword;
+    }
+
+    public override InstructionSchema GetSchema()
+    {
+        return InstructionSchema.Create()
+            .Primary(Keyword)
+                .Argument("actor", ScriptValueKind.Actor)
+                .Argument("dialogue", ScriptValueKind.DialogueText)
+            .Option(ExpressionOption)
+                .Argument("expression", ScriptValueKind.ActorExpression, required: false)
+            .Option(PoseOption)
+                .Argument("pose", ScriptValueKind.ActorPose, required: false);
     }
 
     public override void BindData(RawInstruction raw)
     {
-        Speaker = raw.TryGetStatementArgumentValue(Tr(InstructionType.Dialogue.ToString()), 0, "");
-        Speech = raw.TryGetStatementArgumentValue(Tr(InstructionType.Dialogue.ToString()), 1, "");
-        Expression = raw.TryGetStatementArgumentValue("表情", 0, "");
-        Pose = raw.TryGetStatementArgumentValue("動作", 0, "");
+        RawInstructionBinder bind = Bind(raw);
+        Speaker = bind.Get("actor");
+        Speech = bind.Get("dialogue");
+        Expression = bind.Get(ExpressionOption, "expression");
+        Pose = bind.Get(PoseOption, "pose");
     }
 
     public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)

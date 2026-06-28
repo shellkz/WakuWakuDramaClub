@@ -3,22 +3,37 @@ using System;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Scripting;
+using WakuWakuDramaClub.Scripting.Schema;
 using WakuWakuDramaClub.Timline;
 
 namespace WakuWakuDramaClub.Scripting.Instructions;
 public partial class ActorEnterInstruction : Instruction
 {
+	private const string Id = "ActorEnter";
+	private const string Keyword = "登場";
+
 	public String Actor {  get; set; }
     public ActorEnterInstruction(RawInstruction raw) : base(raw)
     {
     }
-	public override string GetName()
+	public override string GetId()
+	{
+		return Id;
+	}
+	public override string GetKeyword()
     {
-        return Tr(InstructionType.ActorEnter.ToString());
+        return Keyword;
+    }
+	public override InstructionSchema GetSchema()
+	{
+		return InstructionSchema.Create()
+			.Primary(Keyword)
+				.Argument("actor", ScriptValueKind.Actor);
     }
     public override void BindData(RawInstruction raw)
     {
-		Actor = raw.TryGetStatementArgumentValue(Tr(InstructionType.ActorEnter.ToString()), 0, "");
+		RawInstructionBinder bind = Bind(raw);
+		Actor = bind.Get("actor");
     }
  	public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
 	{

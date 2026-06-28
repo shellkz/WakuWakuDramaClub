@@ -27,7 +27,7 @@ public partial class ScriptParser : RefCounted
         foreach (Type factory in factories)
         {
             Instruction instruction = (Instruction)Activator.CreateInstance(factory, new RawInstruction());
-            Factory.Add(instruction.GetName(), instruction.GetType());
+            Factory.Add(instruction.GetKeyword(), instruction.GetType());
         }
         
     }

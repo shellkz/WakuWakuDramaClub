@@ -1,6 +1,8 @@
 using Godot;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WakuWakuDramaClub.Scripting;
+using WakuWakuDramaClub.Scripting.Schema;
 using WakuWakuDramaClub.Timline;
 namespace WakuWakuDramaClub.Scripting.Instructions;
 public abstract partial class Instruction : RefCounted
@@ -13,8 +15,14 @@ public abstract partial class Instruction : RefCounted
         // Options = raw.Options;
         BindData(raw);
     }
-    public abstract string GetName();
+    public abstract string GetId();
+    public abstract string GetKeyword();
+    public abstract InstructionSchema GetSchema();
     public abstract void BindData(RawInstruction raw);
+    protected RawInstructionBinder Bind(RawInstruction raw)
+    {
+        return new RawInstructionBinder(raw, GetSchema());
+    }
     public virtual async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport) {
         await Task.Delay(0);
         return new AnimationPack();

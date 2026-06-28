@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Scripting.Parsing;
 using WakuWakuDramaClub.Scripting.Instructions;
@@ -222,6 +223,7 @@ public partial class EditingMenu : Control
 		List<Instruction> instructions = parser.Parse(ScriptEditor.Text);
 
 
+
 		//ClearActors
 		TimelineViewport.ClearActors();
 
@@ -230,6 +232,8 @@ public partial class EditingMenu : Control
 		// return timeline;
 
 	}
+
+
 	public void OnPlayButtonPressed()
 	{
 		TimelineViewport.Play();

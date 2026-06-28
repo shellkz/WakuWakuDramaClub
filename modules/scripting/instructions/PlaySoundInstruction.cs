@@ -3,21 +3,36 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Render;
+using WakuWakuDramaClub.Scripting.Schema;
 using WakuWakuDramaClub.Timline;
 namespace WakuWakuDramaClub.Scripting.Instructions;
 public partial class PlaySoundInstruction : Instruction
 {
+	private const string Id = "PlaySound";
+	private const string Keyword = "音效";
+
 	public string Sound {get; set;}
  	public PlaySoundInstruction(RawInstruction raw) : base(raw)
     {
     }
-	public override string GetName()
+	public override string GetId()
+	{
+		return Id;
+	}
+	public override string GetKeyword()
     {
-        return Tr(InstructionType.PlaySound.ToString());
+        return Keyword;
+    }
+	public override InstructionSchema GetSchema()
+	{
+		return InstructionSchema.Create()
+			.Primary(Keyword)
+				.Argument("audio", ScriptValueKind.Audio);
     }
     public override void BindData(RawInstruction raw)
     {
-		Sound = raw.TryGetStatementArgumentsValue(Tr(InstructionType.PlaySound.ToString()), "");
+		RawInstructionBinder bind = Bind(raw);
+		Sound = bind.Get("audio");
     }
  	public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
 	{
