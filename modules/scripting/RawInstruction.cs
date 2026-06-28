@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
-namespace WakuWakuDramaClub.Parse;
+namespace WakuWakuDramaClub.Scripting;
 
 
 public partial class RawInstruction : RefCounted

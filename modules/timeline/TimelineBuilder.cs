@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WakuWakuDramaClub.Parse;
+using WakuWakuDramaClub.Scripting.Instructions;
 using WakuWakuDramaClub.Render;
 namespace WakuWakuDramaClub.Timline;
 public partial class TimelineBuilder : Node

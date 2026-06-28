@@ -2,7 +2,7 @@ using Godot;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Timline;
-namespace WakuWakuDramaClub.Parse;
+namespace WakuWakuDramaClub.Scripting.Instructions;
 public abstract partial class Instruction : RefCounted
 {
     // public string[] Arguments { get; set; }

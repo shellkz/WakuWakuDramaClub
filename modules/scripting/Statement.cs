@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+namespace WakuWakuDramaClub.Scripting;
 public partial class Statement : Godot.RefCounted
 {
 	public string Type {get; set;}

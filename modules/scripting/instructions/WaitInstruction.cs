@@ -3,7 +3,8 @@ using System;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Render;
 using WakuWakuDramaClub.Timline;
-namespace WakuWakuDramaClub.Parse;
+using WakuWakuDramaClub.Scripting;
+namespace WakuWakuDramaClub.Scripting.Instructions;
 
 public partial class WaitInstruction : Instruction
 {

@@ -1,7 +1,7 @@
 
 using System;
 using Godot;
-namespace WakuWakuDramaClub.Parse;
+namespace WakuWakuDramaClub.Scripting;
 public enum TokenType
 {
     //Normal,   // Content inside nothing

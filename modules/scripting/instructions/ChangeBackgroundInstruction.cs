@@ -2,9 +2,9 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WakuWakuDramaClub.Parse;
+using WakuWakuDramaClub.Scripting;
 using WakuWakuDramaClub.Timline;
-
+namespace WakuWakuDramaClub.Scripting.Instructions;
 public partial class ChangeBackgroundInstruction : Instruction
 {
 	public String Background {  get; set; }

@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Render;
 using WakuWakuDramaClub.Timline;
-namespace WakuWakuDramaClub.Parse;
+namespace WakuWakuDramaClub.Scripting.Instructions;
 public partial class PlaySoundInstruction : Instruction
 {
 	public string Sound {get; set;}

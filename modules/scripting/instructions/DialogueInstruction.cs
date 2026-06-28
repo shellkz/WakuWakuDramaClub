@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Godot;
 using WakuWakuDramaClub.Render;
 
-namespace WakuWakuDramaClub.Parse;
+namespace WakuWakuDramaClub.Scripting.Instructions;
 public partial class DialogueInstruction : Instruction
 {
     public String Speaker {  get; set; }

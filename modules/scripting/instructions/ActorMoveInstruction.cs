@@ -1,9 +1,9 @@
 using Godot;
 using System;
 using System.Threading.Tasks;
-using WakuWakuDramaClub.Parse;
+using WakuWakuDramaClub.Scripting;
 using WakuWakuDramaClub.Timline;
-
+namespace WakuWakuDramaClub.Scripting.Instructions;
 public partial class ActorMoveInstruction : Instruction
 {
 	public String Actor {  get; set; }

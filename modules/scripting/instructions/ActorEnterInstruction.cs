@@ -2,8 +2,10 @@ using Godot;
 using System;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
-using WakuWakuDramaClub.Parse;
+using WakuWakuDramaClub.Scripting;
 using WakuWakuDramaClub.Timline;
+
+namespace WakuWakuDramaClub.Scripting.Instructions;
 public partial class ActorEnterInstruction : Instruction
 {
 	public String Actor {  get; set; }

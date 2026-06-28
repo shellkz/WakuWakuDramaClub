@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using WakuWakuDramaClub.Parse;
+using WakuWakuDramaClub.Scripting.Parsing;
+using WakuWakuDramaClub.Scripting.Instructions;
 using WakuWakuDramaClub.Render;
 using WakuWakuDramaClub.Timline;
 

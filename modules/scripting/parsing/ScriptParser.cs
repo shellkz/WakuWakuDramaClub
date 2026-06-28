@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-namespace WakuWakuDramaClub.Parse;
+using WakuWakuDramaClub.Scripting.Instructions;
+
+namespace WakuWakuDramaClub.Scripting.Parsing;
 
 [GlobalClass]
 public partial class ScriptParser : RefCounted
