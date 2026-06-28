@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using WakuWakuDramaClub.Scripting;
 using WakuWakuDramaClub.Scripting.Parsing;
 using WakuWakuDramaClub.Scripting.Instructions;
 using WakuWakuDramaClub.Render;
@@ -219,7 +220,10 @@ public partial class EditingMenu : Control
 	}
 	private async Task<Timeline> BuildTimeline()
 	{
-		ScriptParser parser = new ScriptParser();
+		InstructionRegistry registry = InstructionRegistry.CreateDefault();
+		ScriptPreprocessor preprocessor = new ScriptPreprocessor(registry);
+
+		ScriptParser parser = new ScriptParser(registry, preprocessor);
 		List<Instruction> instructions = parser.Parse(ScriptEditor.Text);
 
 
@@ -232,6 +236,7 @@ public partial class EditingMenu : Control
 		// return timeline;
 
 	}
+
 
 
 	public void OnPlayButtonPressed()
