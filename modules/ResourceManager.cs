@@ -31,12 +31,15 @@ public sealed class ActorDefinition
 
 public partial class ResourceManager : Node
 {
+	public event Action ResourcesLoaded;
+
 	public static ResourceManager Instance { get; private set; }
 
 	public Dictionary<string, AssetRecord> AssetIndex { get; private set; } = new Dictionary<string, AssetRecord>();
 
 	// Legacy actor scene lookup kept until timeline actor creation is migrated to the asset index.
 	public Dictionary<string, string> actors = new Dictionary<string, string>();
+	private bool resourcesLoaded;
 
 	private static readonly HashSet<string> ImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
 	{
@@ -52,10 +55,31 @@ public partial class ResourceManager : Node
 		".ogg"
 	};
 
-	public override void _Ready()
+	public override void _EnterTree()
 	{
 		Instance = this;
+	}
+
+	public override void _Ready()
+	{
 		CallDeferred(MethodName.ConnectProjectSession);
+	}
+
+	public override void _ExitTree()
+	{
+		if (Instance == this)
+			Instance = null;
+	}
+
+	public void WhenResourcesLoaded(Action callback)
+	{
+		if (callback == null)
+			return;
+
+		ResourcesLoaded += callback;
+
+		if (resourcesLoaded)
+			callback();
 	}
 
 	private void ConnectProjectSession()
@@ -63,13 +87,12 @@ public partial class ResourceManager : Node
 		if (ProjectSession.Instance == null)
 			return;
 
-		ProjectSession.Instance.ProjectLoaded += Refresh;
-		if (!string.IsNullOrWhiteSpace(ProjectSession.Instance.WorkingDirectory))
-			Refresh();
+		ProjectSession.Instance.WhenProjectLoaded(Refresh);
 	}
 
 	public void Refresh()
 	{
+		resourcesLoaded = false;
 		AssetIndex.Clear();
 
 		if (ProjectSession.Instance == null)
@@ -80,13 +103,21 @@ public partial class ResourceManager : Node
 			return;
 
 		string assetsDirectory = Path.Combine(workingDirectory, "assets");
-		if (!Directory.Exists(assetsDirectory))
-			return;
-
-		foreach (string packDirectory in Directory.GetDirectories(assetsDirectory))
+		if (Directory.Exists(assetsDirectory))
 		{
-			ScanPack(workingDirectory, packDirectory);
+			foreach (string packDirectory in Directory.GetDirectories(assetsDirectory))
+			{
+				ScanPack(workingDirectory, packDirectory);
+			}
 		}
+
+		MarkResourcesLoaded();
+	}
+
+	private void MarkResourcesLoaded()
+	{
+		resourcesLoaded = true;
+		ResourcesLoaded?.Invoke();
 	}
 
 	public ActorDefinition GetActorDefinition(string actorId)

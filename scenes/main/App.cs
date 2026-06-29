@@ -31,7 +31,7 @@ public partial class App : Panel
     public override void _Ready()
     {
         projectMenu.IdPressed += OnProjectMenuSelected;
-        ProjectSession.Instance.ProjectLoaded += OnProjectLoaded;
+        ProjectSession.Instance.WhenProjectLoaded(OnProjectLoaded);
         UpdateProjectState();
 
         if (!string.IsNullOrWhiteSpace(DebugProjectDirectory))

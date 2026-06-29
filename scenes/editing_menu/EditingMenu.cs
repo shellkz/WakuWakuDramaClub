@@ -5,9 +5,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using WakuWakuDramaClub.Completion;
 using WakuWakuDramaClub.Scripting;
 using WakuWakuDramaClub.Scripting.Parsing;
 using WakuWakuDramaClub.Scripting.Instructions;
+using WakuWakuDramaClub.Scripting.Schema;
 using WakuWakuDramaClub.Render;
 using WakuWakuDramaClub.Timline;
 
@@ -15,6 +17,10 @@ public partial class EditingMenu : Control
 {
 	[Export]
 	public ScriptEditor ScriptEditor { get; set; }
+
+	private InstructionRegistry completionRegistry;
+	private ScriptPreprocessor completionPreprocessor;
+	private CompletionAnalyzer completionAnalyzer;
 
 
 
@@ -48,6 +54,16 @@ public partial class EditingMenu : Control
 		RenderButton.Pressed += OnRenderButtonPressed;
 		PlayButton.Pressed += OnPlayButtonPressed;
 		PauseButton.Pressed += OnPauseButtonPressed;
+
+		completionRegistry = InstructionRegistry.CreateDefault();
+		completionPreprocessor = new ScriptPreprocessor(completionRegistry);
+		completionAnalyzer = new CompletionAnalyzer(completionRegistry, completionPreprocessor, ResourceManager.Instance);
+
+		if (ResourceManager.Instance != null)
+			ResourceManager.Instance.WhenResourcesLoaded(RunCompletionAnalyzerTests);
+		else
+			GD.Print("[CompletionAnalyzerTest] ResourceManager.Instance is not available.");
+		
 		
 		ScriptEditor.CodeCompletionEnabled = true;
 	
@@ -68,11 +84,173 @@ public partial class EditingMenu : Control
 
     private void OnScriptChanged()
     {
+		PrintCompletionAnalysis();
+
 		if (ShouldRequestCompletion()){
 			ScriptEditor.RequestCodeCompletion(true);
 			//CallDeferred(MethodName.RequestCodeCompletionDeferred);
 			
     	}
+	}
+
+	private void PrintCompletionAnalysis()
+	{
+		if (completionAnalyzer == null)
+			return;
+
+		int lineIndex = ScriptEditor.GetCaretLine();
+		int caretColumn = ScriptEditor.GetCaretColumn();
+		string line = ScriptEditor.GetLine(lineIndex);
+		CompletionLineResult result = completionAnalyzer.Analyze(line, caretColumn);
+		GD.Print(result.ToDebugString());
+	}
+
+	private void RunCompletionAnalyzerTests()
+	{
+		if (completionAnalyzer == null)
+			return;
+
+		CompletionAnalyzerTestCase[] cases = new[]
+		{
+			new CompletionAnalyzerTestCase("|", null, CompletionCursorKind.PrimaryStart, ""),
+			new CompletionAnalyzerTestCase("背|", null, CompletionCursorKind.PrimaryStart, "背"),
+			new CompletionAnalyzerTestCase("def|", null, CompletionCursorKind.PrimaryStart, "def"),
+			new CompletionAnalyzerTestCase("背景 |", "背景", CompletionCursorKind.InstructionArgument, "", "背景", "背景", 0, ScriptValueKind.Background),
+			new CompletionAnalyzerTestCase("背景 文藝|", "背景", CompletionCursorKind.InstructionArgument, "文藝", "背景", "背景", 0, ScriptValueKind.Background),
+			new CompletionAnalyzerTestCase("音效 |", "音效", CompletionCursorKind.InstructionArgument, "", "音效", "音效", 0, ScriptValueKind.Audio),
+			new CompletionAnalyzerTestCase("default/毛豆 |", null, CompletionCursorKind.ActorAction, "", null, null, null, null, true, "default/毛豆"),
+			new CompletionAnalyzerTestCase("default/毛豆 移|", null, CompletionCursorKind.ActorAction, "移", null, null, null, null, true, "default/毛豆"),
+			new CompletionAnalyzerTestCase("default/毛豆 移動 |", "移動", CompletionCursorKind.StatementName, "", "移動", null, null, null, true, "default/毛豆"),
+			new CompletionAnalyzerTestCase("default/毛豆 移動 到 |", "移動", CompletionCursorKind.StatementArgument, "", "移動", "到", 0, ScriptValueKind.Anchor, true, "default/毛豆"),
+			new CompletionAnalyzerTestCase("default/毛豆 移動 到 右|", "移動", CompletionCursorKind.StatementArgument, "右", "移動", "到", 0, ScriptValueKind.Anchor, true, "default/毛豆"),
+			new CompletionAnalyzerTestCase("default/毛豆 移動 在 |", "移動", CompletionCursorKind.StatementArgument, "", "移動", "在", 0, ScriptValueKind.Float, true, "default/毛豆"),
+			new CompletionAnalyzerTestCase("default/毛豆 \"你好\"|", "對話", CompletionCursorKind.DialogueText, "你好", "對話", "對話", 1, ScriptValueKind.DialogueText, true, "default/毛豆"),
+			new CompletionAnalyzerTestCase("default/毛豆 \"你好\" |", "對話", CompletionCursorKind.StatementName, "", "對話", null, null, null, true, "default/毛豆"),
+			new CompletionAnalyzerTestCase("default/毛豆 \"你好\" 表|", "對話", CompletionCursorKind.StatementName, "表", "對話", null, null, null, true, "default/毛豆"),
+			new CompletionAnalyzerTestCase("default/毛豆 \"你好\" 表情 |", "對話", CompletionCursorKind.StatementArgument, "", "對話", "表情", 0, ScriptValueKind.ActorExpression, true, "default/毛豆"),
+			new CompletionAnalyzerTestCase("default/毛豆 \"你好\" 動作 |", "對話", CompletionCursorKind.StatementArgument, "", "對話", "動作", 0, ScriptValueKind.ActorPose, true, "default/毛豆"),
+			new CompletionAnalyzerTestCase("對話 default/毛豆 |", "對話", CompletionCursorKind.DialogueText, "", "對話", "對話", 1, ScriptValueKind.DialogueText),
+			new CompletionAnalyzerTestCase("對話 default/毛豆 你好|", "對話", CompletionCursorKind.DialogueText, "你好", "對話", "對話", 1, ScriptValueKind.DialogueText),
+			new CompletionAnalyzerTestCase("移動 default/毛豆 |", "移動", CompletionCursorKind.StatementName, "", "移動"),
+			new CompletionAnalyzerTestCase("移動 default/毛豆 到 右 |", "移動", CompletionCursorKind.StatementName, "", "移動"),
+		};
+
+		int passCount = 0;
+		foreach (CompletionAnalyzerTestCase testCase in cases)
+		{
+			CompletionLineResult result = completionAnalyzer.AnalyzeTest(testCase.Line, testCase.CaretColumn);
+			bool passed = testCase.Matches(result);
+			if (passed)
+				passCount++;
+
+			GD.Print($"[CompletionAnalyzerTest] {(passed ? "PASS" : "FAIL")} {testCase.Name}");
+			if (!passed)
+			{
+				GD.Print($"  Expected: {testCase.ToExpectedDebugString()}");
+				GD.Print($"  Actual:   {result.ToDebugString()}");
+			}
+		}
+
+		GD.Print($"[CompletionAnalyzerTest] {passCount}/{cases.Length} passed");
+	}
+
+	private sealed class CompletionAnalyzerTestCase
+	{
+		public string Name { get; }
+		public string Line { get; }
+		public int CaretColumn { get; }
+		private readonly string rawType;
+		private readonly CompletionCursorKind kind;
+		private readonly string prefix;
+		private readonly string instructionName;
+		private readonly string statementName;
+		private readonly int? argumentIndex;
+		private readonly ScriptValueKind? valueKind;
+		private readonly bool? isActorShorthand;
+		private readonly string actorId;
+
+		public CompletionAnalyzerTestCase(
+			string markedLine,
+			string rawType,
+			CompletionCursorKind kind,
+			string prefix,
+			string instructionName = null,
+			string statementName = null,
+			int? argumentIndex = null,
+			ScriptValueKind? valueKind = null,
+			bool? isActorShorthand = null,
+			string actorId = null)
+		{
+			Name = markedLine;
+			CaretColumn = markedLine.IndexOf('|');
+			Line = markedLine.Replace("|", "");
+			this.rawType = rawType;
+			this.kind = kind;
+			this.prefix = prefix;
+			this.instructionName = instructionName;
+			this.statementName = statementName;
+			this.argumentIndex = argumentIndex;
+			this.valueKind = valueKind;
+			this.isActorShorthand = isActorShorthand;
+			this.actorId = actorId;
+		}
+
+		public bool Matches(CompletionLineResult result)
+		{
+			if (result.Raw.Type != rawType)
+				return false;
+
+			if (result.Cursor.Kind != kind)
+				return false;
+
+			if (result.Cursor.Prefix != prefix)
+				return false;
+
+			if (instructionName != null && result.Cursor.InstructionName != instructionName)
+				return false;
+
+			if (statementName != null && result.Cursor.StatementName != statementName)
+				return false;
+
+			if (argumentIndex.HasValue && result.Cursor.ArgumentIndex != argumentIndex)
+				return false;
+
+			if (valueKind.HasValue && result.Cursor.ValueKind != valueKind)
+				return false;
+
+			if (isActorShorthand.HasValue && result.Raw.IsActorShorthand != isActorShorthand)
+				return false;
+
+			if (actorId != null && result.Raw.ActorId != actorId)
+				return false;
+
+			return true;
+		}
+
+		public string ToExpectedDebugString()
+		{
+			return $"Raw.Type={Format(rawType)}, Kind={kind}, Prefix=\"{prefix}\", InstructionName={Format(instructionName)}, StatementName={Format(statementName)}, ArgumentIndex={Format(argumentIndex)}, ValueKind={Format(valueKind)}, IsActorShorthand={Format(isActorShorthand)}, ActorId={Format(actorId)}";
+		}
+
+		private static string Format(string value)
+		{
+			return value == null ? "null" : $"\"{value}\"";
+		}
+
+		private static string Format(int? value)
+		{
+			return value.HasValue ? value.Value.ToString() : "null";
+		}
+
+		private static string Format(bool? value)
+		{
+			return value.HasValue ? value.Value.ToString() : "null";
+		}
+
+		private static string Format(ScriptValueKind? value)
+		{
+			return value.HasValue ? value.Value.ToString() : "null";
+		}
 	}
 	// private void RequestCodeCompletionDeferred()
 	// {

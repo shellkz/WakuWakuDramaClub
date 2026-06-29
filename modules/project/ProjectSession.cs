@@ -12,10 +12,28 @@ public partial class ProjectSession : Node
     public ProjectData Data { get; private set; }
 
     private const string ProjectFileName = "project.json";
+    private bool isProjectLoaded;
 
-    public override void _Ready()
+    public override void _EnterTree()
     {
         Instance = this;
+    }
+
+    public override void _ExitTree()
+    {
+        if (Instance == this)
+            Instance = null;
+    }
+
+    public void WhenProjectLoaded(Action callback)
+    {
+        if (callback == null)
+            return;
+
+        ProjectLoaded += callback;
+
+        if (isProjectLoaded)
+            callback();
     }
 
     public void CreateProject(string name, string path)
@@ -32,7 +50,7 @@ public partial class ProjectSession : Node
         WorkingDirectory = path;
         Data = new ProjectData { ProjectName = name, LastOpenedDatetime = DateTime.Now };
         Save();
-        ProjectLoaded?.Invoke();
+        MarkProjectLoaded();
     }
 
     public void Load(string workingDirectory)
@@ -45,7 +63,7 @@ public partial class ProjectSession : Node
         Data = ProjectData.FromJson(File.ReadAllText(projectFilePath));
         Data.LastOpenedDatetime = DateTime.Now;
         Save();
-        ProjectLoaded?.Invoke();
+        MarkProjectLoaded();
     }
 
     public void Save()
@@ -66,5 +84,12 @@ public partial class ProjectSession : Node
     {
         WorkingDirectory = "";
         Data = null;
+        isProjectLoaded = false;
+    }
+
+    private void MarkProjectLoaded()
+    {
+        isProjectLoaded = true;
+        ProjectLoaded?.Invoke();
     }
 }
