@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WakuWakuDramaClub.Scripting.Instructions;
+using WakuWakuDramaClub.Scripting.Schema;
 
 namespace WakuWakuDramaClub.Scripting.Parsing;
 
@@ -60,19 +61,19 @@ public sealed class ScriptPreprocessor
 			if (index >= line.Length)
 				break;
 
-			if (line[index] == '"')
+			if (line[index] == LanguageSchema.DialogueQuoteStart)
 			{
 				int start = index + 1;
 				index = start;
 
-				while (index < line.Length && line[index] != '"')
+				while (index < line.Length && line[index] != LanguageSchema.DialogueQuoteEnd)
 				{
 					index++;
 				}
 
 				result.Add(new ScriptTokenText(line.Substring(start, index - start), true));
 
-				if (index < line.Length && line[index] == '"')
+				if (index < line.Length && line[index] == LanguageSchema.DialogueQuoteEnd)
 				{
 					index++;
 				}

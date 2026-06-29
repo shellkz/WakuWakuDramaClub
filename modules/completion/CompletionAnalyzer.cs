@@ -372,22 +372,22 @@ public sealed class CompletionAnalyzer
 			if (index >= line.Length)
 				break;
 
-			if (line[index] == '"')
+			if (line[index] == LanguageSchema.DialogueQuoteStart)
 			{
-				int startColumn = index;
 				int valueStart = index + 1;
 				index = valueStart;
 
-				while (index < line.Length && line[index] != '"')
+				while (index < line.Length && line[index] != LanguageSchema.DialogueQuoteEnd)
 				{
 					index++;
 				}
 
+				int valueEnd = index;
 				string value = line.Substring(valueStart, index - valueStart);
-				if (index < line.Length && line[index] == '"')
+				if (index < line.Length && line[index] == LanguageSchema.DialogueQuoteEnd)
 					index++;
 
-				tokens.Add(new PositionedToken(CompletionTokenType.Dialogue, value, startColumn, index));
+				tokens.Add(new PositionedToken(CompletionTokenType.Dialogue, value, valueStart, valueEnd));
 			}
 			else
 			{

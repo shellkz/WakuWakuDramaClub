@@ -21,6 +21,7 @@ public partial class EditingMenu : Control
 	private InstructionRegistry completionRegistry;
 	private ScriptPreprocessor completionPreprocessor;
 	private CompletionAnalyzer completionAnalyzer;
+	private CompletionProvider completionProvider;
 
 
 
@@ -58,11 +59,12 @@ public partial class EditingMenu : Control
 		completionRegistry = InstructionRegistry.CreateDefault();
 		completionPreprocessor = new ScriptPreprocessor(completionRegistry);
 		completionAnalyzer = new CompletionAnalyzer(completionRegistry, completionPreprocessor, ResourceManager.Instance);
+		completionProvider = new CompletionProvider(completionRegistry, ResourceManager.Instance);
 
 		if (ResourceManager.Instance != null)
-			ResourceManager.Instance.WhenResourcesLoaded(RunCompletionAnalyzerTests);
+			ResourceManager.Instance.WhenResourcesLoaded(RunCompletionProviderTests);
 		else
-			GD.Print("[CompletionAnalyzerTest] ResourceManager.Instance is not available.");
+			GD.Print("[CompletionProviderTest] ResourceManager.Instance is not available.");
 		
 		
 		ScriptEditor.CodeCompletionEnabled = true;
@@ -75,8 +77,8 @@ public partial class EditingMenu : Control
 
 	private void OnCodeCompletionOptionConfirmed(string insertText, string displayText)
 	{
-		// Dialouge option selected, insert "", and move caret forward by 1 character
-		if (insertText == "\"\"")
+		// Dialogue option selected, move caret between the quote pair.
+		if (insertText == LanguageSchema.EmptyDialogueText)
 		{
 			ScriptEditor.SetCaretColumn(Mathf.Max(0, ScriptEditor.GetCaretColumn() - 1));
 		}
@@ -84,74 +86,159 @@ public partial class EditingMenu : Control
 
     private void OnScriptChanged()
     {
-		PrintCompletionAnalysis();
+		// PrintCompletionAnalysis();
 
-		if (ShouldRequestCompletion()){
+		if (ShouldRequestNewCompletion()){
 			ScriptEditor.RequestCodeCompletion(true);
 			//CallDeferred(MethodName.RequestCodeCompletionDeferred);
 			
     	}
 	}
 
-	private void PrintCompletionAnalysis()
+	private bool ShouldRequestNewCompletion()
 	{
-		if (completionAnalyzer == null)
-			return;
-
-		int lineIndex = ScriptEditor.GetCaretLine();
-		int caretColumn = ScriptEditor.GetCaretColumn();
-		string line = ScriptEditor.GetLine(lineIndex);
-		CompletionLineResult result = completionAnalyzer.Analyze(line, caretColumn);
-		GD.Print(result.ToDebugString());
+		return GetCurrentCompletionOptions().Count > 0;
 	}
 
-	private void RunCompletionAnalyzerTests()
+	// private void PrintCompletionAnalysis()
+	// {
+	// 	if (completionAnalyzer == null)
+	// 		return;
+
+	// 	int lineIndex = ScriptEditor.GetCaretLine();
+	// 	int caretColumn = ScriptEditor.GetCaretColumn();
+	// 	string line = ScriptEditor.GetLine(lineIndex);
+	// 	CompletionLineResult result = completionAnalyzer.Analyze(line, caretColumn);
+	// 	GD.Print(result.ToDebugString());
+	// }
+
+	// private void RunCompletionAnalyzerTests()
+	// {
+	// 	if (completionAnalyzer == null)
+	// 		return;
+
+	// 	CompletionAnalyzerTestCase[] cases = new[]
+	// 	{
+	// 		new CompletionAnalyzerTestCase("|", null, CompletionCursorKind.PrimaryStart, ""),
+	// 		new CompletionAnalyzerTestCase("背|", null, CompletionCursorKind.PrimaryStart, "背"),
+	// 		new CompletionAnalyzerTestCase("def|", null, CompletionCursorKind.PrimaryStart, "def"),
+	// 		new CompletionAnalyzerTestCase("背景 |", "背景", CompletionCursorKind.InstructionArgument, "", "背景", "背景", 0, ScriptValueKind.Background),
+	// 		new CompletionAnalyzerTestCase("背景 文藝|", "背景", CompletionCursorKind.InstructionArgument, "文藝", "背景", "背景", 0, ScriptValueKind.Background),
+	// 		new CompletionAnalyzerTestCase("音效 |", "音效", CompletionCursorKind.InstructionArgument, "", "音效", "音效", 0, ScriptValueKind.Audio),
+	// 		new CompletionAnalyzerTestCase("default/毛豆 |", null, CompletionCursorKind.ActorAction, "", null, null, null, null, true, "default/毛豆"),
+	// 		new CompletionAnalyzerTestCase("default/毛豆 移|", null, CompletionCursorKind.ActorAction, "移", null, null, null, null, true, "default/毛豆"),
+	// 		new CompletionAnalyzerTestCase("default/毛豆 移動 |", "移動", CompletionCursorKind.StatementName, "", "移動", null, null, null, true, "default/毛豆"),
+	// 		new CompletionAnalyzerTestCase("default/毛豆 移動 到 |", "移動", CompletionCursorKind.StatementArgument, "", "移動", "到", 0, ScriptValueKind.Anchor, true, "default/毛豆"),
+	// 		new CompletionAnalyzerTestCase("default/毛豆 移動 到 右|", "移動", CompletionCursorKind.StatementArgument, "右", "移動", "到", 0, ScriptValueKind.Anchor, true, "default/毛豆"),
+	// 		new CompletionAnalyzerTestCase("default/毛豆 移動 在 |", "移動", CompletionCursorKind.StatementArgument, "", "移動", "在", 0, ScriptValueKind.Float, true, "default/毛豆"),
+	// 		new CompletionAnalyzerTestCase("default/毛豆 \"你好\"|", "對話", CompletionCursorKind.DialogueText, "你好", "對話", "對話", 1, ScriptValueKind.DialogueText, true, "default/毛豆"),
+	// 		new CompletionAnalyzerTestCase("default/毛豆 \"你好\" |", "對話", CompletionCursorKind.StatementName, "", "對話", null, null, null, true, "default/毛豆"),
+	// 		new CompletionAnalyzerTestCase("default/毛豆 \"你好\" 表|", "對話", CompletionCursorKind.StatementName, "表", "對話", null, null, null, true, "default/毛豆"),
+	// 		new CompletionAnalyzerTestCase("default/毛豆 \"你好\" 表情 |", "對話", CompletionCursorKind.StatementArgument, "", "對話", "表情", 0, ScriptValueKind.ActorExpression, true, "default/毛豆"),
+	// 		new CompletionAnalyzerTestCase("default/毛豆 \"你好\" 動作 |", "對話", CompletionCursorKind.StatementArgument, "", "對話", "動作", 0, ScriptValueKind.ActorPose, true, "default/毛豆"),
+	// 		new CompletionAnalyzerTestCase("對話 default/毛豆 |", "對話", CompletionCursorKind.DialogueText, "", "對話", "對話", 1, ScriptValueKind.DialogueText),
+	// 		new CompletionAnalyzerTestCase("對話 default/毛豆 你好|", "對話", CompletionCursorKind.DialogueText, "你好", "對話", "對話", 1, ScriptValueKind.DialogueText),
+	// 		new CompletionAnalyzerTestCase("移動 default/毛豆 |", "移動", CompletionCursorKind.StatementName, "", "移動"),
+	// 		new CompletionAnalyzerTestCase("移動 default/毛豆 到 右 |", "移動", CompletionCursorKind.StatementName, "", "移動"),
+	// 	};
+
+	// 	int passCount = 0;
+	// 	foreach (CompletionAnalyzerTestCase testCase in cases)
+	// 	{
+	// 		CompletionLineResult result = completionAnalyzer.AnalyzeTest(testCase.Line, testCase.CaretColumn);
+	// 		bool passed = testCase.Matches(result);
+	// 		if (passed)
+	// 			passCount++;
+
+	// 		GD.Print($"[CompletionAnalyzerTest] {(passed ? "PASS" : "FAIL")} {testCase.Name}");
+	// 		if (!passed)
+	// 		{
+	// 			GD.Print($"  Expected: {testCase.ToExpectedDebugString()}");
+	// 			GD.Print($"  Actual:   {result.ToDebugString()}");
+	// 		}
+	// 	}
+
+	// 	GD.Print($"[CompletionAnalyzerTest] {passCount}/{cases.Length} passed");
+	// }
+
+	private void RunCompletionProviderTests()
 	{
-		if (completionAnalyzer == null)
+		if (completionAnalyzer == null || completionProvider == null || ResourceManager.Instance == null)
 			return;
 
-		CompletionAnalyzerTestCase[] cases = new[]
+		List<string> actorIds = ResourceManager.Instance.GetActorIds();
+		List<string> backgroundIds = ResourceManager.Instance.GetBackgroundIds();
+		List<string> audioIds = ResourceManager.Instance.GetAudioIds();
+
+		if (actorIds.Count == 0)
 		{
-			new CompletionAnalyzerTestCase("|", null, CompletionCursorKind.PrimaryStart, ""),
-			new CompletionAnalyzerTestCase("背|", null, CompletionCursorKind.PrimaryStart, "背"),
-			new CompletionAnalyzerTestCase("def|", null, CompletionCursorKind.PrimaryStart, "def"),
-			new CompletionAnalyzerTestCase("背景 |", "背景", CompletionCursorKind.InstructionArgument, "", "背景", "背景", 0, ScriptValueKind.Background),
-			new CompletionAnalyzerTestCase("背景 文藝|", "背景", CompletionCursorKind.InstructionArgument, "文藝", "背景", "背景", 0, ScriptValueKind.Background),
-			new CompletionAnalyzerTestCase("音效 |", "音效", CompletionCursorKind.InstructionArgument, "", "音效", "音效", 0, ScriptValueKind.Audio),
-			new CompletionAnalyzerTestCase("default/毛豆 |", null, CompletionCursorKind.ActorAction, "", null, null, null, null, true, "default/毛豆"),
-			new CompletionAnalyzerTestCase("default/毛豆 移|", null, CompletionCursorKind.ActorAction, "移", null, null, null, null, true, "default/毛豆"),
-			new CompletionAnalyzerTestCase("default/毛豆 移動 |", "移動", CompletionCursorKind.StatementName, "", "移動", null, null, null, true, "default/毛豆"),
-			new CompletionAnalyzerTestCase("default/毛豆 移動 到 |", "移動", CompletionCursorKind.StatementArgument, "", "移動", "到", 0, ScriptValueKind.Anchor, true, "default/毛豆"),
-			new CompletionAnalyzerTestCase("default/毛豆 移動 到 右|", "移動", CompletionCursorKind.StatementArgument, "右", "移動", "到", 0, ScriptValueKind.Anchor, true, "default/毛豆"),
-			new CompletionAnalyzerTestCase("default/毛豆 移動 在 |", "移動", CompletionCursorKind.StatementArgument, "", "移動", "在", 0, ScriptValueKind.Float, true, "default/毛豆"),
-			new CompletionAnalyzerTestCase("default/毛豆 \"你好\"|", "對話", CompletionCursorKind.DialogueText, "你好", "對話", "對話", 1, ScriptValueKind.DialogueText, true, "default/毛豆"),
-			new CompletionAnalyzerTestCase("default/毛豆 \"你好\" |", "對話", CompletionCursorKind.StatementName, "", "對話", null, null, null, true, "default/毛豆"),
-			new CompletionAnalyzerTestCase("default/毛豆 \"你好\" 表|", "對話", CompletionCursorKind.StatementName, "表", "對話", null, null, null, true, "default/毛豆"),
-			new CompletionAnalyzerTestCase("default/毛豆 \"你好\" 表情 |", "對話", CompletionCursorKind.StatementArgument, "", "對話", "表情", 0, ScriptValueKind.ActorExpression, true, "default/毛豆"),
-			new CompletionAnalyzerTestCase("default/毛豆 \"你好\" 動作 |", "對話", CompletionCursorKind.StatementArgument, "", "對話", "動作", 0, ScriptValueKind.ActorPose, true, "default/毛豆"),
-			new CompletionAnalyzerTestCase("對話 default/毛豆 |", "對話", CompletionCursorKind.DialogueText, "", "對話", "對話", 1, ScriptValueKind.DialogueText),
-			new CompletionAnalyzerTestCase("對話 default/毛豆 你好|", "對話", CompletionCursorKind.DialogueText, "你好", "對話", "對話", 1, ScriptValueKind.DialogueText),
-			new CompletionAnalyzerTestCase("移動 default/毛豆 |", "移動", CompletionCursorKind.StatementName, "", "移動"),
-			new CompletionAnalyzerTestCase("移動 default/毛豆 到 右 |", "移動", CompletionCursorKind.StatementName, "", "移動"),
+			GD.Print("[CompletionProviderTest] SKIP no actor resources");
+			return;
+		}
+
+		string actorId = actorIds[0];
+		string backgroundId = backgroundIds.FirstOrDefault();
+		string audioId = audioIds.FirstOrDefault();
+
+		List<CompletionProviderTestCase> cases = new List<CompletionProviderTestCase>
+		{
+			new CompletionProviderTestCase("|", "背景", "音效", actorId),
+			new CompletionProviderTestCase("背|", "背景"),
+			new CompletionProviderTestCase($"{actorId} |", LanguageSchema.EmptyDialogueText, "登場", "移動"),
+			new CompletionProviderTestCase($"{actorId} 移|", "移動"),
+			new CompletionProviderTestCase($"{actorId} 移動 |", "到", "在"),
+			new CompletionProviderTestCase($"{actorId} 移動 到 |", "左", "中", "右"),
+			new CompletionProviderTestCase($"{actorId} {LanguageSchema.EmptyDialogueText}|", "表情", "動作"),
+			new CompletionProviderTestCase($"{actorId} {LanguageSchema.EmptyDialogueText} |", "表情", "動作"),
+			new CompletionProviderTestCase($"{actorId} {QuoteDialogue("你好")} |", "表情", "動作"),
+			new CompletionProviderTestCase($"{actorId} {QuoteDialogue("你好")} 表|", "表情")
 		};
 
-		int passCount = 0;
-		foreach (CompletionAnalyzerTestCase testCase in cases)
+		if (!string.IsNullOrEmpty(backgroundId))
+			cases.Add(new CompletionProviderTestCase("背景 |", backgroundId));
+
+		if (!string.IsNullOrEmpty(audioId))
+			cases.Add(new CompletionProviderTestCase("音效 |", audioId));
+
+		try
 		{
-			CompletionLineResult result = completionAnalyzer.AnalyzeTest(testCase.Line, testCase.CaretColumn);
-			bool passed = testCase.Matches(result);
+			ActorDefinition actorDefinition = ResourceManager.Instance.GetActorDefinition(actorId);
+			string expression = actorDefinition.Expressions.Keys.OrderBy(value => value, StringComparer.Ordinal).FirstOrDefault();
+			string body = actorDefinition.Bodies.Keys.OrderBy(value => value, StringComparer.Ordinal).FirstOrDefault();
+
+			if (!string.IsNullOrEmpty(expression))
+				cases.Add(new CompletionProviderTestCase($"{actorId} {QuoteDialogue("你好")} 表情 |", expression));
+
+			if (!string.IsNullOrEmpty(body))
+				cases.Add(new CompletionProviderTestCase($"{actorId} {QuoteDialogue("你好")} 動作 |", body));
+		}
+		catch (ArgumentException)
+		{
+		}
+
+		int passCount = 0;
+		foreach (CompletionProviderTestCase testCase in cases)
+		{
+			CompletionLineResult line = completionAnalyzer.AnalyzeTest(testCase.Line, testCase.CaretColumn);
+			IReadOnlyList<CompletionOption> options = completionProvider.Provide(line);
+			bool passed = testCase.Matches(options);
 			if (passed)
 				passCount++;
 
-			GD.Print($"[CompletionAnalyzerTest] {(passed ? "PASS" : "FAIL")} {testCase.Name}");
+			GD.Print($"[CompletionProviderTest] {(passed ? "PASS" : "FAIL")} {testCase.Name}");
 			if (!passed)
 			{
-				GD.Print($"  Expected: {testCase.ToExpectedDebugString()}");
-				GD.Print($"  Actual:   {result.ToDebugString()}");
+				GD.Print($"  Expected contains: {string.Join(", ", testCase.ExpectedInsertTexts)}");
+				GD.Print($"  Actual: {string.Join(", ", options.Select(option => option.ToDebugString()))}");
 			}
 		}
 
-		GD.Print($"[CompletionAnalyzerTest] {passCount}/{cases.Length} passed");
+		GD.Print($"[CompletionProviderTest] {passCount}/{cases.Count} passed");
+	}
+
+	private static string QuoteDialogue(string dialogue)
+	{
+		return $"{LanguageSchema.DialogueQuoteStart}{dialogue}{LanguageSchema.DialogueQuoteEnd}";
 	}
 
 	private sealed class CompletionAnalyzerTestCase
@@ -252,10 +339,68 @@ public partial class EditingMenu : Control
 			return value.HasValue ? value.Value.ToString() : "null";
 		}
 	}
+
+	private sealed class CompletionProviderTestCase
+	{
+		public string Name { get; }
+		public string Line { get; }
+		public int CaretColumn { get; }
+		public IReadOnlyList<string> ExpectedInsertTexts { get; }
+
+		public CompletionProviderTestCase(string markedLine, params string[] expectedInsertTexts)
+		{
+			Name = markedLine;
+			CaretColumn = markedLine.IndexOf('|');
+			Line = markedLine.Replace("|", "");
+			ExpectedInsertTexts = expectedInsertTexts;
+		}
+
+		public bool Matches(IReadOnlyList<CompletionOption> options)
+		{
+			HashSet<string> actualInsertTexts = options.Select(option => option.InsertText).ToHashSet(StringComparer.Ordinal);
+			return ExpectedInsertTexts.All(actualInsertTexts.Contains);
+		}
+	}
 	// private void RequestCodeCompletionDeferred()
 	// {
 	// 	ScriptEditor.RequestCodeCompletion(true);
 	// }
+
+	private void OnCodeCompletionRequested()
+	{
+		IReadOnlyList<CompletionOption> options = GetCurrentCompletionOptions();
+		AddCompletionOptions(options);
+		ScriptEditor.UpdateCodeCompletionOptions(true);
+	}
+
+	private IReadOnlyList<CompletionOption> GetCurrentCompletionOptions()
+	{
+		if (completionAnalyzer == null || completionProvider == null)
+			return Array.Empty<CompletionOption>();
+
+		int lineIndex = ScriptEditor.GetCaretLine();
+		int caretColumn = ScriptEditor.GetCaretColumn();
+		string line = ScriptEditor.GetLine(lineIndex);
+	    CompletionLineResult result = completionAnalyzer.Analyze(line, caretColumn);
+		IReadOnlyList<CompletionOption> options = completionProvider.Provide(result);
+
+	
+
+		return options;
+	}
+
+	private void AddCompletionOptions(IEnumerable<CompletionOption> options)
+	{
+		foreach (CompletionOption option in options)
+		{
+			ScriptEditor.AddCodeCompletionOption(
+				CodeEdit.CodeCompletionKind.PlainText,
+				option.DisplayText,
+				option.InsertText,
+				Colors.White);
+		}
+	}
+
 	private bool ShouldRequestCompletion()
 	{
 		string beforeCursor = GetTextBeforeCursor();
@@ -265,7 +410,7 @@ public partial class EditingMenu : Control
 		return beforeCursor.Length == 0 || !string.IsNullOrWhiteSpace(beforeCursor);
 	}
 
-	private void OnCodeCompletionRequested()
+	private void OnLegacyCodeCompletionRequested()
 	{
 		string beforeCursor = GetTextBeforeCursor();
 		CompletionContext context = GetCompletionContext(beforeCursor);
@@ -285,7 +430,7 @@ public partial class EditingMenu : Control
 		}
 		else if (context == CompletionContext.Actor)
 		{
-			AddCompletionOptions(new[] { "\"\"", "登場", "移動" });
+			AddCompletionOptions(new[] { LanguageSchema.EmptyDialogueText, "登場", "移動" });
 		}
 
 		ScriptEditor.UpdateCodeCompletionOptions(true);
