@@ -21,7 +21,7 @@ public partial class TTSService : Node
     // This value can be found by querying the /speakers endpoint of the VOICEVOX API.
     private const int ZundamonSpeakerId = 3;
 
-    private HttpClient _httpClient;
+    private HttpClient _httpClient = new HttpClient();
     private bool _isConnected = false;
 
     // A signal to notify other parts of the application about the connection status.
@@ -39,15 +39,11 @@ public partial class TTSService : Node
     //    AttemptConnection();
     //}
 
-    private async void OnConnectionStatusChanged(bool isConnected)
+    private  void OnConnectionStatusChanged(bool isConnected)
     {
         //if (isConnected)
         //{
-        //    AudioStreamWav stream = await TTS("大好きなのっだ");
-        //    AudioStreamPlayer player = new AudioStreamPlayer();
-        //    AddChild(player);
-        //    player.Stream = stream;
-        //    player.Play(); 
+        //    AudioStreamWav stream = await TTS("大好きなのだ");
         //}
     }
 
