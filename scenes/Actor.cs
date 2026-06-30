@@ -118,20 +118,25 @@ public partial class Actor : Control
 		return new AnimationClip(PosePlayer, animation);
 	}
 
-	public AnimationClip MoveTo(Vector2 destination, double duration)
+	public AnimationClip MoveTo(Vector2 to, double duration)
+	{
+		return MoveTo(Position, to, duration);
+	}
+
+	public AnimationClip MoveTo(Vector2 from, Vector2 to, double duration)
 	{
 		Animation animation = (Animation)MotionPlayer.GetAnimation("move").Duplicate();
 
 		// position or global_position?
 		
-		animation.UpdateTrackKeyValue(".:position",Animation.TrackType.Value, 0, Position);
+		animation.UpdateTrackKeyValue(".:position",Animation.TrackType.Value, 0, from);
 
 		animation.UpdateTrackKeyTime(".:position",Animation.TrackType.Value, 1, duration);
-		animation.UpdateTrackKeyValue(".:position",Animation.TrackType.Value, 1, destination);
+		animation.UpdateTrackKeyValue(".:position",Animation.TrackType.Value, 1, to);
 
 		animation.Length = (float)duration;
 
-		Position = destination;
+		Position = to;
 		
 		return new AnimationClip(MotionPlayer, animation);
 	}
