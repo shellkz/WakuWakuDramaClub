@@ -174,7 +174,8 @@ public static class AnimationExtensions
     /// <param name="inserted">The animation to be inserted.</param>
     /// <param name="from">The time in the base animation where the insertion should begin.</param>
     /// <param name="overwrite">If true, will overwrite a key if one already exists at the new time.</param>
-    public static void InsertAnimation(this Animation animation, Animation inserted, double from, bool overwrite = true)
+    /// <param name="frameDelta">The frame duration used to preserve the previous key at timeline cuts.</param>
+    public static void InsertAnimation(this Animation animation, Animation inserted, double from, bool overwrite = true, double frameDelta = 0.0)
     {
         // Determine the new length of the combined animation.
         // It's either the length of the original animation or the length of the inserted
@@ -209,11 +210,19 @@ public static class AnimationExtensions
                 double newKeyTime = keyTime + from;
                
 
-                // Corrected logic: Check for an existing keyframe using TrackFindKey and overwrite it if specified.
                 int existingKeyIndex = animation.TrackFindKey(targetTrackIndex, newKeyTime, Animation.FindMode.Approx);
                 if (overwrite && existingKeyIndex != -1)
                 {
-                    animation.TrackSetKeyValue(targetTrackIndex, existingKeyIndex, keyValue);
+                    Variant existingValue = animation.TrackGetKeyValue(targetTrackIndex, existingKeyIndex);
+                    if (k == 0 && frameDelta > 0.0 && !existingValue.Equals(keyValue)
+                        && TryMoveKeyEarlier(animation, targetTrackIndex, existingKeyIndex, frameDelta))
+                    {
+                        animation.TrackInsertKey(targetTrackIndex, newKeyTime, keyValue);
+                    }
+                    else
+                    {
+                        animation.TrackSetKeyValue(targetTrackIndex, existingKeyIndex, keyValue);
+                    }
                 }
                 else
                 {
@@ -221,5 +230,29 @@ public static class AnimationExtensions
                 }
             }
         }
+    }
+
+    private static bool TryMoveKeyEarlier(Animation animation, int trackIndex, int keyIndex, double frameDelta)
+    {
+        double keyTime = animation.TrackGetKeyTime(trackIndex, keyIndex);
+        double previousKeyTime = keyIndex > 0
+            ? animation.TrackGetKeyTime(trackIndex, keyIndex - 1)
+            : 0.0;
+
+        double newKeyTime = Math.Max(previousKeyTime, keyTime - frameDelta);
+        if (newKeyTime >= keyTime)
+            return false;
+
+        if (newKeyTime <= previousKeyTime)
+        {
+            double midpoint = (previousKeyTime + keyTime) / 2.0;
+            if (midpoint <= previousKeyTime || midpoint >= keyTime)
+                return false;
+
+            newKeyTime = midpoint;
+        }
+
+        animation.TrackSetKeyTime(trackIndex, keyIndex, newKeyTime);
+        return true;
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Scripting.Instructions;
 using WakuWakuDramaClub.Render;
+using WakuWakuDramaClub.Project;
 namespace WakuWakuDramaClub.Timline;
 public partial class TimelineBuilder : Node
 {
@@ -40,7 +41,7 @@ public partial class TimelineBuilder : Node
             foreach (AnimationClip clip in animationPack.Clips)
             {
                
-                timeline.InsertAnimation(clip.Animation, cursor, true);
+                timeline.InsertAnimation(clip.Animation, cursor, true, ProjectDefaults.FrameDelta);
             }
 
             foreach (VideoRenderer.AudioClip audio in animationPack.Audios)
