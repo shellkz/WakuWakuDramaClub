@@ -11,6 +11,7 @@ using FFMpegCore.Enums;
 using System.Linq;
 using FFMpegCore.Exceptions;
 using FFMpegCore.Arguments;
+using WakuWakuDramaClub.Project;
 namespace WakuWakuDramaClub.Render;
 
 [GlobalClass]
@@ -19,7 +20,6 @@ public partial class VideoRenderer : Node
     [Export] public SubViewport SubViewportToRecord;
     [Export] public AnimationPlayer AnimationPlayer;
 
-    [Export] public float TargetFPS = 30.0f;
     [Export] public string OutputFileName = "exported_animation.mp4";
 
     private int _videoWidth;
@@ -62,8 +62,8 @@ public partial class VideoRenderer : Node
         AnimationPlayer.Pause();
         
         float animationDuration = (float)animation.Length;
-        float frameDuration = 1.0f / TargetFPS;
-        int totalFrames = (int)(animationDuration * TargetFPS);
+        float frameDuration = (float)ProjectDefaults.FrameDelta;
+        int totalFrames = (int)(animationDuration * ProjectDefaults.FrameRate);
 
         for (int i = 0; i < totalFrames; i++)
         {
@@ -144,7 +144,7 @@ public partial class VideoRenderer : Node
 
         var videoPipe = new RawVideoPipeSource(GetVideoFrames())
         {
-            FrameRate = TargetFPS,
+            FrameRate = ProjectDefaults.FrameRate,
         };
 
         try
@@ -153,11 +153,11 @@ public partial class VideoRenderer : Node
             {
                 await FFMpegArguments
                     .FromPipeInput(videoPipe, options => options
-                        .WithFramerate((int)TargetFPS)
+                        .WithFramerate((int)ProjectDefaults.FrameRate)
                     )
                     .OutputToFile(outputPath, true, options => options
                         .WithVideoCodec("libx264")
-                        .WithFramerate((int)TargetFPS)
+                        .WithFramerate((int)ProjectDefaults.FrameRate)
                         .WithConstantRateFactor(23)
                         .WithFastStart())
                     .ProcessAsynchronously();
@@ -218,7 +218,7 @@ public partial class VideoRenderer : Node
 
                 await ffmpegArguments.OutputToFile(outputPath, true, options => options
                     .WithVideoCodec("libx264")
-                    .WithFramerate((int)TargetFPS)
+                    .WithFramerate((int)ProjectDefaults.FrameRate)
                     .WithConstantRateFactor(23)
                     .WithFastStart()
                     .WithArgument(new InputComplexFilterArgument(filterComplexString))).ProcessAsynchronously();
