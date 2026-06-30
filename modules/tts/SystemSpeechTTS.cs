@@ -4,6 +4,8 @@ using System.IO;
 using System.Speech.Synthesis;
 using System.Speech.AudioFormat;
 using NAudio.Wave;
+using System.Runtime.Versioning;
+
 public partial class SystemSpeechTTS : Node
 {
 	// 	Microsoft Hanhan Desktop
@@ -20,6 +22,15 @@ public partial class SystemSpeechTTS : Node
 		// </speak>";
 	public void ListVoices()
 	{
+		if (!OperatingSystem.IsWindows())
+			throw new PlatformNotSupportedException("SystemSpeechTTS is only supported on Windows.");
+
+		ListVoicesWindows();
+	}
+
+	[SupportedOSPlatform("windows")]
+	private void ListVoicesWindows()
+	{
 
         SpeechSynthesizer synth = null;
         
@@ -34,7 +45,7 @@ public partial class SystemSpeechTTS : Node
             // This loop attempts to find the best available Chinese voice.
             GD.Print("Searching for a suitable Chinese voice...");
             
-            bool voiceFound = false;
+  
             foreach (var voice in synth.GetInstalledVoices())
             {
                 var info = voice.VoiceInfo;
@@ -63,6 +74,15 @@ public partial class SystemSpeechTTS : Node
         }
 	}
 	public void TTS(string textToSpeak, string voice,string filename)
+	{
+		if (!OperatingSystem.IsWindows())
+			throw new PlatformNotSupportedException("SystemSpeechTTS is only supported on Windows.");
+
+		TTSWindows(textToSpeak, voice, filename);
+	}
+
+	[SupportedOSPlatform("windows")]
+	private void TTSWindows(string textToSpeak, string voice,string filename)
 	{
 		// The file name for the output WAV file.
 		string userDataBaseDir = OS.GetUserDataDir();
@@ -116,6 +136,15 @@ public partial class SystemSpeechTTS : Node
 	}
 
 	public (byte[], TimeSpan) SynthesizeSpeechToBytes(string textToSpeak, string voiceName)
+	{
+		if (!OperatingSystem.IsWindows())
+			throw new PlatformNotSupportedException("SystemSpeechTTS is only supported on Windows.");
+
+		return SynthesizeSpeechToBytesWindows(textToSpeak, voiceName);
+	}
+
+	[SupportedOSPlatform("windows")]
+	private (byte[], TimeSpan) SynthesizeSpeechToBytesWindows(string textToSpeak, string voiceName)
 	{
 		// 1. Create a MemoryStream to hold the audio data in memory.
 		using (MemoryStream audioStream = new MemoryStream())
