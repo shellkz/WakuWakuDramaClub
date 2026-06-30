@@ -51,7 +51,7 @@ public partial class DialogueInstruction : Instruction
         Pose = bind.Get(PoseOption, "pose");
     }
 
-    public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
+    public override Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
     {
         AnimationPack result = new AnimationPack();
 
@@ -83,7 +83,7 @@ public partial class DialogueInstruction : Instruction
 
         result.AddClip(viewport.DialoguePanel.ShowDialogue(actor.Definition.DisplayName, Speech, duration));
         //GD.Print("AnimationPack length " + result.GetDuration());
-        return result;
+        return Task.FromResult(result);
     }
 
 }

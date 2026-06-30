@@ -39,7 +39,7 @@ public partial class ActorEnterInstruction : Instruction
 		Actor = bind.Get("actor");
 		Location = bind.Get(LocationOption, "location");
     }
- 	public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
+ 	public override Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
 	{
 		AnimationPack result = new AnimationPack();
 
@@ -55,9 +55,7 @@ public partial class ActorEnterInstruction : Instruction
 
 		result.AddClip(actor.FadeIn());
 
-
-
-		return result;
+		return Task.FromResult(result);
 	}
 	
 }

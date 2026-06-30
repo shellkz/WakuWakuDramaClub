@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Scripting;
 using WakuWakuDramaClub.Scripting.Schema;
@@ -35,7 +34,7 @@ public partial class ChangeBackgroundInstruction : Instruction
 		RawInstructionBinder bind = Bind(raw);
 		Background = bind.Get("background");
     }
- 	public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
+ 	public override Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
 	{
 		AnimationPack result = new AnimationPack();
 
@@ -43,6 +42,6 @@ public partial class ChangeBackgroundInstruction : Instruction
 		Texture2D texture = ResourceManager.Instance.LoadTexture(record);
 		result.AddClip(viewport.Background.Change(texture));
 
-		return result;
+		return Task.FromResult(result);
 	}
 }

@@ -49,7 +49,7 @@ public partial class ActorMoveInstruction : Instruction
 		To = bind.Get(ToOption, "to");
 		Duration = bind.Get(DurationOption, "duration");
     }
- 	public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
+ 	public override Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
 	{
 		AnimationPack result = new AnimationPack();
 
@@ -69,7 +69,7 @@ public partial class ActorMoveInstruction : Instruction
 			result.AddClip(actor.MoveTo(from, to, duration));
 		}
 
-		return result;
+		return Task.FromResult(result);
 	}
 	
 }

@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Render;
 using WakuWakuDramaClub.Scripting.Schema;
@@ -34,7 +33,7 @@ public partial class PlaySoundInstruction : Instruction
 		RawInstructionBinder bind = Bind(raw);
 		Sound = bind.Get("audio");
     }
- 	public override async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
+ 	public override Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
 	{
 		AnimationPack result = new AnimationPack();
 
@@ -45,7 +44,7 @@ public partial class PlaySoundInstruction : Instruction
         voiceClip.Data = ResourceManager.Instance.LoadAudioBytes(record);
         result.Audios.Add(voiceClip);
 	
-		return result;
+		return Task.FromResult(result);
 	}
 
 }

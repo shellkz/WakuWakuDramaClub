@@ -1,5 +1,4 @@
 using Godot;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Scripting;
 using WakuWakuDramaClub.Scripting.Schema;
@@ -23,9 +22,8 @@ public abstract partial class Instruction : RefCounted
     {
         return new RawInstructionBinder(raw, GetSchema());
     }
-    public virtual async Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport) {
-        await Task.Delay(0);
-        return new AnimationPack();
+    public virtual Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport) {
+        return Task.FromResult(new AnimationPack());
     }
     
     // public string TryGetArgument(int index, string defaultValue)
