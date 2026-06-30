@@ -74,8 +74,7 @@ public partial class Actor : Control
 
 	
 
-	//Enter() => AnimationClip that fade actor in
-	public AnimationClip Enter()
+	public AnimationClip FadeIn()
 	{
 		
 		Animation animation = (Animation)PosePlayer.GetAnimation("fade_in").Duplicate();
@@ -90,6 +89,20 @@ public partial class Actor : Control
 
 
 		return new AnimationClip(PosePlayer, animation);
+	}
+
+	public AnimationClip Teleport(Vector2 position)
+	{
+		Animation animation = new Animation();
+		int track = animation.AddTrack(Animation.TrackType.Value);
+
+		animation.TrackSetPath(track, ".:position");
+		animation.TrackInsertKey(track, 0, position);
+		animation.Length = 0;
+
+		Position = position;
+
+		return new AnimationClip(MotionPlayer, animation);
 	}
 
 	public AnimationClip MakeExpression(string expression)
