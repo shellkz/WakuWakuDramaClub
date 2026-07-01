@@ -3,11 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Completion;
-using WakuWakuDramaClub.Scripting;
-using WakuWakuDramaClub.Scripting.Parsing;
-using WakuWakuDramaClub.Scripting.Instructions;
 using WakuWakuDramaClub.Scripting.Schema;
-using WakuWakuDramaClub.Render;
 using WakuWakuDramaClub.Timline;
 
 public partial class EditingMenu : Control
@@ -19,7 +15,7 @@ public partial class EditingMenu : Control
 	public ScriptEditor ScriptEditor { get; set; }
 
 	[Export]
-	public Button RenderButton { get; set; }
+	public Button PreviewButton { get; set; }
 
 	[Export]
 	public Button PlayButton { get; set; }
@@ -27,7 +23,8 @@ public partial class EditingMenu : Control
 	[Export]
 	public Button PauseButton { get; set; }
 	
-	private MainWorkspaceServices services;
+	private EditingMenuServices services;
+	private bool signalsConnected;
 
 
 
@@ -36,19 +33,43 @@ public partial class EditingMenu : Control
 	{
 	}
 
-	public void Initialize(MainWorkspaceServices services)
+	public void Initialize(EditingMenuServices services)
 	{
+		DisconnectSignals();
+
 		this.services = services;
 		TimelinePreview.Initialize(services.Stage);
 
-		RenderButton.Pressed += OnRenderButtonPressed;
+		ScriptEditor.CodeCompletionEnabled = true;
+		ConnectSignals();
+	}
+
+	private void ConnectSignals()
+	{
+		if (signalsConnected) return;
+
+		PreviewButton.Pressed += OnPreviewButtonPressed;
 		PlayButton.Pressed += OnPlayButtonPressed;
 		PauseButton.Pressed += OnPauseButtonPressed;
-
-		ScriptEditor.CodeCompletionEnabled = true;
 		ScriptEditor.TextChanged += OnScriptChanged;
 		ScriptEditor.CodeCompletionRequested += OnCodeCompletionRequested;
 		ScriptEditor.CodeCompletionOptionConfirmed += OnCodeCompletionOptionConfirmed;
+
+		signalsConnected = true;
+	}
+
+	private void DisconnectSignals()
+	{
+		if (!signalsConnected) return;
+
+		PreviewButton.Pressed -= OnPreviewButtonPressed;
+		PlayButton.Pressed -= OnPlayButtonPressed;
+		PauseButton.Pressed -= OnPauseButtonPressed;
+		ScriptEditor.TextChanged -= OnScriptChanged;
+		ScriptEditor.CodeCompletionRequested -= OnCodeCompletionRequested;
+		ScriptEditor.CodeCompletionOptionConfirmed -= OnCodeCompletionOptionConfirmed;
+
+		signalsConnected = false;
 	}
 
 	private void OnCodeCompletionOptionConfirmed(string insertText, string displayText)
@@ -104,38 +125,30 @@ public partial class EditingMenu : Control
 		}
 	}
 
-    public async void OnRenderButtonPressed() {
-
-		
-		Timeline timeline = await BuildTimeline();
-		services.Stage.Timeline = timeline;
-		await services.VideoRenderer.ExportAnimationToVideo(timeline.Animation, timeline.Audio);
-		
-	}
-	private async Task<Timeline> BuildTimeline()
+	public string GetScriptText()
 	{
-		ScriptParser parser = new ScriptParser(services.InstructionRegistry, services.ScriptPreprocessor);
-		List<Instruction> instructions = parser.Parse(ScriptEditor.Text);
-
-
-
-		//ClearActors
-		services.Stage.ClearActors();
-
-		return await services.Stage.BuildTimeline(instructions);
-		// TimelineViewport.Timeline = timeline;
-		// return timeline;
-
+		return ScriptEditor.Text;
 	}
 
+	private async void OnPreviewButtonPressed()
+	{
+		await RefreshPreviewTimeline();
+	}
 
+	private async Task RefreshPreviewTimeline()
+	{
+		if (services?.BuildTimeline == null) return;
+
+		Timeline timeline = await services.BuildTimeline(GetScriptText());
+		TimelinePreview.Play(timeline);
+	}
 
 	public void OnPlayButtonPressed()
 	{
-		services.Stage.Play();
+		TimelinePreview.Play();
 	}
 	public void OnPauseButtonPressed()
 	{
-		services.Stage.Pause();
+		TimelinePreview.Pause();
 	}
 }

@@ -1,6 +1,8 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using WakuWakuDramaClub.Completion;
 using WakuWakuDramaClub.Render;
 using WakuWakuDramaClub.Scripting;
@@ -51,8 +53,7 @@ public partial class App : Panel
     
     public override void _Ready()
     {
-        CreateWorkspaceServices();
-        editingMenu.Initialize(workspaceServices);
+        RebuildWorkspaceServices();
 
         tabBar.TabChanged += OnTabChanged;
         projectMenu.IdPressed += OnProjectMenuSelected;
@@ -83,8 +84,60 @@ public partial class App : Panel
         };
     }
 
+    private void RebuildWorkspaceServices()
+    {
+        CreateWorkspaceServices();
+        editingMenu.Initialize(CreateEditingMenuServices());
+        renderingMenu.Initialize(CreateRenderingMenuServices());
+    }
+
+    private EditingMenuServices CreateEditingMenuServices()
+    {
+        return new EditingMenuServices
+        {
+            CompletionAnalyzer = workspaceServices.CompletionAnalyzer,
+            CompletionProvider = workspaceServices.CompletionProvider,
+            Stage = workspaceServices.Stage,
+            BuildTimeline = BuildTimelineFromScript
+        };
+    }
+
+    private RenderingMenuServices CreateRenderingMenuServices()
+    {
+        return new RenderingMenuServices
+        {
+            VideoRenderer = workspaceServices.VideoRenderer,
+            BuildTimeline = BuildTimelineFromCurrentScript,
+            ExportDirectory = GetExportDirectory()
+        };
+    }
+
+    private string GetExportDirectory()
+    {
+        if (ProjectSession.Instance.Data == null)
+            return "";
+
+        return Path.Combine(ProjectSession.Instance.WorkingDirectory, "exports");
+    }
+
+    private Task<Timeline> BuildTimelineFromCurrentScript()
+    {
+        return BuildTimelineFromScript(editingMenu.GetScriptText());
+    }
+
+    private async Task<Timeline> BuildTimelineFromScript(string scriptText)
+    {
+        ScriptParser parser = new ScriptParser(workspaceServices.InstructionRegistry, workspaceServices.ScriptPreprocessor);
+        var instructions = parser.Parse(scriptText);
+
+        workspaceServices.Stage.ClearActors();
+
+        return await workspaceServices.Stage.BuildTimeline(instructions);
+    }
+
     private void OnProjectLoaded()
     {
+        RebuildWorkspaceServices();
         GetTree().Root.Title = $"WakuWaku Drama Club - {ProjectSession.Instance.Data.ProjectName}";
         UpdateProjectState();
     }

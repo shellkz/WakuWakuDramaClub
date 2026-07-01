@@ -28,17 +28,31 @@ public partial class TimelinePreview : TextureRect
 		}
 	}
 
-	// OnTimelineOperated(TimlineOperation operation)
-	//		Play
-	//		Pause
-	//		CursorDraggingStarted	=>	PAUSE
-	//		CursorDragging			=>	SEEK
-	//		CursorDraggingEnded		=>  PLAY
-	
+	public void Play(Timeline timeline)
+	{
+		if (stage == null || timeline == null) return;
+
+		stage.Timeline = timeline;
+		Play();
+	}
+
+	public void Play()
+	{
+		stage?.Play();
+	}
+
+	public void Pause()
+	{
+		stage?.Pause();
+	}
+
+	public void Seek(double value)
+	{
+		stage?.Seek(value);
+	}
     private void OnCurosrMoved(double value)
     {
-		//TimelineViewport.Pause();
-        stage?.Seek(value);
+		Seek(value);
     }
 
 

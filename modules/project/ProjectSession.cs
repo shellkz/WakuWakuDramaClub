@@ -42,6 +42,7 @@ public partial class ProjectSession : Node
             throw new InvalidOperationException($"目錄已存在專案：{path}");
 
         Directory.CreateDirectory(path);
+        Directory.CreateDirectory(Path.Combine(path, "exports"));
         Directory.CreateDirectory(Path.Combine(path, "scripts"));
         Directory.CreateDirectory(Path.Combine(path, "assets", "default", "actors"));
         Directory.CreateDirectory(Path.Combine(path, "assets", "default", "backgrounds"));

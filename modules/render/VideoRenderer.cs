@@ -42,14 +42,28 @@ public partial class VideoRenderer : Node
         //GlobalFFOptions.Configure(new FFOptions { BinaryFolder = "res://ffmpeg-binaries/", TemporaryFilesFolder = "user://temp" });
     }
 
-    public async Task ExportAnimationToVideo(Animation animation, List<AudioClip> audio)
+    public Task ExportAnimationToVideo(Animation animation, List<AudioClip> audio)
     {
+        return ExportAnimationToVideo(animation, audio, new VideoRenderSettings
+        {
+            OutputFileName = OutputFileName,
+            VideoCodec = "libx264",
+            FrameRate = (int)ProjectDefaults.FrameRate
+        });
+    }
+
+    public async Task ExportAnimationToVideo(Animation animation, List<AudioClip> audio, VideoRenderSettings settings)
+    {
+        settings ??= new VideoRenderSettings();
+
         _ffmpegCts = new CancellationTokenSource();
         _ffmpegTaskCompletionSource = new TaskCompletionSource<bool>();
 
-        GD.Print($"Starting export of animation to {ProjectSettings.GlobalizePath($"user://{OutputFileName}")}");
+        string outputPath = ResolveOutputPath(settings.OutputDirectory, settings.OutputFileName);
+        Directory.CreateDirectory(Path.GetDirectoryName(outputPath) ?? "");
+        GD.Print($"Starting export of animation to {outputPath}");
 
-        Task ffmpegEncodingTask = Task.Run(() => RecordVideoAsync(ProjectSettings.GlobalizePath($"user://{OutputFileName}"), _ffmpegCts.Token, audio));
+        Task ffmpegEncodingTask = Task.Run(() => RecordVideoAsync(outputPath, _ffmpegCts.Token, audio, settings));
 
         AnimationLibrary animationLibrary = new AnimationLibrary();
         animationLibrary.AddAnimation("timeline", animation);
@@ -62,8 +76,8 @@ public partial class VideoRenderer : Node
         AnimationPlayer.Pause();
         
         float animationDuration = (float)animation.Length;
-        float frameDuration = (float)ProjectDefaults.FrameDelta;
-        int totalFrames = (int)(animationDuration * ProjectDefaults.FrameRate);
+        float frameDuration = 1.0f / settings.FrameRate;
+        int totalFrames = (int)(animationDuration * settings.FrameRate);
 
         for (int i = 0; i < totalFrames; i++)
         {
@@ -88,6 +102,25 @@ public partial class VideoRenderer : Node
         _ffmpegCts.Dispose();
         _ffmpegCts = null;
         _ffmpegTaskCompletionSource = null;
+    }
+
+    private static string ResolveOutputPath(string outputDirectory, string outputFileName)
+    {
+        string fileName = string.IsNullOrWhiteSpace(outputFileName)
+            ? "exported_animation.mp4"
+            : outputFileName.Trim();
+
+        if (string.IsNullOrWhiteSpace(outputDirectory))
+            return ProjectSettings.GlobalizePath($"user://{fileName}");
+
+        string directory = outputDirectory.Trim();
+        if (directory.StartsWith("user://", StringComparison.OrdinalIgnoreCase) ||
+            directory.StartsWith("res://", StringComparison.OrdinalIgnoreCase))
+        {
+            return ProjectSettings.GlobalizePath($"{directory.TrimEnd('/', '\\')}/{fileName}");
+        }
+
+        return Path.Combine(directory, fileName);
     }
 
     private void CaptureFrameFromSubViewport()
@@ -118,7 +151,7 @@ public partial class VideoRenderer : Node
         }
     }
 
-    private async Task RecordVideoAsync(string outputPath, CancellationToken cancellationToken, List<AudioClip> audioClips)
+    private async Task RecordVideoAsync(string outputPath, CancellationToken cancellationToken, List<AudioClip> audioClips, VideoRenderSettings settings)
     {
         if (_videoWidth == 0 || _videoHeight == 0)
         {
@@ -144,7 +177,7 @@ public partial class VideoRenderer : Node
 
         var videoPipe = new RawVideoPipeSource(GetVideoFrames())
         {
-            FrameRate = ProjectDefaults.FrameRate,
+            FrameRate = settings.FrameRate,
         };
 
         try
@@ -153,11 +186,11 @@ public partial class VideoRenderer : Node
             {
                 await FFMpegArguments
                     .FromPipeInput(videoPipe, options => options
-                        .WithFramerate((int)ProjectDefaults.FrameRate)
+                        .WithFramerate(settings.FrameRate)
                     )
                     .OutputToFile(outputPath, true, options => options
-                        .WithVideoCodec("libx264")
-                        .WithFramerate((int)ProjectDefaults.FrameRate)
+                        .WithVideoCodec(settings.VideoCodec)
+                        .WithFramerate(settings.FrameRate)
                         .WithConstantRateFactor(23)
                         .WithFastStart())
                     .ProcessAsynchronously();
@@ -217,8 +250,8 @@ public partial class VideoRenderer : Node
                 string filterComplexString = string.Join(";", audioFilterComplex);
 
                 await ffmpegArguments.OutputToFile(outputPath, true, options => options
-                    .WithVideoCodec("libx264")
-                    .WithFramerate((int)ProjectDefaults.FrameRate)
+                    .WithVideoCodec(settings.VideoCodec)
+                    .WithFramerate(settings.FrameRate)
                     .WithConstantRateFactor(23)
                     .WithFastStart()
                     .WithArgument(new InputComplexFilterArgument(filterComplexString))).ProcessAsynchronously();

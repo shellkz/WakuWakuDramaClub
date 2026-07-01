@@ -22,7 +22,7 @@ color_regions = {
 "\" \"": Color(0.2806, 0.46, 0.39123002, 1)
 }
 
-[node name="EditingMenu" type="Panel" unique_id=1436386884 node_paths=PackedStringArray("TimelinePreview", "ScriptEditor", "RenderButton", "PlayButton", "PauseButton")]
+[node name="EditingMenu" type="Panel" unique_id=1436386884 node_paths=PackedStringArray("TimelinePreview", "ScriptEditor", "PreviewButton", "PlayButton", "PauseButton")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -31,9 +31,9 @@ grow_vertical = 2
 script = ExtResource("1_yf4wl")
 TimelinePreview = NodePath("TimelinePreview")
 ScriptEditor = NodePath("ScriptEditor")
-RenderButton = NodePath("RenderButton")
-PlayButton = NodePath("TimelinePreview/VBoxContainer/HBoxContainer/PlayButton")
-PauseButton = NodePath("TimelinePreview/VBoxContainer/HBoxContainer/PauseButton")
+PreviewButton = NodePath("TimelinePreview/VBoxContainer/HBoxContainer/HBoxContainer2/PreviewButton")
+PlayButton = NodePath("TimelinePreview/VBoxContainer/HBoxContainer/HBoxContainer/PlayButton")
+PauseButton = NodePath("TimelinePreview/VBoxContainer/HBoxContainer/HBoxContainer/PauseButton")
 
 [node name="TimelinePreview" type="TextureRect" parent="." unique_id=1421730459 node_paths=PackedStringArray("PlaybackSlider")]
 layout_mode = 1
@@ -67,13 +67,31 @@ step = 0.033
 layout_mode = 2
 alignment = 1
 
-[node name="PlayButton" type="Button" parent="TimelinePreview/VBoxContainer/HBoxContainer" unique_id=1944021930]
+[node name="HBoxContainer3" type="HBoxContainer" parent="TimelinePreview/VBoxContainer/HBoxContainer" unique_id=1869284977]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TimelinePreview/VBoxContainer/HBoxContainer" unique_id=1904131732]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="TimelinePreview/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1944021930]
 layout_mode = 2
 text = "播放"
 
-[node name="PauseButton" type="Button" parent="TimelinePreview/VBoxContainer/HBoxContainer" unique_id=1357129784]
+[node name="PauseButton" type="Button" parent="TimelinePreview/VBoxContainer/HBoxContainer/HBoxContainer" unique_id=1357129784]
 layout_mode = 2
 text = "暫停"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="TimelinePreview/VBoxContainer/HBoxContainer" unique_id=929877325]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="PreviewButton" type="Button" parent="TimelinePreview/VBoxContainer/HBoxContainer/HBoxContainer2" unique_id=1743093683]
+layout_mode = 2
+text = "Preview"
 
 [node name="ScriptEditor" type="CodeEdit" parent="." unique_id=1075755904]
 layout_mode = 1
@@ -95,24 +113,7 @@ highlight_current_line = true
 code_completion_enabled = true
 script = ExtResource("3_c1dxk")
 
-[node name="RenderButton" type="Button" parent="." unique_id=1743093683]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -107.0
-offset_top = -62.0
-offset_right = -43.0
-offset_bottom = -31.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "Render"
-
 [node name="----------------" type="Control" parent="." unique_id=1757255441]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[connection signal="pressed" from="RenderButton" to="." method="_on_render_button_pressed"]
