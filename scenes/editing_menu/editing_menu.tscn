@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://by6r5p7e5c5w5"]
 
 [ext_resource type="Script" uid="uid://kd4rot4su7xo" path="res://scenes/editing_menu/EditingMenu.cs" id="1_yf4wl"]
-[ext_resource type="Script" uid="uid://caqlwvawboogb" path="res://scenes/main/TimelinePreview.cs" id="2_4na11"]
+[ext_resource type="Script" uid="uid://caqlwvawboogb" path="res://scenes/editing_menu/TimelinePreview.cs" id="2_4na11"]
 [ext_resource type="Script" uid="uid://cvve0e7ccvqid" path="res://scenes/editing_menu/ScriptEditor.cs" id="3_c1dxk"]
 [ext_resource type="Script" uid="uid://b5ynslh55orys" path="res://modules/timeline/Stage.cs" id="3_fbaj0"]
 [ext_resource type="Script" uid="uid://cioomy225no3x" path="res://modules/render/VideoRenderer.cs" id="3_mg8al"]
@@ -255,7 +255,7 @@ _data = {
 color = Color(0.36, 0.36, 0.36, 0.741176)
 thickness = 4
 
-[node name="EditingMenu" type="Panel" unique_id=1436386884 node_paths=PackedStringArray("ScriptEditor", "RenderButton", "PlayButton", "PauseButton", "Stage", "TimelinePreview", "VideoRenderer")]
+[node name="EditingMenu" type="Panel" unique_id=1436386884 node_paths=PackedStringArray("TimelinePreview", "ScriptEditor", "RenderButton", "PlayButton", "PauseButton")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -266,9 +266,7 @@ ScriptEditor = NodePath("ScriptEditor")
 RenderButton = NodePath("RenderButton")
 PlayButton = NodePath("TimelinePreview/VBoxContainer/HBoxContainer/PlayButton")
 PauseButton = NodePath("TimelinePreview/VBoxContainer/HBoxContainer/PauseButton")
-Stage = NodePath("Stage")
 TimelinePreview = NodePath("TimelinePreview")
-VideoRenderer = NodePath("VideoRender")
 
 [node name="TimelinePreview" type="TextureRect" parent="." unique_id=1421730459 node_paths=PackedStringArray("Stage", "PlaybackSlider")]
 layout_mode = 1

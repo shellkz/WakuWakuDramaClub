@@ -13,14 +13,10 @@ using WakuWakuDramaClub.Timline;
 public partial class EditingMenu : Control
 {
 	[Export]
+	public TimelinePreview TimelinePreview;
+
+	[Export]
 	public ScriptEditor ScriptEditor { get; set; }
-
-	private InstructionRegistry instructionRegistry;
-	private ScriptPreprocessor scriptPreprocessor;
-	private CompletionAnalyzer completionAnalyzer;
-	private CompletionProvider completionProvider;
-
-
 
 	[Export]
 	public Button RenderButton { get; set; }
@@ -31,40 +27,27 @@ public partial class EditingMenu : Control
 	[Export]
 	public Button PauseButton { get; set; }
 	
-	// [Export]
-	// public TimelineBuilder TimelineBuilder { get; set; }
-
-	[Export]
-	public Stage Stage { get; set; }
-
-	[Export]
-	public TimelinePreview TimelinePreview { get; set; }
-
-	[Export]
-	public VideoRenderer VideoRenderer { get; set; }
+	private MainWorkspaceServices services;
 
 
 
 
 	public override void _Ready()
 	{
+	}
+
+	public void Initialize(MainWorkspaceServices services)
+	{
+		this.services = services;
 
 		RenderButton.Pressed += OnRenderButtonPressed;
 		PlayButton.Pressed += OnPlayButtonPressed;
 		PauseButton.Pressed += OnPauseButtonPressed;
 
-		instructionRegistry = InstructionRegistry.CreateDefault();
-		scriptPreprocessor = new ScriptPreprocessor(instructionRegistry);
-		completionAnalyzer = new CompletionAnalyzer(instructionRegistry, scriptPreprocessor, ResourceManager.Instance);
-		completionProvider = new CompletionProvider(instructionRegistry, ResourceManager.Instance);
-		
-		
 		ScriptEditor.CodeCompletionEnabled = true;
-	
 		ScriptEditor.TextChanged += OnScriptChanged;
 		ScriptEditor.CodeCompletionRequested += OnCodeCompletionRequested;
 		ScriptEditor.CodeCompletionOptionConfirmed += OnCodeCompletionOptionConfirmed;
-
 	}
 
 	private void OnCodeCompletionOptionConfirmed(string insertText, string displayText)
@@ -98,14 +81,14 @@ public partial class EditingMenu : Control
 
 	private IReadOnlyList<CompletionOption> GetCurrentCompletionOptions()
 	{
-		if (completionAnalyzer == null || completionProvider == null)
+		if (services?.CompletionAnalyzer == null || services.CompletionProvider == null)
 			return Array.Empty<CompletionOption>();
 
 		int lineIndex = ScriptEditor.GetCaretLine();
 		int caretColumn = ScriptEditor.GetCaretColumn();
 		string line = ScriptEditor.GetLine(lineIndex);
-		CompletionLineResult result = completionAnalyzer.Analyze(line, caretColumn);
-		return completionProvider.Provide(result);
+		CompletionLineResult result = services.CompletionAnalyzer.Analyze(line, caretColumn);
+		return services.CompletionProvider.Provide(result);
 	}
 
 	private void AddCompletionOptions(IEnumerable<CompletionOption> options)
@@ -124,21 +107,21 @@ public partial class EditingMenu : Control
 
 		
 		Timeline timeline = await BuildTimeline();
-		Stage.Timeline = timeline;
-		await VideoRenderer.ExportAnimationToVideo(timeline.Animation, timeline.Audio);
+		services.Stage.Timeline = timeline;
+		await services.VideoRenderer.ExportAnimationToVideo(timeline.Animation, timeline.Audio);
 
 	}
 	private async Task<Timeline> BuildTimeline()
 	{
-		ScriptParser parser = new ScriptParser(instructionRegistry, scriptPreprocessor);
+		ScriptParser parser = new ScriptParser(services.InstructionRegistry, services.ScriptPreprocessor);
 		List<Instruction> instructions = parser.Parse(ScriptEditor.Text);
 
 
 
 		//ClearActors
-		Stage.ClearActors();
+		services.Stage.ClearActors();
 
-		return await Stage.BuildTimeline(instructions);
+		return await services.Stage.BuildTimeline(instructions);
 		// TimelineViewport.Timeline = timeline;
 		// return timeline;
 
@@ -148,10 +131,10 @@ public partial class EditingMenu : Control
 
 	public void OnPlayButtonPressed()
 	{
-		Stage.Play();
+		services.Stage.Play();
 	}
 	public void OnPauseButtonPressed()
 	{
-		Stage.Pause();
+		services.Stage.Pause();
 	}
 }

@@ -1,6 +1,11 @@
 using Godot;
 using Godot.Collections;
 using System;
+using WakuWakuDramaClub.Completion;
+using WakuWakuDramaClub.Render;
+using WakuWakuDramaClub.Scripting;
+using WakuWakuDramaClub.Scripting.Parsing;
+using WakuWakuDramaClub.Timline;
 
 public partial class App : Panel
 {
@@ -17,19 +22,29 @@ public partial class App : Panel
     RichTextLabel hintLabel;
     [Export]
     EditingMenu editingMenu;
-
-
-
     [Export]
     CreateProjectPopup createProjectPopup;
     
     [Export]
     OpenProjectPopup openProjectPopup;
     
+    [Export]
+    Stage stage;
 
+    [Export]
+    VideoRenderer videoRenderer;
+
+
+
+
+
+    private MainWorkspaceServices workspaceServices;
     
     public override void _Ready()
     {
+        CreateWorkspaceServices();
+        editingMenu.Initialize(workspaceServices);
+
         projectMenu.IdPressed += OnProjectMenuSelected;
         ProjectSession.Instance.WhenProjectLoaded(OnProjectLoaded);
         UpdateProjectState();
@@ -38,6 +53,24 @@ public partial class App : Panel
         {
             TryOpenProject(DebugProjectDirectory);
         }
+    }
+
+    private void CreateWorkspaceServices()
+    {
+        InstructionRegistry instructionRegistry = InstructionRegistry.CreateDefault();
+        ScriptPreprocessor scriptPreprocessor = new ScriptPreprocessor(instructionRegistry);
+        CompletionAnalyzer completionAnalyzer = new CompletionAnalyzer(instructionRegistry, scriptPreprocessor, ResourceManager.Instance);
+        CompletionProvider completionProvider = new CompletionProvider(instructionRegistry, ResourceManager.Instance);
+
+        workspaceServices = new MainWorkspaceServices
+        {
+            InstructionRegistry = instructionRegistry,
+            ScriptPreprocessor = scriptPreprocessor,
+            CompletionAnalyzer = completionAnalyzer,
+            CompletionProvider = completionProvider,
+            Stage = stage,
+            VideoRenderer = videoRenderer
+        };
     }
 
     private void OnProjectLoaded()

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bkglwywlfrw0d"]
 
-[ext_resource type="PackedScene" uid="uid://by6r5p7e5c5w5" path="res://scenes/main/control.tscn" id="1_4n8gi"]
+[ext_resource type="PackedScene" uid="uid://by6r5p7e5c5w5" path="res://scenes/editing_menu/editing_menu.tscn" id="1_4n8gi"]
 [ext_resource type="Script" uid="uid://cal774vwr5ucn" path="res://scenes/main/App.cs" id="1_kjr42"]
 [ext_resource type="PackedScene" uid="uid://m257tr5ipbq3" path="res://scenes/popups/create_project/create_project_popup.tscn" id="3_8qm6s"]
 [ext_resource type="PackedScene" uid="uid://dnd22605cnr5r" path="res://scenes/popups/open_project/open_project_popup.tscn" id="4_rulcv"]
@@ -8,7 +8,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjr42"]
 bg_color = Color(0.06, 0.06, 0.06, 1)
 
-[node name="App" type="Panel" unique_id=2033538703 node_paths=PackedStringArray("projectMenu", "tabBar", "hintLabel", "editingMenu", "createProjectPopup", "openProjectPopup")]
+[node name="App" type="Panel" unique_id=2033538703 node_paths=PackedStringArray("projectMenu", "tabBar", "hintLabel", "editingMenu", "createProjectPopup", "openProjectPopup", "stage", "videoRenderer")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -22,6 +22,8 @@ hintLabel = NodePath("VBoxContainer/ContentPanel/HintLabel")
 editingMenu = NodePath("VBoxContainer/ContentPanel/EditingMenu")
 createProjectPopup = NodePath("Popups/CreateProjectPopup")
 openProjectPopup = NodePath("Popups/OpenProjectPopup")
+stage = NodePath("VBoxContainer/ContentPanel/EditingMenu/Stage")
+videoRenderer = NodePath("VBoxContainer/ContentPanel/EditingMenu/VideoRender")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1052142871]
 layout_mode = 1
