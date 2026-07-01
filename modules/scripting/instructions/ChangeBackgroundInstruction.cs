@@ -34,7 +34,7 @@ public partial class ChangeBackgroundInstruction : Instruction
 		RawInstructionBinder bind = Bind(raw);
 		Background = bind.Get("background");
     }
- 	public override Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
+ 	public override Task<AnimationPack> BakeAsAnimation(Stage viewport)
 	{
 		AnimationPack result = new AnimationPack();
 

@@ -31,11 +31,11 @@ public partial class EditingMenu : Control
 	[Export]
 	public Button PauseButton { get; set; }
 	
-	[Export]
-	public TimelineBuilder TimelineBuilder { get; set; }
+	// [Export]
+	// public TimelineBuilder TimelineBuilder { get; set; }
 
 	[Export]
-	public TimelineViewport TimelineViewport { get; set; }
+	public Stage Stage { get; set; }
 
 	[Export]
 	public TimelinePreview TimelinePreview { get; set; }
@@ -124,7 +124,7 @@ public partial class EditingMenu : Control
 
 		
 		Timeline timeline = await BuildTimeline();
-		TimelineViewport.Timeline = timeline;
+		Stage.Timeline = timeline;
 		await VideoRenderer.ExportAnimationToVideo(timeline.Animation, timeline.Audio);
 
 	}
@@ -136,9 +136,9 @@ public partial class EditingMenu : Control
 
 
 		//ClearActors
-		TimelineViewport.ClearActors();
+		Stage.ClearActors();
 
-		return await TimelineBuilder.BuildTimeline(instructions);
+		return await Stage.BuildTimeline(instructions);
 		// TimelineViewport.Timeline = timeline;
 		// return timeline;
 
@@ -148,10 +148,10 @@ public partial class EditingMenu : Control
 
 	public void OnPlayButtonPressed()
 	{
-		TimelineViewport.Play();
+		Stage.Play();
 	}
 	public void OnPauseButtonPressed()
 	{
-		TimelineViewport.Pause();
+		Stage.Pause();
 	}
 }

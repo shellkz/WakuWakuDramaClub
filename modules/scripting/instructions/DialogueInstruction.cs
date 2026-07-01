@@ -51,7 +51,7 @@ public partial class DialogueInstruction : Instruction
         Pose = bind.Get(PoseOption, "pose");
     }
 
-    public override Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
+    public override Task<AnimationPack> BakeAsAnimation(Stage viewport)
     {
         AnimationPack result = new AnimationPack();
 

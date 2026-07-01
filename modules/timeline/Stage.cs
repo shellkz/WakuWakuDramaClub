@@ -2,8 +2,12 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using WakuWakuDramaClub.Project;
+using WakuWakuDramaClub.Render;
+using WakuWakuDramaClub.Scripting.Instructions;
 namespace WakuWakuDramaClub.Timline;
-public partial class TimelineViewport : SubViewport
+public partial class Stage : SubViewport
 {
     [Signal]
     public delegate void PlayingEventHandler(double cursor, double duration);
@@ -56,6 +60,56 @@ public partial class TimelineViewport : SubViewport
         }
 
     }
+
+
+    public async Task<Timeline> BuildTimeline(List<Instruction> instructions)
+    {
+        
+
+        Animation timeline = new Animation();
+        List<VideoRenderer.AudioClip> audios = new List<VideoRenderer.AudioClip>();
+        double cursor = 0.0;
+
+
+
+        foreach (Instruction instruction in instructions)
+        {
+
+
+            AnimationPack animationPack = await instruction.BakeAsAnimation(this);
+        
+            
+            animationPack.ConvertTo(AnimationPlayer); 
+       
+
+        
+            // [Time Advancing and insert keyframe]
+            foreach (AnimationClip clip in animationPack.Clips)
+            {
+               
+                timeline.InsertAnimation(clip.Animation, cursor, true, ProjectDefaults.FrameDelta);
+            }
+
+            foreach (VideoRenderer.AudioClip audio in animationPack.Audios)
+            {
+
+                audio.StartingTime += cursor;
+                audios.Add(audio);
+            }
+
+    
+            cursor += animationPack.GetDuration();
+        }
+
+
+   
+
+
+        return  new Timeline(timeline, audios); ;
+    }
+   
+
+
 
     public void Play()
     {

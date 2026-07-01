@@ -3,14 +3,15 @@ using WakuWakuDramaClub.Timline;
 public partial class TimelinePreview : TextureRect
 {
 	[Export]
-	public TimelineViewport TimelineViewport;
+	public Stage Stage;
 
 	[Export]
 	public HSlider PlaybackSlider;
 
     public override void _Ready()
     {
-        TimelineViewport.Playing += OnTimelinePlaying;
+		GD.Print(Stage == null);
+        Stage.Playing += OnTimelinePlaying;
 		PlaybackSlider.ValueChanged += OnCurosrMoved;
     }
 
@@ -24,7 +25,7 @@ public partial class TimelinePreview : TextureRect
     private void OnCurosrMoved(double value)
     {
 		//TimelineViewport.Pause();
-        TimelineViewport.Seek(value);
+        Stage.Seek(value);
     }
 
 

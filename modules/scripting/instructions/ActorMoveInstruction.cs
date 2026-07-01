@@ -49,7 +49,7 @@ public partial class ActorMoveInstruction : Instruction
 		To = bind.Get(ToOption, "to");
 		Duration = bind.Get(DurationOption, "duration");
     }
- 	public override Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
+ 	public override Task<AnimationPack> BakeAsAnimation(Stage viewport)
 	{
 		AnimationPack result = new AnimationPack();
 

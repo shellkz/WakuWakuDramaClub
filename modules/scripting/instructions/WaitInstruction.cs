@@ -35,7 +35,7 @@ public partial class WaitInstruction : Instruction
 		RawInstructionBinder bind = Bind(raw);
 		Duration = bind.Get("duration");
     }
- 	public override Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
+ 	public override Task<AnimationPack> BakeAsAnimation(Stage viewport)
 	{
 		AnimationPack result = new AnimationPack();
 		// empty animation clip with only specified length

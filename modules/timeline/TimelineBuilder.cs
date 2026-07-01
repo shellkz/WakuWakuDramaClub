@@ -9,7 +9,7 @@ public partial class TimelineBuilder : Node
 {
     // TimelineViewport
     [Export]
-    public TimelineViewport TimelineViewport { get; set; }
+    public Stage TimelineViewport { get; set; }
 
  
 
@@ -32,10 +32,7 @@ public partial class TimelineBuilder : Node
             
             animationPack.ConvertTo(TimelineViewport.AnimationPlayer); 
        
-            //// [auto sync state]
-            //  foreach clip in pack
-            //      foreach track
-            //          track.context_node.set(track.context_property, track.last key value)
+
         
             // [Time Advancing and insert keyframe]
             foreach (AnimationClip clip in animationPack.Clips)

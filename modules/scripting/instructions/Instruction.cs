@@ -22,7 +22,7 @@ public abstract partial class Instruction : RefCounted
     {
         return new RawInstructionBinder(raw, GetSchema());
     }
-    public virtual Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport) {
+    public virtual Task<AnimationPack> BakeAsAnimation(Stage viewport) {
         return Task.FromResult(new AnimationPack());
     }
     

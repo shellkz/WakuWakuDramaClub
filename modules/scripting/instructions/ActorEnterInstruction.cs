@@ -39,7 +39,7 @@ public partial class ActorEnterInstruction : Instruction
 		Actor = bind.Get("actor");
 		Location = bind.Get(LocationOption, "location");
     }
- 	public override Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
+ 	public override Task<AnimationPack> BakeAsAnimation(Stage viewport)
 	{
 		AnimationPack result = new AnimationPack();
 

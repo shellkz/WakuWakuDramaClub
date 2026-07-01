@@ -33,7 +33,7 @@ public partial class PlaySoundInstruction : Instruction
 		RawInstructionBinder bind = Bind(raw);
 		Sound = bind.Get("audio");
     }
- 	public override Task<AnimationPack> BakeAsAnimation(TimelineViewport viewport)
+ 	public override Task<AnimationPack> BakeAsAnimation(Stage viewport)
 	{
 		AnimationPack result = new AnimationPack();
 
