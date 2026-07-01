@@ -39,6 +39,7 @@ public partial class EditingMenu : Control
 	public void Initialize(MainWorkspaceServices services)
 	{
 		this.services = services;
+		TimelinePreview.Initialize(services.Stage);
 
 		RenderButton.Pressed += OnRenderButtonPressed;
 		PlayButton.Pressed += OnPlayButtonPressed;
@@ -109,7 +110,7 @@ public partial class EditingMenu : Control
 		Timeline timeline = await BuildTimeline();
 		services.Stage.Timeline = timeline;
 		await services.VideoRenderer.ExportAnimationToVideo(timeline.Animation, timeline.Audio);
-
+		
 	}
 	private async Task<Timeline> BuildTimeline()
 	{

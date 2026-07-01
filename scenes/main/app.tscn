@@ -5,9 +5,238 @@
 [ext_resource type="PackedScene" uid="uid://m257tr5ipbq3" path="res://scenes/popups/create_project/create_project_popup.tscn" id="3_8qm6s"]
 [ext_resource type="PackedScene" uid="uid://b50ae8fkgqnk0" path="res://scenes/rendering_menu/rendering_menu.tscn" id="3_4551y"]
 [ext_resource type="PackedScene" uid="uid://dnd22605cnr5r" path="res://scenes/popups/open_project/open_project_popup.tscn" id="4_rulcv"]
+[ext_resource type="Script" uid="uid://b5ynslh55orys" path="res://modules/timeline/Stage.cs" id="6_nw038"]
+[ext_resource type="PackedScene" uid="uid://rd10yuft47xg" path="res://assets/actors/template/actor.tscn" id="7_7qdje"]
+[ext_resource type="Script" uid="uid://c5n8husurio2r" path="res://scenes/main/StageBackground.cs" id="9_r77hi"]
+[ext_resource type="Texture2D" uid="uid://biyng53rn2ax0" path="res://assets/backgrounds/赤冬 會長辦公室 晚上.jpg" id="10_7ks4x"]
+[ext_resource type="Script" uid="uid://b3wf1cmsev3p3" path="res://scenes/dialogue_panel/DialoguePanel.cs" id="11_qsexx"]
+[ext_resource type="Script" uid="uid://cioomy225no3x" path="res://modules/render/VideoRenderer.cs" id="12_1qmki"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjr42"]
 bg_color = Color(0.06, 0.06, 0.06, 1)
+
+[sub_resource type="Animation" id="Animation_qtu10"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ee4bf"]
+_data = {
+&"RESET": SubResource("Animation_qtu10")
+}
+
+[sub_resource type="Animation" id="Animation_46hgv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_em5dr"]
+resource_name = "black-in-out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_7ks4x")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tmf5n"]
+_data = {
+&"RESET": SubResource("Animation_46hgv"),
+&"black-in-out": SubResource("Animation_em5dr")
+}
+
+[sub_resource type="Gradient" id="Gradient_eeixe"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jjy5e"]
+gradient = SubResource("Gradient_eeixe")
+width = 64
+
+[sub_resource type="Gradient" id="Gradient_ee4bf"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.75431, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0.8, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kbped"]
+gradient = SubResource("Gradient_ee4bf")
+fill_from = Vector2(0.508547, 1)
+fill_to = Vector2(0.549145, 0)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fj5cn"]
+texture = SubResource("GradientTexture2D_kbped")
+
+[sub_resource type="Animation" id="Animation_16l5g"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SpeakerLabel:text")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["角色"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SpeakerLabel:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SpeechLabel:text")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["對話"]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SpeechLabel:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_fyarh"]
+resource_name = "show_dialogue"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SpeakerLabel:text")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["角色"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SpeakerLabel:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SpeechLabel:text")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": ["對話"]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SpeechLabel:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yf4wl"]
+_data = {
+&"RESET": SubResource("Animation_16l5g"),
+&"show_dialogue": SubResource("Animation_fyarh")
+}
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_ee4bf"]
+color = Color(0.36, 0.36, 0.36, 0.741176)
+thickness = 4
 
 [node name="App" type="Panel" unique_id=2033538703 node_paths=PackedStringArray("projectMenu", "tabBar", "hintLabel", "editingMenu", "renderingMenu", "createProjectPopup", "openProjectPopup", "stage", "videoRenderer")]
 anchors_preset = 15
@@ -24,8 +253,8 @@ editingMenu = NodePath("VBoxContainer/ContentPanel/EditingMenu")
 renderingMenu = NodePath("VBoxContainer/ContentPanel/RenderingMenu")
 createProjectPopup = NodePath("Popups/CreateProjectPopup")
 openProjectPopup = NodePath("Popups/OpenProjectPopup")
-stage = NodePath("VBoxContainer/ContentPanel/EditingMenu/Stage")
-videoRenderer = NodePath("VBoxContainer/ContentPanel/EditingMenu/VideoRender")
+stage = NodePath("Stage")
+videoRenderer = NodePath("VideoRender")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1052142871]
 layout_mode = 1
@@ -169,3 +398,168 @@ text = "關閉"
 layout_mode = 2
 text = "內容"
 fit_content = true
+
+[node name="ScriptParser" type="Node" parent="." unique_id=1776224674]
+
+[node name="Stage" type="SubViewport" parent="." unique_id=1386558528 node_paths=PackedStringArray("AnimationPlayer", "Actors", "Anchors", "DialoguePanel", "Background")]
+canvas_cull_mask = 1
+size = Vector2i(1920, 1080)
+script = ExtResource("6_nw038")
+AnimationPlayer = NodePath("TimelineAnimationPlayer")
+Actors = NodePath("Actors")
+Anchors = NodePath("Anchors")
+DialoguePanel = NodePath("DialoguePanel")
+Background = NodePath("Background")
+ActorTemplate = ExtResource("7_7qdje")
+
+[node name="TimelineAnimationPlayer" type="AnimationPlayer" parent="Stage" unique_id=2006574868]
+libraries/ = SubResource("AnimationLibrary_ee4bf")
+
+[node name="Background" type="TextureRect" parent="Stage" unique_id=953605407 node_paths=PackedStringArray("animationPlayer")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 6
+script = ExtResource("9_r77hi")
+animationPlayer = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Stage/Background" unique_id=1672736340]
+libraries/ = SubResource("AnimationLibrary_tmf5n")
+
+[node name="Anchors" type="Control" parent="Stage" unique_id=262538898]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="左" type="Control" parent="Stage/Anchors" unique_id=1465842085]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 400.0
+offset_top = 800.0
+offset_right = 400.0
+offset_bottom = 800.0
+
+[node name="TextureRect" type="TextureRect" parent="Stage/Anchors/左" unique_id=2032094534]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_jjy5e")
+
+[node name="中" type="Control" parent="Stage/Anchors" unique_id=56534961]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 960.0
+offset_top = 800.0
+offset_right = 960.0
+offset_bottom = 800.0
+
+[node name="TextureRect" type="TextureRect" parent="Stage/Anchors/中" unique_id=1321259010]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_jjy5e")
+
+[node name="右" type="Control" parent="Stage/Anchors" unique_id=1815301472]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 1520.0
+offset_top = 800.0
+offset_right = 1520.0
+offset_bottom = 800.0
+
+[node name="TextureRect" type="TextureRect" parent="Stage/Anchors/右" unique_id=2137756972]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_jjy5e")
+
+[node name="Actors" type="Control" parent="Stage" unique_id=1901650662]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="DialoguePanel" type="Panel" parent="Stage" unique_id=702218382 node_paths=PackedStringArray("Player")]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 696.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_fj5cn")
+script = ExtResource("11_qsexx")
+Player = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Stage/DialoguePanel" unique_id=1044478359]
+libraries/ = SubResource("AnimationLibrary_yf4wl")
+
+[node name="SpeakerLabel" type="RichTextLabel" parent="Stage/DialoguePanel" unique_id=62794434]
+layout_mode = 0
+offset_left = 232.0
+offset_top = 47.0
+offset_right = 511.0
+offset_bottom = 137.0
+theme_override_colors/default_color = Color(0.91, 0.91, 0.91, 1)
+theme_override_font_sizes/normal_font_size = 56
+text = "角色"
+fit_content = true
+autowrap_mode = 0
+
+[node name="SpeechLabel" type="RichTextLabel" parent="Stage/DialoguePanel" unique_id=191769355]
+layout_mode = 0
+offset_left = 238.0
+offset_top = 154.0
+offset_right = 1181.0
+offset_bottom = 407.0
+theme_override_colors/default_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/normal_font_size = 44
+text = "對話"
+
+[node name="Panel" type="Panel" parent="Stage/DialoguePanel" unique_id=1276534620]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 241.0
+offset_top = -248.0
+offset_right = -235.0
+offset_bottom = -245.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxLine_ee4bf")
+
+[node name="VideoRender" type="Node" parent="." unique_id=32982568 node_paths=PackedStringArray("SubViewportToRecord", "AnimationPlayer")]
+script = ExtResource("12_1qmki")
+SubViewportToRecord = NodePath("../Stage")
+AnimationPlayer = NodePath("../Stage/TimelineAnimationPlayer")
