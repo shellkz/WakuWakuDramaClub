@@ -9,6 +9,12 @@ using WakuWakuDramaClub.Timline;
 
 public partial class App : Panel
 {
+    private enum MainTab
+    {
+        Scripting = 0,
+        Rendering = 1
+    }
+
     [Export(PropertyHint.GlobalDir)]
     public string DebugProjectDirectory = "";
 
@@ -22,6 +28,9 @@ public partial class App : Panel
     RichTextLabel hintLabel;
     [Export]
     EditingMenu editingMenu;
+    [Export]
+    RenderingMenu renderingMenu;
+
     [Export]
     CreateProjectPopup createProjectPopup;
     
@@ -45,6 +54,7 @@ public partial class App : Panel
         CreateWorkspaceServices();
         editingMenu.Initialize(workspaceServices);
 
+        tabBar.TabChanged += OnTabChanged;
         projectMenu.IdPressed += OnProjectMenuSelected;
         ProjectSession.Instance.WhenProjectLoaded(OnProjectLoaded);
         UpdateProjectState();
@@ -83,9 +93,20 @@ public partial class App : Panel
     {
         var hasProject = ProjectSession.Instance.Data != null;
         tabBar.Visible = hasProject;
-        editingMenu.Visible = hasProject;
+        UpdateActiveMenu(hasProject);
         hintLabel.Visible = !hasProject;
         projectMenu.SetItemDisabled(2, !hasProject);
+    }
+
+    private void OnTabChanged(long tabIndex)
+    {
+        UpdateProjectState();
+    }
+
+    private void UpdateActiveMenu(bool hasProject)
+    {
+        editingMenu.Visible = hasProject && tabBar.CurrentTab == (int)MainTab.Scripting;
+        renderingMenu.Visible = hasProject && tabBar.CurrentTab == (int)MainTab.Rendering;
     }
 
     private void OnProjectMenuSelected(long id)

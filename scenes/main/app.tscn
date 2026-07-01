@@ -3,12 +3,13 @@
 [ext_resource type="PackedScene" uid="uid://by6r5p7e5c5w5" path="res://scenes/editing_menu/editing_menu.tscn" id="1_4n8gi"]
 [ext_resource type="Script" uid="uid://cal774vwr5ucn" path="res://scenes/main/App.cs" id="1_kjr42"]
 [ext_resource type="PackedScene" uid="uid://m257tr5ipbq3" path="res://scenes/popups/create_project/create_project_popup.tscn" id="3_8qm6s"]
+[ext_resource type="PackedScene" uid="uid://b50ae8fkgqnk0" path="res://scenes/rendering_menu/rendering_menu.tscn" id="3_4551y"]
 [ext_resource type="PackedScene" uid="uid://dnd22605cnr5r" path="res://scenes/popups/open_project/open_project_popup.tscn" id="4_rulcv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjr42"]
 bg_color = Color(0.06, 0.06, 0.06, 1)
 
-[node name="App" type="Panel" unique_id=2033538703 node_paths=PackedStringArray("projectMenu", "tabBar", "hintLabel", "editingMenu", "createProjectPopup", "openProjectPopup", "stage", "videoRenderer")]
+[node name="App" type="Panel" unique_id=2033538703 node_paths=PackedStringArray("projectMenu", "tabBar", "hintLabel", "editingMenu", "renderingMenu", "createProjectPopup", "openProjectPopup", "stage", "videoRenderer")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -20,6 +21,7 @@ projectMenu = NodePath("VBoxContainer/HBoxContainer/MenuBar/ProjectMenu")
 tabBar = NodePath("VBoxContainer/HBoxContainer/TabBar")
 hintLabel = NodePath("VBoxContainer/ContentPanel/HintLabel")
 editingMenu = NodePath("VBoxContainer/ContentPanel/EditingMenu")
+renderingMenu = NodePath("VBoxContainer/ContentPanel/RenderingMenu")
 createProjectPopup = NodePath("Popups/CreateProjectPopup")
 openProjectPopup = NodePath("Popups/OpenProjectPopup")
 stage = NodePath("VBoxContainer/ContentPanel/EditingMenu/Stage")
@@ -54,10 +56,9 @@ layout_mode = 2
 current_tab = 0
 clip_tabs = false
 close_with_middle_mouse = false
-tab_count = 3
-tab_0/title = "Asset"
-tab_1/title = "Script"
-tab_2/title = "Render"
+tab_count = 2
+tab_0/title = "Scripting"
+tab_1/title = "Rendering"
 
 [node name="ContentPanel" type="Panel" parent="VBoxContainer" unique_id=746861848]
 layout_mode = 2
@@ -80,6 +81,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="EditingMenu" parent="VBoxContainer/ContentPanel" unique_id=1436386884 instance=ExtResource("1_4n8gi")]
+visible = false
+layout_mode = 1
+
+[node name="RenderingMenu" parent="VBoxContainer/ContentPanel" unique_id=1686624275 instance=ExtResource("3_4551y")]
 visible = false
 layout_mode = 1
 

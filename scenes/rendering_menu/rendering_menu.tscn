@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://b50ae8fkgqnk0"]
+
+[ext_resource type="Script" uid="uid://cgh5chawy270c" path="res://scenes/rendering_menu/RenderingMenu.cs" id="1_672iw"]
+
+[node name="RenderingMenu" type="Panel" unique_id=1686624275 node_paths=PackedStringArray("FileNameEdit", "CodecOption", "FrameRateOption", "RenderButton")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_672iw")
+FileNameEdit = NodePath("HBoxContainer/RightPanel/RenderingSettingForm/FileNameEntry/HboxContainer/FileNameEdit")
+CodecOption = NodePath("HBoxContainer/RightPanel/RenderingSettingForm/CodecEntry/HboxContainer/CodecOption")
+FrameRateOption = NodePath("HBoxContainer/RightPanel/RenderingSettingForm/FrameRateEntry/HboxContainer/FrameRateOption")
+RenderButton = NodePath("HBoxContainer/RightPanel/RenderingSettingForm/ActionEntry/HboxContainer/RenderButton")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=996597111]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftPanel" type="Panel" parent="HBoxContainer" unique_id=55996035]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="RightPanel" type="Panel" parent="HBoxContainer" unique_id=1623875567]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RenderingSettingForm" type="VBoxContainer" parent="HBoxContainer/RightPanel" unique_id=985266068]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FileNameEntry" type="MarginContainer" parent="HBoxContainer/RightPanel/RenderingSettingForm" unique_id=312036047]
+layout_mode = 2
+
+[node name="HboxContainer" type="HBoxContainer" parent="HBoxContainer/RightPanel/RenderingSettingForm/FileNameEntry" unique_id=1055619352]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/RightPanel/RenderingSettingForm/FileNameEntry/HboxContainer" unique_id=1133367450]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "File Name"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="FileNameEdit" type="LineEdit" parent="HBoxContainer/RightPanel/RenderingSettingForm/FileNameEntry/HboxContainer" unique_id=1919087397]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+text = "output"
+
+[node name="Control" type="Control" parent="HBoxContainer/RightPanel/RenderingSettingForm/FileNameEntry/HboxContainer" unique_id=733357338]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CodecEntry" type="MarginContainer" parent="HBoxContainer/RightPanel/RenderingSettingForm" unique_id=703519515]
+layout_mode = 2
+
+[node name="HboxContainer" type="HBoxContainer" parent="HBoxContainer/RightPanel/RenderingSettingForm/CodecEntry" unique_id=1148783363]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/RightPanel/RenderingSettingForm/CodecEntry/HboxContainer" unique_id=625509646]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Codec"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CodecOption" type="OptionButton" parent="HBoxContainer/RightPanel/RenderingSettingForm/CodecEntry/HboxContainer" unique_id=285923881]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+selected = 0
+item_count = 1
+popup/item_0/text = "H.264"
+popup/item_0/id = 0
+
+[node name="Control" type="Control" parent="HBoxContainer/RightPanel/RenderingSettingForm/CodecEntry/HboxContainer" unique_id=1056284147]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FrameRateEntry" type="MarginContainer" parent="HBoxContainer/RightPanel/RenderingSettingForm" unique_id=1063397794]
+layout_mode = 2
+
+[node name="HboxContainer" type="HBoxContainer" parent="HBoxContainer/RightPanel/RenderingSettingForm/FrameRateEntry" unique_id=262427335]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/RightPanel/RenderingSettingForm/FrameRateEntry/HboxContainer" unique_id=628790819]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Frame Rate"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="FrameRateOption" type="OptionButton" parent="HBoxContainer/RightPanel/RenderingSettingForm/FrameRateEntry/HboxContainer" unique_id=1794860394]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+selected = 0
+item_count = 2
+popup/item_0/text = "30"
+popup/item_0/id = 0
+popup/item_1/text = "60"
+popup/item_1/id = 1
+
+[node name="Control" type="Control" parent="HBoxContainer/RightPanel/RenderingSettingForm/FrameRateEntry/HboxContainer" unique_id=2118909630]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ActionEntry" type="MarginContainer" parent="HBoxContainer/RightPanel/RenderingSettingForm" unique_id=66510133]
+layout_mode = 2
+
+[node name="HboxContainer" type="HBoxContainer" parent="HBoxContainer/RightPanel/RenderingSettingForm/ActionEntry" unique_id=869011630]
+layout_mode = 2
+
+[node name="RichTextLabel" type="Control" parent="HBoxContainer/RightPanel/RenderingSettingForm/ActionEntry/HboxContainer" unique_id=1190729874]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Empty" type="Control" parent="HBoxContainer/RightPanel/RenderingSettingForm/ActionEntry/HboxContainer" unique_id=817790133]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="RenderButton" type="Button" parent="HBoxContainer/RightPanel/RenderingSettingForm/ActionEntry/HboxContainer" unique_id=1885446109]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Render"
