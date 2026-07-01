@@ -172,9 +172,9 @@ public partial class FFmpegService : Node // You might make this an Autoload Sin
         }
     }
    
-    public void GetVideoDuration(string videoPath, Callable onCompleted)
+    public async void GetVideoDuration(string videoPath, Callable onCompleted)
     {
-        GetVideoDurationAsync(videoPath, onCompleted);
+        await GetVideoDurationAsync(videoPath, onCompleted);
     }
     //  GetVideoDuration test code
     //    string exampleVideoPath = "C:/Users/zechi/Videos/hie.mkv"; // Example Windows path
@@ -227,7 +227,7 @@ public partial class FFmpegService : Node // You might make this an Autoload Sin
     }
 
 
-    public void CreateVideoFromImageSequence(
+    public async void CreateVideoFromImageSequence(
          string inputDirectoryPath,
          string outputFilePath,
          int frameRate,
@@ -235,7 +235,7 @@ public partial class FFmpegService : Node // You might make this an Autoload Sin
          Callable onCompleted)
     {
 
-        CreateVideoFromImageSequenceAsync(inputDirectoryPath, outputFilePath, frameRate, imageFilePattern, onCompleted);
+        await CreateVideoFromImageSequenceAsync(inputDirectoryPath, outputFilePath, frameRate, imageFilePattern, onCompleted);
     }
 
     public async Task<bool> CreateVideoFromImageSequenceAsync(
@@ -345,10 +345,10 @@ public partial class FFmpegService : Node // You might make this an Autoload Sin
         GD.Print($"Hi, {who}");
     }
 
-    public void GetDuck(string videoPath, Callable onCompleted)
+    public async void GetDuck(string videoPath, Callable onCompleted)
     {
         
-        GetDuckAsync(videoPath, onCompleted);
+        await GetDuckAsync(videoPath, onCompleted);
     }
     public async Task GetDuckAsync(string videoPath, Callable onCompleted)
     {
