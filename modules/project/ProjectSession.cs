@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.IO;
+using WakuWakuDramaClub.Project;
 
 public partial class ProjectSession : Node
 {
@@ -42,8 +43,8 @@ public partial class ProjectSession : Node
             throw new InvalidOperationException($"目錄已存在專案：{path}");
 
         Directory.CreateDirectory(path);
-        Directory.CreateDirectory(Path.Combine(path, "exports"));
-        Directory.CreateDirectory(Path.Combine(path, "scripts"));
+        Directory.CreateDirectory(Path.Combine(path, ProjectDefaults.ExportsDirectoryName));
+        Directory.CreateDirectory(Path.Combine(path, ProjectDefaults.ScriptsDirectoryName));
         Directory.CreateDirectory(Path.Combine(path, "assets", "default", "actors"));
         Directory.CreateDirectory(Path.Combine(path, "assets", "default", "backgrounds"));
         Directory.CreateDirectory(Path.Combine(path, "assets", "default", "audio"));

@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using WakuWakuDramaClub.Completion;
+using WakuWakuDramaClub.Project;
 using WakuWakuDramaClub.Render;
 using WakuWakuDramaClub.Scripting;
 using WakuWakuDramaClub.Scripting.Parsing;
@@ -50,6 +51,7 @@ public partial class App : Panel
 
 
     private MainWorkspaceServices workspaceServices;
+    private readonly ScriptStore scriptStore = new();
     
     public override void _Ready()
     {
@@ -117,7 +119,7 @@ public partial class App : Panel
         if (ProjectSession.Instance.Data == null)
             return "";
 
-        return Path.Combine(ProjectSession.Instance.WorkingDirectory, "exports");
+        return Path.Combine(ProjectSession.Instance.WorkingDirectory, ProjectDefaults.ExportsDirectoryName);
     }
 
     private Task<Timeline> BuildTimelineFromCurrentScript()
@@ -138,8 +140,19 @@ public partial class App : Panel
     private void OnProjectLoaded()
     {
         RebuildWorkspaceServices();
+        LoadProjectScript();
         GetTree().Root.Title = $"WakuWaku Drama Club - {ProjectSession.Instance.Data.ProjectName}";
         UpdateProjectState();
+    }
+
+    private void LoadProjectScript()
+    {
+        string scriptDirectory = Path.Combine(
+            ProjectSession.Instance.WorkingDirectory,
+            ProjectDefaults.ScriptsDirectoryName);
+
+        scriptStore.LoadProject(scriptDirectory);
+        editingMenu.SetScriptText(scriptStore.LoadScript());
     }
 
     private void UpdateProjectState()
@@ -181,6 +194,7 @@ public partial class App : Panel
     private void SaveProject()
     {
         if (ProjectSession.Instance.Data == null) return;
+        scriptStore.SaveScript(editingMenu.GetScriptText());
         ProjectSession.Instance.Save();
     }
 

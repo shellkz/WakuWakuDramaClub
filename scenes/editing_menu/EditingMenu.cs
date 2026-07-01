@@ -130,6 +130,11 @@ public partial class EditingMenu : Control
 		return ScriptEditor.Text;
 	}
 
+	public void SetScriptText(string text)
+	{
+		ScriptEditor.Text = text ?? "";
+	}
+
 	private async void OnPreviewButtonPressed()
 	{
 		await RefreshPreviewTimeline();
