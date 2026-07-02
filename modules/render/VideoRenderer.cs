@@ -55,53 +55,63 @@ public partial class VideoRenderer : Node
     public async Task ExportAnimationToVideo(Animation animation, List<AudioClip> audio, VideoRenderSettings settings)
     {
         settings ??= new VideoRenderSettings();
+        SubViewport.UpdateMode originalUpdateMode = SubViewportToRecord.RenderTargetUpdateMode;
 
         _ffmpegCts = new CancellationTokenSource();
         _ffmpegTaskCompletionSource = new TaskCompletionSource<bool>();
 
-        string outputPath = ResolveOutputPath(settings.OutputDirectory, settings.OutputFileName);
-        Directory.CreateDirectory(Path.GetDirectoryName(outputPath) ?? "");
-        GD.Print($"Starting export of animation to {outputPath}");
-
-        Task ffmpegEncodingTask = Task.Run(() => RecordVideoAsync(outputPath, _ffmpegCts.Token, audio, settings));
-
-        AnimationLibrary animationLibrary = new AnimationLibrary();
-        animationLibrary.AddAnimation("timeline", animation);
-
-        if (AnimationPlayer.HasAnimationLibrary("custom"))
-            AnimationPlayer.RemoveAnimationLibrary("custom");
-
-        AnimationPlayer.AddAnimationLibrary("custom", animationLibrary);
-        AnimationPlayer.Play("custom/timeline");
-        AnimationPlayer.Pause();
-        
-        float animationDuration = (float)animation.Length;
-        float frameDuration = 1.0f / settings.FrameRate;
-        int totalFrames = (int)(animationDuration * settings.FrameRate);
-
-        for (int i = 0; i < totalFrames; i++)
+        try
         {
-            float currentTime = i * frameDuration;
-            if (currentTime > animationDuration)
+            SubViewportToRecord.RenderTargetUpdateMode = SubViewport.UpdateMode.Always;
+
+            string outputPath = ResolveOutputPath(settings.OutputDirectory, settings.OutputFileName);
+            Directory.CreateDirectory(Path.GetDirectoryName(outputPath) ?? "");
+            GD.Print($"Starting export of animation to {outputPath}");
+
+            Task ffmpegEncodingTask = Task.Run(() => RecordVideoAsync(outputPath, _ffmpegCts.Token, audio, settings));
+
+            AnimationLibrary animationLibrary = new AnimationLibrary();
+            animationLibrary.AddAnimation("timeline", animation);
+
+            if (AnimationPlayer.HasAnimationLibrary("custom"))
+                AnimationPlayer.RemoveAnimationLibrary("custom");
+
+            AnimationPlayer.AddAnimationLibrary("custom", animationLibrary);
+            AnimationPlayer.Play("custom/timeline");
+            AnimationPlayer.Pause();
+
+            float animationDuration = (float)animation.Length;
+            float frameDuration = 1.0f / settings.FrameRate;
+            int totalFrames = (int)(animationDuration * settings.FrameRate);
+
+            for (int i = 0; i < totalFrames; i++)
             {
-                currentTime = animationDuration;
+                float currentTime = i * frameDuration;
+                if (currentTime > animationDuration)
+                {
+                    currentTime = animationDuration;
+                }
+
+                AnimationPlayer.Seek(currentTime, true);
+                await ToSignal(RenderingServer.Singleton, RenderingServer.SignalName.FramePostDraw);
+                CaptureFrameFromSubViewport();
+
+                GD.Print($"Captured frame {i + 1}/{totalFrames} at time {currentTime:F2}s");
             }
 
-            AnimationPlayer.Seek(currentTime, true);
-            await ToSignal(RenderingServer.Singleton, RenderingServer.SignalName.FramePostDraw);
-            CaptureFrameFromSubViewport();
+            _ffmpegCts.Cancel();
+            await _ffmpegTaskCompletionSource.Task;
 
-            GD.Print($"Captured frame {i + 1}/{totalFrames} at time {currentTime:F2}s");
+            GD.Print("Animation export complete!");
         }
+        finally
+        {
+            SubViewportToRecord.RenderTargetUpdateMode = originalUpdateMode;
 
-        _ffmpegCts.Cancel();
-        await _ffmpegTaskCompletionSource.Task;
-
-        GD.Print("Animation export complete!");
-
-        _ffmpegCts.Dispose();
-        _ffmpegCts = null;
-        _ffmpegTaskCompletionSource = null;
+            _ffmpegCts?.Dispose();
+            _ffmpegCts = null;
+            _ffmpegTaskCompletionSource = null;
+        }
     }
 
     private static string ResolveOutputPath(string outputDirectory, string outputFileName)

@@ -134,8 +134,14 @@ public partial class App : Panel
 
         workspaceServices.Stage.ClearActors();
 
-        return await workspaceServices.Stage.BuildTimeline(instructions);
+        Timeline timeline = await workspaceServices.Stage.BuildTimeline(instructions);
+
+        
+
+
+        return timeline;
     }
+
 
     private void OnProjectLoaded()
     {
