@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 using WakuWakuDramaClub.Timline;
 public partial class DialoguePanel : Panel
@@ -8,6 +9,28 @@ public partial class DialoguePanel : Panel
     public AnimationPlayer Player { get; set; }
 
    
+    public List<AnimationClip> Reset()
+    {
+        List<AnimationClip> clips = new List<AnimationClip>();
+
+        if (Player == null)
+        {
+            GD.PrintErr("Cannot reset DialoguePanel because the AnimationPlayer is null.");
+            return clips;
+        }
+
+        if (!Player.HasAnimation("RESET"))
+        {
+            string availableAnimations = string.Join(", ", Player.GetAnimationList());
+            GD.PrintErr($"RESET animation not found on '{Player.GetPath()}'. Available animations: {availableAnimations}");
+            return clips;
+        }
+
+        Animation animation = (Animation)Player.GetAnimation("RESET").Duplicate();
+        clips.Add(new AnimationClip(Player, animation));
+        return clips;
+    }
+
 
     public AnimationClip ShowDialogue(string speaker, string speech, TimeSpan voiceDuration)
     {

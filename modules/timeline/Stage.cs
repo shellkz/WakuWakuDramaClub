@@ -64,25 +64,20 @@ public partial class Stage : SubViewport
 
     public async Task<Timeline> BuildTimeline(List<Instruction> instructions)
     {
-        
-
+    
         Animation timeline = new Animation();
         List<VideoRenderer.AudioClip> audios = new List<VideoRenderer.AudioClip>();
         double cursor = 0.0;
 
+        InsertInitialAnimation(timeline);
 
-
+        // Content
         foreach (Instruction instruction in instructions)
         {
-
-
             AnimationPack animationPack = await instruction.BakeAsAnimation(this);
         
-            
             animationPack.ConvertTo(AnimationPlayer); 
        
-
-        
             // [Time Advancing and insert keyframe]
             foreach (AnimationClip clip in animationPack.Clips)
             {
@@ -97,15 +92,29 @@ public partial class Stage : SubViewport
                 audios.Add(audio);
             }
 
-    
             cursor += animationPack.GetDuration();
         }
 
+        return  new Timeline(timeline, audios);
+    }
 
-   
-
-
-        return  new Timeline(timeline, audios); ;
+    private void InsertInitialAnimation(Animation timeline)
+    {
+        // Gather stage objects, at the moment there is only DialoguePanel
+        if (DialoguePanel == null)
+        {
+            GD.PrintErr("Cannot insert initial animation because DialoguePanel is null.");
+            return;
+        }
+        // For each  stage object
+        //  for intial clip in object.Reset()
+        //      convert
+        //      insert
+        foreach (AnimationClip clip in DialoguePanel.Reset())
+        {
+            clip.ConvertTo(AnimationPlayer);
+            timeline.InsertAnimation(clip.Animation, 0, true, 0);
+        }
     }
    
 
